@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>GESTIONE COSTI</title>
+
+<style>
+:root{
+  --base:#d6006b; --fastweb:#e4b002; --tiscali:#3b2783; --sky:#cf01cf; --acea:#05a8b0; --wa:#03bf62;
+  --text:#111827; --muted:#6b7280; --radius:16px;
+  --shadow:0 10px 25px rgba(0,0,0,.08); --shadow-soft:0 6px 18px rgba(0,0,0,.06);
+  --g-body:linear-gradient(180deg,#f9fafb,#ffffff);
+  --g-nav: linear-gradient(90deg, var(--base), var(--tiscali));
+  --g-card: linear-gradient(180deg,#ffffff,#f8fafc);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color:var(--text);
+  background:var(--g-body);
+}
+
+/* Topbar */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:40;
+  background:var(--g-nav);
+  color:#fff;
+  box-shadow:var(--shadow);
+}
+.topbar-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:16px 20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.brand-title{
+  font-weight:900;
+  letter-spacing:.5px;
+  font-size:26px;
+  text-shadow:0 1px 0 rgba(0,0,0,.25);
+}
+
+/* Layout */
+.container{
+  max-width:1200px;
+  margin:24px auto;
+  padding:0 14px;
+}
+.section{
+  background:#ffffffcc;
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
+}
+.section h2{
+  font-size:22px;
+  margin-bottom:14px;
+  background:linear-gradient(90deg,#111,#6b7280);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.muted{color:var(--muted); font-size:13px;}
+.hr{height:1px; background:rgba(0,0,0,.06); margin:16px 0;}
+
+/* Forms & grid */
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media (max-width:880px){ .grid-2{grid-template-columns:1fr;} }
+
+label{
+  font-weight:800;
+  font-size:14px;
+  margin-bottom:6px;
+  display:block;
+}
+.field{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:10px 12px;
+  width:100%;
+}
+
+/* Buttons */
+.btn{
+  background:linear-gradient(90deg, var(--base), var(--tiscali));
+  color:#fff;
+  font-weight:800;
+  border:none;
+  border-radius:12px;
+  padding:12px 16px;
+  cursor:pointer;
+  transition:.2s;
+  box-shadow:0 8px 18px rgba(214,0,107,.25);
+  width:100%;
+  text-align:center;
+}
+.btn:hover{transform:translateY(-1px);}
+.btn.wa{
+  background:var(--wa);
+  box-shadow:0 8px 18px rgba(3,191,98,.25);
+}
+.btn.detail{
+  background:#374151;
+  box-shadow:0 8px 18px rgba(55,65,81,.25);
+  font-size:14px;
+}
+
+/* CHIP BRAND */
+.chip{
+  padding:10px 16px;
+  border-radius:22px;
+  display:inline-block;
+  margin:6px 6px 0 0;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  border:2px solid transparent;
+  transition:.25s;
+  background:#fff;
+  box-shadow:var(--shadow-soft);
+}
+.chip.fastweb{color:var(--fastweb);background:rgba(228,176,2,.12);}
+.chip.sky{color:var(--sky);background:rgba(207,1,207,.12);}
+.chip.acea{color:var(--acea);background:rgba(5,168,176,.12);}
+.chip.tiscali{color:var(--tiscali);background:rgba(59,39,131,.12);}
+.chip.active{border:2px solid currentColor;}
+
+/* PANNELLO COMPENSI */
+#compensiPanel{
+  display:none;
+  margin-top:10px;
+}
+#compensiPanel textarea{
+  width:100%;
+  height:260px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  font-size:14px;
+  margin-top:8px;
+  font-family:monospace;
+  white-space:pre;
+}
+
+/* RISULTATI PARLANTI */
+.resultCard{
+  margin-top:16px;
+  background:var(--g-card);
+  padding:20px;
+  border-radius:14px;
+  font-size:16px;
+  box-shadow:var(--shadow-soft);
+  font-weight:500;
+  line-height:1.45;
+  border-left:6px solid var(--base);
+  white-space:pre-line;
+}
+
+/* Pannello dettaglio */
+#dettaglioPanel{
+  margin-top:12px;
+  padding:14px;
+  background:#f3f4ff;
+  border-radius:12px;
+  font-size:14px;
+  line-height:1.5;
+  white-space:pre-line;
+  display:none;
+}
+
+/* WhatsApp btn shortcut */
+.waBtn{}
+
+/* Utility */
+.hidden{display:none;}
+</style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-title">Cost Management - Dealer E2K</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 1. COSTI -->
+  <div class="section">
+    <h2>Costi mensili</h2>
+
+    <div class="grid-2">
+      <div>
+        <label for="affitto">Affitto (€)</label>
+        <input id="affitto" type="number" class="field" placeholder="0">
+      </div>
+
+      <div>
+        <label for="personale">Personale totale (€)</label>
+        <input id="personale" type="number" class="field" placeholder="0">
+      </div>
+
+      <div>
+        <label for="utenze">Utenze (€)</label>
+        <input id="utenze" type="number" class="field" placeholder="0">
+      </div>
+
+      <div>
+        <label for="altro">Altri costi (€)</label>
+        <input id="altro" type="number" class="field" placeholder="0">
+      </div>
+    </div>
+
+    <div id="totCosti" style="font-weight:700;font-size:16px;margin-top:10px;">
+      Totale: €0
+    </div>
+  </div>
+
+  <!-- 2. BRAND -->
+  <div class="section">
+    <h2>Brand attivi</h2>
+
+    <div id="brandContainer">
+      <div class="chip fastweb" data-brand="fastweb">FASTWEB</div>
+      <div class="chip sky" data-brand="sky">SKY</div>
+      <div class="chip acea" data-brand="acea">ACEA</div>
+      <div class="chip tiscali" data-brand="tiscali">TISCALI</div>
+    </div>
+    <p class="muted" style="margin-top:8px;">
+      Seleziona i brand realmente attivi sul dealer per simulare la copertura dei costi.
+    </p>
+  </div>
+
+  <!-- 3. COMPENSI MULTIBRAND -->
+  <div class="section">
+    <h2>Compensi del mese</h2>
+    <button class="btn" style="max-width:260px;" onclick="toggleCompensi()">Mostra / Nascondi configurazione Multibrand</button>
+
+    <div id="compensiPanel">
+      <p style="margin-top:10px;font-size:14px;font-weight:600;">
+        ⚙️ Modifica qui i compensi del mese (solo Multibrand):
+      </p>
+
+      <textarea id="jsonCompensi"></textarea>
+
+      <button class="btn" style="margin-top:12px;max-width:220px;" onclick="salvaCompensi()">SALVA COMPENSI</button>
+    </div>
+  </div>
+
+  <!-- 4. CALCOLO -->
+  <div class="section">
+    <h2>Calcolo contratti necessari</h2>
+
+    <button class="btn" onclick="calcola()">CALCOLA</button>
+
+    <div id="output" class="resultCard hidden"></div>
+
+    <button id="btnDettaglio" class="btn detail hidden" onclick="toggleDettaglio()">
+      🔍 Dettaglio provvigioni e punti per contratto
+    </button>
+    <div id="dettaglioPanel"></div>
+
+    <button id="waBtn" class="btn wa waBtn hidden" onclick="whatsapp()">
+      Invia su WhatsApp
+    </button>
+  </div>
+
+</div> <!-- /container -->
+
+<script>
+/* ============================================================
+   0. BRAND SELECTION
+   ============================================================ */
+let brandAttivi = [];
+
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    const brand = chip.dataset.brand;
+
+    if(brandAttivi.includes(brand)){
+      brandAttivi = brandAttivi.filter(b => b !== brand);
+      chip.classList.remove('active');
+    } else {
+      brandAttivi.push(brand);
+      chip.classList.add('active');
+    }
+  });
+});
+
+/* ============================================================
+   1. COMPENSI MULTIBRAND
+   ============================================================ */
+const COMPENSI_DEFAULT = {
+  multibrand: {
+    soglie:   [10, 20, 40, 60, 80, 110],
+    bonus_2:  [50, 100, 200, 250, 300, 400],
+    bonus_3:  [100, 200, 400, 500, 600, 800],
+    bonus_4:  [150, 300, 600, 750, 900, 1200],
+    extra_sky_energy: 1500,
+    note: "Extra valido se: 4 brand attivi + 10 Sky + 50 Energy Fastweb"
+  }
+};
+
+let COMPENSI = JSON.parse(JSON.stringify(COMPENSI_DEFAULT));
+
+function initCompensi(){
+  const area = document.getElementById('jsonCompensi');
+  if(area){
+    area.value = JSON.stringify(COMPENSI, null, 2);
+  }
+}
+
+function toggleCompensi(){
+  const panel = document.getElementById('compensiPanel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function salvaCompensi(){
+  try{
+    const raw = document.getElementById('jsonCompensi').value;
+    COMPENSI = JSON.parse(raw);
+    alert("✔️ Compensi aggiornati correttamente!");
+  }catch(e){
+    alert("❌ Errore nel JSON. Controlla la sintassi.");
+  }
+}
+
+/* ============================================================
+   2. CALCOLO TOTALE COSTI
+   ============================================================ */
+function calcolaTotaleCosti(){
+  const aff = Number(document.getElementById('affitto').value || 0);
+  const per = Number(document.getElementById('personale').value || 0);
+  const ute = Number(document.getElementById('utenze').value || 0);
+  const alt = Number(document.getElementById('altro').value || 0);
+
+  const totale = aff + per + ute + alt;
+
+  document.getElementById('totCosti').innerText = "Totale: €" + totale;
+  return totale;
+}
+
+/* listener live costi */
+['affitto','personale','utenze','altro'].forEach(id=>{
+  const el = document.getElementById(id);
+  el.addEventListener('input', calcolaTotaleCosti);
+});
+
+/* ============================================================
+   3. REVENUE PER BRAND – SCAGLIONI
+   ============================================================ */
+
+/* SKY 3P – gara a punti:
+   3 pt a contratto; soglie punti:
+   <5 → 140
+   5–7 → 150
+   8–11 → 170
+   12–19 → 195
+   ≥20 → 225
+*/
+function valoreSkyPerContratto(n){
+  if(n <= 0) return 0;
+  const puntiBrand = n * 3;
+  if(puntiBrand < 5)  return 140;
+  if(puntiBrand < 8)  return 150;
+  if(puntiBrand < 12) return 170;
+  if(puntiBrand < 20) return 195;
+  return 225;
+}
+function revenueSky(n){
+  return n * valoreSkyPerContratto(n);
+}
+
+/* ACEA Fix/Sprint – scaglioni RETROATTIVI:
+   1–4 → 60
+   5–14 → 70
+   15–24→ 75
+   25+ → 85
+*/
+function valoreAceaPerContratto(n){
+  if(n <= 0) return 0;
+  if(n < 5)  return 60;
+  if(n < 15) return 70;
+  if(n < 25) return 75;
+  return 85;
+}
+function revenueAcea(n){
+  return n * valoreAceaPerContratto(n);
+}
+
+/* FASTWEB Mobile 9,95 AUT – scaglioni RETROATTIVI:
+   1–9 → 23
+   10–29 → 33
+   30+ → 43
+*/
+function valoreFastwebMobilePerSim(n){
+  if(n <= 0) return 0;
+  if(n <= 9)  return 23;
+  if(n <= 29) return 33;
+  return 43;
+}
+function revenueFastwebMobile(n){
+  return n * valoreFastwebMobilePerSim(n);
+}
+
+/* FASTWEB Fisso – valori medi Casa Start/FWA */
+function valoreFastwebFissoPerLinea(n){
+  if(n <= 0) return 0;
+  if(n <= 4)  return 50;
+  if(n <= 9)  return 65;
+  return 65;
+}
+function revenueFastwebFisso(n){
+  return n * valoreFastwebFissoPerLinea(n);
+}
+
+/* FASTWEB Energy – L/F/M valore medio */
+function valoreFastwebEnergyPerContratto(n){
+  if(n <= 0) return 0;
+  return 90;
+}
+function revenueFastwebEnergy(n){
+  return n * valoreFastwebEnergyPerContratto(n);
+}
+
+/* TISCALI – progressivo */
+function revenueTiscali(n){
+  let t = 0;
+  for(let i=1;i<=n;i++){
+    if(i<=4)      t+=16;
+    else if(i<=9) t+=20;
+    else if(i<=17)t+=23;
+    else if(i<=29)t+=26;
+    else         t+=30;
+  }
+  return t;
+}
+
+/* ============================================================
+   4. PUNTI MULTIBRAND
+   ============================================================ */
+function puntiSky(n){ return n * 2; }            // 2 pt per contratto
+function puntiAcea(n){ return n * 2; }           // 2 pt per contratto
+function puntiTiscali(n){ return n * 0.25; }     // 0,25 pt per SIM
+function puntiFastweb(nM, nF, nE){
+  return nM * 0.25 + nF * 2 + nE * 2;
+}
+
+/* ============================================================
+   5. BONUS MULTIBRAND
+   ============================================================ */
+function bonusMultibrand(puntiTot, nBrand, extra){
+  const mb = COMPENSI.multibrand;
+  const soglie = mb.soglie;
+
+  let livello = -1;
+  for(let i=0;i<soglie.length;i++){
+    if(puntiTot >= soglie[i]) livello = i;
+  }
+  if(livello < 0) return 0;
+
+  let base = 0;
+  if(nBrand === 2) base = mb.bonus_2[livello];
+  if(nBrand === 3) base = mb.bonus_3[livello];
+  if(nBrand === 4) base = mb.bonus_4[livello];
+
+  if(extra) base += mb.extra_sky_energy;
+
+  return base;
+}
+
+/* ============================================================
+   6. MINIMI ATTIVAZIONE
+   ============================================================ */
+const MINIMI = {
+  sky: 3,
+  acea: 5,
+  tiscali: 8,
+  fastweb_mobile: 8,
+  fastweb_fisso: 1,
+  fastweb_energy: 1
+};
+
+/* Valori max per contratto (per stimare i limiti di ricerca) */
+const VALORE_MAX = {
+  sky: 225,
+  acea: 85,
+  fastweb_mobile: 43,
+  fastweb_fisso: 65,
+  fastweb_energy: 90,
+  tiscali: 30
+};
+
+/* Per pannello dettaglio */
+let _bestDettaglio = null;
+
+/* ============================================================
+   7. MOTORE PRINCIPALE — CALCOLA COMBINAZIONI
+   ============================================================ */
+function calcola(){
+
+  const costi = calcolaTotaleCosti();
+  if(costi <= 0) return alert("Inserisci i costi.");
+  if(brandAttivi.length === 0) return alert("Seleziona almeno un brand.");
+
+  /* 7.1 Calcolo limite INTELLIGENTE sul totale contratti */
+  let bestPer = 0;
+  let minContrattiObbl = 0;
+
+  if(brandAttivi.includes("sky")){
+    bestPer = Math.max(bestPer, VALORE_MAX.sky);
+    minContrattiObbl += MINIMI.sky;
+  }
+  if(brandAttivi.includes("acea")){
+    bestPer = Math.max(bestPer, VALORE_MAX.acea);
+    minContrattiObbl += MINIMI.acea;
+  }
+  if(brandAttivi.includes("tiscali")){
+    bestPer = Math.max(bestPer, VALORE_MAX.tiscali);
+    minContrattiObbl += MINIMI.tiscali;
+  }
+  if(brandAttivi.includes("fastweb")){
+    bestPer = Math.max(bestPer,
+      VALORE_MAX.fastweb_mobile,
+      VALORE_MAX.fastweb_fisso,
+      VALORE_MAX.fastweb_energy
+    );
+    minContrattiObbl += MINIMI.fastweb_mobile + MINIMI.fastweb_fisso + MINIMI.fastweb_energy;
+  }
+
+  if(bestPer === 0) bestPer = 50; // fallback
+
+  const teoricoMin = Math.ceil(costi / bestPer);
+  let maxTotContratti = Math.max(minContrattiObbl, teoricoMin) + 20; // margine
+
+  let best = null;
+
+  for(let sky = brandAttivi.includes("sky") ? MINIMI.sky : 0;
+           sky <= (brandAttivi.includes("sky") ? 40 : 0); sky++){
+
+    for(let acea = brandAttivi.includes("acea") ? MINIMI.acea : 0;
+             acea <= (brandAttivi.includes("acea") ? 40 : 0); acea++){
+
+      if(sky + acea > maxTotContratti) break;
+
+      for(let tisc = brandAttivi.includes("tiscali") ? MINIMI.tiscali : 0;
+               tisc <= (brandAttivi.includes("tiscali") ? 40 : 0); tisc++){
+
+        if(sky + acea + tisc > maxTotContratti) break;
+
+        for(let fm = brandAttivi.includes("fastweb") ? MINIMI.fastweb_mobile : 0;
+                 fm <= (brandAttivi.includes("fastweb") ? 40 : 0); fm++){
+
+          if(sky + acea + tisc + fm > maxTotContratti) break;
+
+          for(let ff = brandAttivi.includes("fastweb") ? MINIMI.fastweb_fisso : 0;
+                   ff <= (brandAttivi.includes("fastweb") ? 10 : 0); ff++){
+
+            if(sky + acea + tisc + fm + ff > maxTotContratti) break;
+
+            for(let fe = brandAttivi.includes("fastweb") ? MINIMI.fastweb_energy : 0;
+                     fe <= (brandAttivi.includes("fastweb") ? 10 : 0); fe++){
+
+              const totContratti = sky + acea + tisc + fm + ff + fe;
+              if(totContratti > maxTotContratti) break;
+
+              /* 1. REVENUE PER BRAND */
+              const rSky  = brandAttivi.includes("sky")     ? revenueSky(sky)      : 0;
+              const rAcea = brandAttivi.includes("acea")    ? revenueAcea(acea)    : 0;
+              const rTisc = brandAttivi.includes("tiscali") ? revenueTiscali(tisc) : 0;
+
+              let rFast = 0;
+              let fastwebValido = false;
+
+              if(brandAttivi.includes("fastweb")){
+                rFast =
+                  revenueFastwebMobile(fm) +
+                  revenueFastwebFisso(ff) +
+                  revenueFastwebEnergy(fe);
+
+                fastwebValido =
+                  fm >= MINIMI.fastweb_mobile &&
+                  ff >= MINIMI.fastweb_fisso &&
+                  fe >= MINIMI.fastweb_energy;
+              }
+
+              /* 2. PUNTI MULTIBRAND (dettagliati per brand) */
+              let puntiMB = 0;
+              let puntiMB_acea = 0, puntiMB_sky = 0, puntiMB_tisc = 0;
+              let puntiMB_fm = 0, puntiMB_ff = 0, puntiMB_fe = 0;
+
+              if(brandAttivi.includes("sky")){
+                puntiMB_sky = puntiSky(sky);
+                puntiMB += puntiMB_sky;
+              }
+              if(brandAttivi.includes("acea")){
+                puntiMB_acea = puntiAcea(acea);
+                puntiMB += puntiMB_acea;
+              }
+              if(brandAttivi.includes("tiscali")){
+                puntiMB_tisc = puntiTiscali(tisc); // 0,25 per SIM
+                puntiMB += puntiMB_tisc;
+              }
+              if(brandAttivi.includes("fastweb") && fastwebValido){
+                puntiMB_fm = fm * 0.25;
+                puntiMB_ff = ff * 2;
+                puntiMB_fe = fe * 2;
+                puntiMB += puntiMB_fm + puntiMB_ff + puntiMB_fe;
+              }
+
+              /* 3. COUNT BRAND PER MULTIBRAND */
+              let nBrandMB = 0;
+              if(brandAttivi.includes("sky")) nBrandMB++;
+              if(brandAttivi.includes("acea")) nBrandMB++;
+              if(brandAttivi.includes("tiscali")) nBrandMB++;
+              if(brandAttivi.includes("fastweb") && fastwebValido) nBrandMB++;
+
+              /* Extra Sky + Energy */
+              let extra = false;
+              if(
+                brandAttivi.includes("sky") &&
+                brandAttivi.includes("fastweb") &&
+                fastwebValido &&
+                sky >= 10 &&
+                (fm+ff+fe) >= 50
+              ){
+                extra = true;
+              }
+
+              /* 4. BONUS MULTIBRAND */
+              const bonus = bonusMultibrand(puntiMB, nBrandMB, extra);
+
+              /* 5. REVENUE TOTALE */
+              const tot = rSky + rAcea + rTisc + rFast + bonus;
+
+              if(tot >= costi){
+                if(!best || totContratti < best._contratti){
+                  best = {
+                    sky, acea, tisc, fm, ff, fe,
+                    rSky, rAcea, rTisc, rFast,
+                    puntiMB,
+                    puntiMB_acea,
+                    puntiMB_sky,
+                    puntiMB_tisc,
+                    puntiMB_fm,
+                    puntiMB_ff,
+                    puntiMB_fe,
+                    bonus,
+                    tot,
+                    _contratti: totContratti,
+                    extra
+                  };
+                }
+              }
+
+            }}}}}
+  }
+
+  /* OUTPUT */
+  const out = document.getElementById('output');
+  const btnDett = document.getElementById('btnDettaglio');
+  const dettPanel = document.getElementById('dettaglioPanel');
+
+  if(!best){
+    out.innerText = "❌ Nessuna combinazione copre i costi con i brand selezionati.";
+    out.classList.remove('hidden');
+    btnDett.classList.add('hidden');
+    dettPanel.style.display = "none";
+    window._lastOutput = out.innerText;
+    _bestDettaglio = null;
+    return;
+  }
+
+  let txt = "";
+  txt += `🎯 OBIETTIVO: Copertura costi €${costi}\n\n`;
+  txt += `📌 Brand attivi: ${brandAttivi.join(", ").toUpperCase()}\n\n`;
+  txt += `📈 Produzione minima consigliata:\n`;
+
+  if(brandAttivi.includes("acea")){
+    txt += `• ACEA → ${best.acea} contratti `
+        + `(provvigioni: €${best.rAcea}, punti MB: ${best.puntiMB_acea})\n`;
+  }
+
+  if(brandAttivi.includes("sky")){
+    txt += `• SKY → ${best.sky} contratti `
+        + `(provvigioni: €${best.rSky}, punti MB: ${best.puntiMB_sky})\n`;
+  }
+
+  if(brandAttivi.includes("tiscali")){
+    txt += `• TISCALI → ${best.tisc} contratti `
+        + `(provvigioni: €${best.rTisc}, punti MB: ${best.puntiMB_tisc})\n`;
+  }
+
+  if(brandAttivi.includes("fastweb")){
+    const rFm = revenueFastwebMobile(best.fm);
+    const rFf = revenueFastwebFisso(best.ff);
+    const rFe = revenueFastwebEnergy(best.fe);
+    txt += `• FASTWEB Mobile → ${best.fm} (provvigioni: €${rFm}, punti MB: ${best.puntiMB_fm})\n`;
+    txt += `• FASTWEB Fisso  → ${best.ff} (provvigioni: €${rFf}, punti MB: ${best.puntiMB_ff})\n`;
+    txt += `• FASTWEB Energy → ${best.fe} (provvigioni: €${rFe}, punti MB: ${best.puntiMB_fe})\n`;
+    txt += `  👉 Totale FASTWEB: €${best.rFast}\n`;
+  }
+
+  const margine = best.tot - costi;
+
+  txt += `\n🔥 Punti Multibrand totali: ${best.puntiMB}`;
+  txt += `\n💶 Bonus Multibrand: €${best.bonus}`;
+  if(best.extra){
+    txt += `\n✨ Extra SKY + ENERGY attivo: +€${COMPENSI.multibrand.extra_sky_energy}`;
+  }
+  txt += `\n\n💰 TOTALE COPERTURA: €${best.tot}`;
+  txt += `\n📊 Margine rispetto ai costi: €${margine}`;
+  txt += `\n\n✔ Combinazione MINIMA trovata per coprire (o superare) i costi.`;
+
+  out.innerText = txt;
+  out.classList.remove('hidden');
+
+  document.getElementById('waBtn').classList.remove('hidden');
+  btnDett.classList.remove('hidden');
+
+  window._lastOutput = txt;
+  _bestDettaglio = { best, costi };
+  dettPanel.style.display = "none";
+}
+
+/* ============================================================
+   8. DETTAGLIO PROVVIGIONI E PUNTI
+   ============================================================ */
+function toggleDettaglio(){
+  const panel = document.getElementById('dettaglioPanel');
+  if(panel.style.display === "block"){
+    panel.style.display = "none";
+    return;
+  }
+  if(!_bestDettaglio){
+    panel.style.display = "none";
+    return;
+  }
+  const { best } = _bestDettaglio;
+
+  let d = "🔍 Dettaglio provvigioni e punti per contratto:\n\n";
+
+  if(brandAttivi.includes("acea") && best.acea > 0){
+    const v = valoreAceaPerContratto(best.acea);
+    const puntiPer = 2;
+    const puntiTot = puntiPer * best.acea;
+    d += `• ACEA\n`;
+    d += `- contratti: ${best.acea}\n`;
+    d += `- provvigione per contratto: €${v.toFixed(2)}\n`;
+    d += `- punti MB per contratto: ${puntiPer}\n`;
+    d += `- punti MB totali: ${puntiTot}\n\n`;
+  }
+
+  if(brandAttivi.includes("sky") && best.sky > 0){
+    const v = valoreSkyPerContratto(best.sky);
+    const puntiPer = 2; // multibrand (gara SKY separata)
+    const puntiTot = puntiPer * best.sky;
+    d += `• SKY (3P base)\n`;
+    d += `- contratti: ${best.sky}\n`;
+    d += `- provvigione per contratto (gara SKY): €${v.toFixed(2)}\n`;
+    d += `- punti MB per contratto: ${puntiPer}\n`;
+    d += `- punti MB totali: ${puntiTot}\n\n`;
+  }
+
+  if(brandAttivi.includes("fastweb")){
+    if(best.fm > 0){
+      const v = valoreFastwebMobilePerSim(best.fm);
+      const puntiPer = 0.25;
+      const puntiTot = puntiPer * best.fm;
+      d += `• FASTWEB Mobile (MNP 9,95 AUT)\n`;
+      d += `- SIM: ${best.fm}\n`;
+      d += `- provvigione per SIM: €${v.toFixed(2)}\n`;
+      d += `- punti MB per SIM: ${puntiPer}\n`;
+      d += `- punti MB totali: ${puntiTot}\n\n`;
+    }
+
+    if(best.ff > 0){
+      const v = valoreFastwebFissoPerLinea(best.ff);
+      const puntiPer = 2;
+      const puntiTot = puntiPer * best.ff;
+      d += `• FASTWEB Fisso (Casa Start/FWA)\n`;
+      d += `- linee: ${best.ff}\n`;
+      d += `- provvigione per linea: €${v.toFixed(2)}\n`;
+      d += `- punti MB per linea: ${puntiPer}\n`;
+      d += `- punti MB totali: ${puntiTot}\n\n`;
+    }
+
+    if(best.fe > 0){
+      const v = valoreFastwebEnergyPerContratto(best.fe);
+      const puntiPer = 2;
+      const puntiTot = puntiPer * best.fe;
+      d += `• FASTWEB Energy (L/F/M)\n`;
+      d += `- contratti: ${best.fe}\n`;
+      d += `- provvigione per contratto: €${v.toFixed(2)}\n`;
+      d += `- punti MB per contratto: ${puntiPer}\n`;
+      d += `- punti MB totali: ${puntiTot}\n\n`;
+    }
+  }
+
+  if(brandAttivi.includes("tiscali") && best.tisc > 0){
+    const puntiPer = 0.25;
+    const puntiTot = puntiPer * best.tisc;
+    d += `• TISCALI Mobile 200\n`;
+    d += `- contratti: ${best.tisc}\n`;
+    d += `- provvigione TOTALE: €${best.rTisc}\n`;
+    d += `- punti MB per contratto: ${puntiPer}\n`;
+    d += `- punti MB totali: ${puntiTot}\n\n`;
+  }
+
+  d += `Totale punti Multibrand conteggiati: ${best.puntiMB}`;
+
+  panel.innerText = d;
+  panel.style.display = "block";
+}
+
+/* ============================================================
+   9. WHATSAPP SHARE
+   ============================================================ */
+function whatsapp(){
+  if(!window._lastOutput){
+    alert("Prima esegui un calcolo.");
+    return;
+  }
+  const text = encodeURIComponent(window._lastOutput);
+  const url = "https://wa.me/?text=" + text;
+  window.open(url, "_blank");
+}
+
+/* Init JSON compensi al load */
+initCompensi();
+</script>
+
+</body>
+</html>

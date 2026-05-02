@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  />
+  <title>GESTIONE COSTI – APRILE 2026</title>
+
+  <style>
+    :root {
+      --base: #d6006b;
+      --fastweb: #e4b002;
+      --tiscali: #3b2783;
+      --sky: #cf01cf;
+      --acea: #05a8b0;
+      --wa: #03bf62;
+      --ho: #5f58a1;
+      --eff: #16a34a;
+      --rent: #2563eb;
+
+      --text: #111827;
+      --muted: #6b7280;
+      --radius: 16px;
+
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.06);
+
+      --g-body: linear-gradient(180deg, #f9fafb, #ffffff);
+      --g-nav: linear-gradient(90deg, var(--base), var(--tiscali));
+      --g-card: linear-gradient(180deg, #ffffff, #f8fafc);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: var(--g-body);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--g-nav);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand-title {
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      font-size: 26px;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 14px;
+    }
+
+    .section {
+      background: #ffffffcc;
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .section h2 {
+      font-size: 22px;
+      margin-bottom: 14px;
+      background: linear-gradient(90deg, #111, #6b7280);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hr {
+      height: 1px;
+      background: rgba(0, 0, 0, 0.06);
+      margin: 16px 0;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 880px) {
+      .grid-2,
+      .grid-3,
+      .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .field {
+      width: 100%;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: 800;
+      text-align: center;
+      color: #fff;
+      transition: 0.2s;
+      background: linear-gradient(90deg, var(--base), var(--tiscali));
+      box-shadow: 0 8px 18px rgba(214, 0, 107, 0.25);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn.wa {
+      background: var(--wa);
+      box-shadow: 0 8px 18px rgba(3, 191, 98, 0.25);
+    }
+
+    .btn.detail {
+      background: #374151;
+      box-shadow: 0 8px 18px rgba(55, 65, 81, 0.25);
+      font-size: 14px;
+    }
+
+    .chip {
+      display: inline-block;
+      margin: 6px 6px 0 0;
+      padding: 10px 16px;
+      border-radius: 22px;
+      border: 2px solid transparent;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.25s;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .chip.fastweb { color: var(--fastweb); background: rgba(228, 176, 2, 0.12); }
+    .chip.sky { color: var(--sky); background: rgba(207, 1, 207, 0.12); }
+    .chip.acea { color: var(--acea); background: rgba(5, 168, 176, 0.12); }
+    .chip.ho { color: var(--ho); background: rgba(95, 88, 161, 0.12); }
+    .chip.tiscali { color: var(--tiscali); background: rgba(59, 39, 131, 0.12); }
+    .chip.eff { color: var(--eff); background: rgba(22, 163, 74, 0.12); }
+    .chip.rent { color: var(--rent); background: rgba(37, 99, 235, 0.12); }
+
+    .chip.active {
+      border: 2px solid currentColor;
+    }
+
+    .brand-box {
+      background: #fff;
+      border: 1px solid #e9e9ee;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      font-size: 12px;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+    }
+
+    .badge.fastweb { background: rgba(228, 176, 2, 0.12); border-color: rgba(228, 176, 2, 0.3); color: var(--fastweb); }
+    .badge.sky { background: rgba(207, 1, 207, 0.12); border-color: rgba(207, 1, 207, 0.3); color: var(--sky); }
+    .badge.acea { background: rgba(5, 168, 176, 0.12); border-color: rgba(5, 168, 176, 0.3); color: var(--acea); }
+    .badge.ho { background: rgba(95, 88, 161, 0.12); border-color: rgba(95, 88, 161, 0.3); color: var(--ho); }
+    .badge.tiscali { background: rgba(59, 39, 131, 0.12); border-color: rgba(59, 39, 131, 0.3); color: var(--tiscali); }
+    .badge.eff { background: rgba(22, 163, 74, 0.12); border-color: rgba(22, 163, 74, 0.3); color: var(--eff); }
+    .badge.rent { background: rgba(37, 99, 235, 0.12); border-color: rgba(37, 99, 235, 0.3); color: var(--rent); }
+
+    .checkline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .checkline input {
+      margin-top: 0;
+    }
+
+    #compensiPanel {
+      display: none;
+      margin-top: 10px;
+    }
+
+    #compensiPanel textarea {
+      width: 100%;
+      height: 260px;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      font-family: monospace;
+      white-space: pre;
+    }
+
+    .resultCard {
+      margin-top: 16px;
+      padding: 20px;
+      border-radius: 14px;
+      background: var(--g-card);
+      border-left: 6px solid var(--base);
+      box-shadow: var(--shadow-soft);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.45;
+      white-space: pre-line;
+    }
+
+    #dettaglioPanel {
+      display: none;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #f3f4ff;
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .smallPct {
+      max-width: 120px;
+    }
+
+    .noteBox {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+    }
+
+    .percentBox {
+      background: #fff;
+      border: 1px solid #e9e9ee;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .percentRow {
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+
+    .percentRow:last-child {
+      margin-bottom: 0;
+    }
+
+    .sumBadge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      background: #eef2ff;
+      color: #312e81;
+    }
+
+    .sumBadge.ok {
+      background: #ecfdf5;
+      color: #065f46;
+    }
+
+    .sumBadge.warn {
+      background: #fff7ed;
+      color: #9a3412;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-title">Cost Management - Dealer E2K • Aprile 2026</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- COSTI -->
+    <div class="section">
+      <h2>Costi mensili</h2>
+
+      <div class="grid-2">
+        <div>
+          <label for="affitto">Affitto (€)</label>
+          <input id="affitto" type="number" class="field" placeholder="0" />
+        </div>
+
+        <div>
+          <label for="personale">Personale totale (€)</label>
+          <input id="personale" type="number" class="field" placeholder="0" />
+        </div>
+
+        <div>
+          <label for="utenze">Utenze (€)</label>
+          <input id="utenze" type="number" class="field" placeholder="0" />
+        </div>
+
+        <div>
+          <label for="altro">Altri costi (€)</label>
+          <input id="altro" type="number" class="field" placeholder="0" />
+        </div>
+      </div>
+
+      <div id="totCosti" style="font-weight: 800; font-size: 16px; margin-top: 10px;">
+        Totale: €0
+      </div>
+    </div>
+
+    <!-- BRAND -->
+    <div class="section">
+      <h2>Brand attivi</h2>
+
+      <div id="brandContainer">
+        <div class="chip acea" data-brand="acea">ACEA</div>
+        <div class="chip sky" data-brand="sky">SKY</div>
+        <div class="chip fastweb" data-brand="fastweb">FASTWEB</div>
+        <div class="chip ho" data-brand="ho">HO Mobile (agganciato a Fastweb)</div>
+        <div class="chip tiscali" data-brand="tiscali">TISCALI</div>
+
+        <div class="hr"></div>
+
+        <div class="chip eff" data-brand="eff">EFFICIENCY (secondario)</div>
+        <div class="chip rent" data-brand="rent">RENT (secondario)</div>
+      </div>
+
+      <p class="muted" style="margin-top: 8px;">
+        Brand principali Multibrand: <b>ACEA, SKY, FASTWEB(+HO), TISCALI</b>.<br />
+        <b>HO</b> si seleziona a parte, ma conta come parte del brand <b>FASTWEB</b> nella Multibrand.<br />
+        Brand secondari invariati: <b>EFFICIENCY</b> e <b>RENT</b>.
+      </p>
+    </div>
+
+    <!-- PERCENTUALI -->
+    <div class="section">
+      <h2>Distribuzione personalizzata per brand</h2>
+
+      <p class="muted" style="margin-bottom: 12px;">
+        Inserisci la percentuale di produzione desiderata per ogni brand attivo.
+        Il sistema userà queste percentuali come riferimento del calcolo.
+        Se il totale non è 100%, verrà normalizzato automaticamente.
+      </p>
+
+      <div id="percentualiBox" class="percentBox">
+        <div class="muted">Seleziona almeno un brand per configurare le percentuali.</div>
+      </div>
+
+      <div id="percentualiSomma" class="sumBadge warn">Totale percentuali: 0%</div>
+    </div>
+
+    <!-- CONFIGURAZIONE -->
+    <div class="section">
+      <h2>Configurazione gare (Aprile 2026)</h2>
+
+      <p class="muted" style="margin-bottom: 12px;">
+        Logiche aggiornate al piano di aprile 2026: nuova Multibrand, Tiscali brand valido,
+        Fastweb con HO opzionale ma integrato nello stesso brand.
+      </p>
+
+      <div class="grid-3">
+        <!-- ACEA -->
+        <div id="cfgAcea" class="brand-box hidden">
+          <div class="brand-head">
+            <div style="font-weight: 900;">ACEA</div>
+            <span class="badge acea">1 / 5 / 15 / 30 / 55</span>
+          </div>
+
+          <label for="aceaTipo">Tipo produzione</label>
+          <select id="aceaTipo" class="field">
+            <option value="sprint_fix" selected>SPRINT & FIX Casa</option>
+            <option value="flex">FLEX Casa</option>
+            <option value="business">BUSINESS</option>
+            <option value="subentro">SUBENTRO Luce+Gas</option>
+            <option value="allaccio">NUOVO ALLACCIO</option>
+          </select>
+
+          <div class="checkline">
+            <input id="aceaBollettino" type="checkbox" />
+            <label for="aceaBollettino" style="font-weight: 700; margin: 0;">
+              Pagamento con bollettino (−20€)
+            </label>
+          </div>
+
+          <div class="noteBox">
+            Se nel mese il dealer produce almeno <b>5 Fastweb Energy</b>, su ACEA si attiva
+            il bonus <b>+3€</b> su tutti i contratti Acea.
+          </div>
+        </div>
+
+        <!-- SKY -->
+        <div id="cfgSky" class="brand-box hidden">
+          <div class="brand-head">
+            <div style="font-weight: 900;">SKY</div>
+            <span class="badge sky">Gara a punti</span>
+          </div>
+
+          <label for="skyTipo">Prodotto Sky considerato</label>
+          <select id="skyTipo" class="field">
+            <option value="3p" selected>3P e 3P + Glass</option>
+            <option value="3p_promo">3P promo 29,90€</option>
+            <option value="tv">Sky TV</option>
+            <option value="wifi">Sky WiFi</option>
+            <option value="wifi_gia_tv">Sky WiFi per già clienti TV</option>
+            <option value="wifi_prova_nonconv">Sky WiFi + Prova (non conv.)</option>
+            <option value="wifi_prova_conv">Sky WiFi + Prova (conv.)</option>
+            <option value="glass_new">Sky Glass nuovo cliente</option>
+            <option value="wifi_business">Sky WiFi Business</option>
+            <option value="prova_conv">Prova TV (convertito)</option>
+            <option value="prova_nonconv">Prova TV (non convertito)</option>
+            <option value="skybar">Sky Bar</option>
+          </select>
+
+          <div class="noteBox">
+            Nella Multibrand il brand SKY si considera attivo con almeno
+            <b>1 contratto valido</b>.<br />
+            Il <b>solo Prova Sky</b> non attiva il brand SKY.
+          </div>
+        </div>
+
+        <!-- FASTWEB -->
+        <div id="cfgFastweb" class="brand-box hidden">
+          <div class="brand-head">
+            <div style="font-weight: 900;">FASTWEB</div>
+            <span class="badge fastweb">Mobile + Fisso + Energy</span>
+          </div>
+
+          <label for="fwMobilePiano">Mobile FW (AUTO) – piano</label>
+          <select id="fwMobilePiano" class="field">
+            <option value="9.95" selected>9,95 AUTO</option>
+            <option value="11.95">11,95 AUTO</option>
+            <option value="19.95">19,95 AUTO</option>
+          </select>
+
+          <div class="checkline">
+            <input id="fwProtect" type="checkbox" checked disabled />
+            <label for="fwProtect" style="font-weight: 700; margin: 0;">
+              Protect sempre incluso
+            </label>
+          </div>
+
+          <div class="hr"></div>
+
+          <label for="fwFissoTipo">Wireline FW – profilo</label>
+          <select id="fwFissoTipo" class="field">
+            <option value="casa_start" selected>Casa Start / FWA</option>
+            <option value="casa_pro">Casa Pro</option>
+            <option value="casa_ultra">Casa Ultra</option>
+            <option value="business_light">Business Light</option>
+            <option value="business">Business</option>
+            <option value="business_pro">Business+ / Pro</option>
+            <option value="web">WEB</option>
+            <option value="small_2">Small 2 linee</option>
+          </select>
+
+          <div class="hr"></div>
+
+          <label for="fwEnergyTipo">Energy FW</label>
+          <select id="fwEnergyTipo" class="field">
+            <option value="lfm" selected>LIGHT / FULL / MAXI</option>
+            <option value="flex">FLEX</option>
+            <option value="fix">FIX</option>
+            <option value="business">BUSINESS (FLEX & FIX)</option>
+          </select>
+
+          <div class="noteBox">
+            Brand FASTWEB attivo in Multibrand:<br />
+            • senza HO selezionato → almeno <b>1 Mobile FW + 1 Fisso FW + 1 Energy FW</b><br />
+            • con HO selezionato → almeno
+            <b>1 Mobile FW + 1 Mobile HO + 1 Fisso FW + 1 Energy FW</b>
+          </div>
+        </div>
+
+        <!-- HO -->
+        <div id="cfgHo" class="brand-box hidden">
+          <div class="brand-head">
+            <div style="font-weight: 900;">HO Mobile</div>
+            <span class="badge ho">Parte del brand Fastweb</span>
+          </div>
+
+          <label for="hoMode">Modalità</label>
+          <select id="hoMode" class="field">
+            <option value="auto" selected>AUTORICARICA</option>
+            <option value="pura">PURA</option>
+          </select>
+
+          <label for="hoTier" style="margin-top: 10px;">Fascia offerta HO</label>
+          <select id="hoTier" class="field">
+            <option value="lt6" selected>&lt; 6€</option>
+            <option value="mid">da 6€ a 9€</option>
+            <option value="gt9">&gt; 9€</option>
+          </select>
+
+          <div class="noteBox">
+            Se HO è selezionato, viene conteggiato come <b>parte del brand Fastweb</b>.<br />
+            Da solo non crea un brand Multibrand separato.
+          </div>
+        </div>
+
+        <!-- TISCALI -->
+        <div id="cfgTiscali" class="brand-box hidden">
+          <div class="brand-head">
+            <div style="font-weight: 900;">TISCALI</div>
+            <span class="badge tiscali">Mobile + Fisso</span>
+          </div>
+
+          <label for="tiscMobileTipo">Mobile Tiscali</label>
+          <select id="tiscMobileTipo" class="field">
+            <option value="mobile_200" selected>Mobile 200</option>
+            <option value="mobile_150_5g">Mobile 150 5G</option>
+            <option value="mobile_250_5g">Mobile 250 5G</option>
+            <option value="mobile_350_5g">Mobile 350 5G</option>
+            <option value="smart_100_affari">Smart 100 Affari</option>
+            <option value="smart_250_affari">Smart 250 Affari</option>
+            <option value="smart_unlimited_affari">Smart Unlimited Affari</option>
+            <option value="mobile_300_pro_5g">Mobile 300 Pro 5G</option>
+            <option value="business_mobile_500_pro_5g">Business Mobile 500 Pro 5G</option>
+          </select>
+
+          <label for="tiscFissoTipo" style="margin-top: 10px;">Fisso Tiscali</label>
+          <select id="tiscFissoTipo" class="field">
+            <option value="res_fibra" selected>Residenziale Fibra</option>
+            <option value="res_fwa">Residenziale FWA</option>
+            <option value="business_power">Business Power / Ultrainternet Fibra</option>
+            <option value="affari_2_linee">Ultrainternet Affari 2 linee</option>
+            <option value="affari_premium">Ultrainternet Affari Premium</option>
+            <option value="affari_premium_2">Ultrainternet Affari Premium 2 linee</option>
+            <option value="business_5g_fwa">Business 5G FWA</option>
+          </select>
+
+          <div class="noteBox">
+            Il brand TISCALI si attiva in Multibrand solo con almeno <b>1 mobile + 1 fisso</b>.
+          </div>
+        </div>
+
+        <!-- EXTRA -->
+        <div id="cfgExtra" class="brand-box hidden">
+          <div class="brand-head">
+            <div style="font-weight: 900;">EFFICIENCY & RENT</div>
+            <span class="badge eff">Secondari</span>
+          </div>
+
+          <p class="muted" style="margin-bottom: 10px;">
+            Logica secondari invariata. Puoi inserire una provvigione media se vuoi farli
+            contribuire anche ai ricavi.
+          </p>
+
+          <div class="grid-2">
+            <div>
+              <label for="effVal">EFFICIENCY – provvigione media (€)</label>
+              <input id="effVal" type="number" class="field" value="0" min="0" step="1" />
+              <div class="muted" style="margin-top: 6px;">
+                Punti MB per pratica: <b id="effPtsLabel">5</b>
+              </div>
+            </div>
+
+            <div>
+              <label for="rentVal">RENT – provvigione media (€)</label>
+              <input id="rentVal" type="number" class="field" value="0" min="0" step="1" />
+              <div class="muted" style="margin-top: 6px;">
+                Punti MB per pratica: <b id="rentPtsLabel">5</b>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkline">
+            <input id="extraPtsMode" type="checkbox" checked />
+            <label for="extraPtsMode" style="font-weight: 700; margin: 0;">
+              Usa 5 punti per pratica su Efficiency e Rent
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPENSI -->
+    <div class="section">
+      <h2>Compensi del mese</h2>
+
+      <button class="btn" style="max-width: 360px;" onclick="toggleCompensi()">
+        Mostra / Nascondi configurazione Multibrand
+      </button>
+
+      <div id="compensiPanel">
+        <p style="margin-top: 10px; font-size: 14px; font-weight: 700;">
+          ⚙️ Modifica qui i compensi del mese (Multibrand – Aprile 2026)
+        </p>
+
+        <textarea id="jsonCompensi"></textarea>
+
+        <button
+          class="btn"
+          style="margin-top: 12px; max-width: 220px;"
+          onclick="salvaCompensi()"
+        >
+          SALVA COMPENSI
+        </button>
+      </div>
+    </div>
+
+    <!-- CALCOLO -->
+    <div class="section">
+      <h2>Calcolo contratti necessari</h2>
+
+      <div class="checkline" style="margin-bottom: 10px;">
+        <input id="useMarg" type="checkbox" />
+        <label for="useMarg" style="font-weight: 900; margin: 0;">MARGINALITÀ</label>
+        <input
+          id="margPct"
+          type="number"
+          class="field smallPct"
+          value="20"
+          min="20"
+          max="100"
+          step="5"
+          placeholder="20-100"
+        />
+        <span class="muted" style="font-weight: 800;">%</span>
+        <span class="muted">Target ricavi = costi + % scelta (20–100)</span>
+      </div>
+
+      <button class="btn" onclick="calcola()">CALCOLA</button>
+
+      <div id="output" class="resultCard hidden"></div>
+
+      <button
+        id="btnDettaglio"
+        class="btn detail hidden"
+        onclick="toggleDettaglio()"
+      >
+        🔍 Dettaglio provvigioni e punti
+      </button>
+
+      <div id="dettaglioPanel"></div>
+
+      <button id="waBtn" class="btn wa hidden" onclick="whatsapp()">
+        Invia su WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /****************************************************************
+     * STATO UI
+     ****************************************************************/
+    let brandAttivi = [];
+    let _bestDettaglio = null;
+
+    /****************************************************************
+     * CONFIGURAZIONE MULTIBRAND
+     ****************************************************************/
+    const COMPENSI_DEFAULT = {
+      multibrand: {
+        soglie: [10, 20, 30, 40, 50, 70, 90],
+        bonus_2: [50, 75, 125, 175, 225, 275, 350],
+        bonus_3: [100, 150, 250, 350, 450, 550, 700],
+        bonus_4: [150, 225, 375, 525, 675, 825, 1100],
+        extra_sky: [50, 75, 100, 125, 150, 175, 200],
+        boost_energy_points: 10,
+        extra_sky_min_brands: 3,
+        extra_sky_min_contracts: 7,
+        note:
+          "Fastweb+HO è un unico brand. Tiscali è brand valido. Extra Boost: 10 FW energia + 10 ACEA = +10 punti. Extra Aprile Sky: 3 o 4 brand attivi + almeno 7 contratti Sky."
+      }
+    };
+
+    let COMPENSI = JSON.parse(JSON.stringify(COMPENSI_DEFAULT));
+
+    /****************************************************************
+     * TABELLE COMPENSI / REGOLE BRAND
+     ****************************************************************/
+    const MINIMI = {
+      acea: 1,
+      sky: 1,
+      ho: 0,
+      tiscMob: 1,
+      tiscFix: 1,
+      eff: 0,
+      rent: 0,
+      fwMobile: 1,
+      fwFisso: 1,
+      fwEnergy: 1
+    };
+
+    const SKY_PRODUCTS = {
+      skybar: {
+        points: 0,
+        values: [200, 200, 200, 200, 200, 200],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Sky Bar",
+        validBrand: false
+      },
+      "3p": {
+        points: 3,
+        values: [140, 150, 170, 195, 225, 245],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "3P e 3P + Glass",
+        validBrand: true,
+        aprilExtraEligible: true
+      },
+      "3p_promo": {
+        points: 3,
+        values: [140, 150, 170, 195, 225, 245],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "3P promo 29,90€",
+        validBrand: true,
+        aprilExtraEligible: true
+      },
+      tv: {
+        points: 2,
+        values: [90, 100, 110, 125, 145, 150],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Sky TV",
+        validBrand: true,
+        aprilExtraEligible: true
+      },
+      wifi: {
+        points: 1,
+        values: [70, 75, 80, 85, 95, 95],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Sky WiFi",
+        validBrand: true,
+        aprilExtraEligible: true
+      },
+      wifi_gia_tv: {
+        points: 1,
+        values: [70, 75, 80, 85, 95, 95],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Sky WiFi già clienti TV",
+        validBrand: true,
+        aprilExtraEligible: true
+      },
+      wifi_prova_nonconv: {
+        points: 1.5,
+        values: [70, 75, 80, 85, 95, 95],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Sky WiFi + Prova (non conv.)",
+        validBrand: true,
+        aprilExtraEligible: false
+      },
+      wifi_prova_conv: {
+        points: 1.5,
+        values: [105, 115, 130, 150, 175, 185],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Sky WiFi + Prova (conv.)",
+        validBrand: true,
+        aprilExtraEligible: false
+      },
+      prova_nonconv: {
+        points: 0.5,
+        values: [5, 5, 5, 5, 5, 5],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Prova TV (non convertito)",
+        validBrand: false,
+        aprilExtraEligible: false
+      },
+      prova_conv: {
+        points: 0.5,
+        values: [60, 60, 60, 60, 60, 60],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Prova TV (convertito)",
+        validBrand: false,
+        aprilExtraEligible: false
+      },
+      glass_new: {
+        points: 2,
+        values: [90, 100, 110, 130, 145, 155],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Sky Glass nuovo cliente",
+        validBrand: true,
+        aprilExtraEligible: false
+      },
+      wifi_business: {
+        points: 1,
+        values: [90, 100, 120, 130, 130, 130],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Sky WiFi Business",
+        validBrand: true,
+        aprilExtraEligible: true
+      }
+    };
+
+    const ACEA_TABLE = {
+      sprint_fix: {
+        thresholds: [1, 5, 15, 30, 55],
+        values: [60, 70, 75, 85, 90],
+        name: "SPRINT & FIX Casa"
+      },
+      flex: {
+        thresholds: [1, 5, 15, 30, 55],
+        values: [70, 80, 85, 95, 100],
+        name: "FLEX Casa"
+      },
+      business: {
+        thresholds: [1, 15, 55],
+        values: [85, 100, 105],
+        name: "BUSINESS"
+      },
+      subentro: {
+        thresholds: [1, 5, 15, 30, 55],
+        values: [60, 70, 75, 85, 90],
+        name: "SUBENTRO Luce+Gas"
+      },
+      allaccio: {
+        flat: 35,
+        name: "NUOVO ALLACCIO"
+      }
+    };
+
+    const HO_TABLES = {
+      auto: {
+        gt9: { thresholds: [1, 15, 25, 40], values: [21, 27, 31, 35] },
+        mid: { thresholds: [1, 15, 25, 40], values: [20, 25, 28, 31] },
+        lt6: { thresholds: [1, 15, 25, 40], values: [18, 20, 23, 25] }
+      },
+      pura: {
+        gt9: { thresholds: [1, 15, 25, 40], values: [16, 18, 20, 23] },
+        mid: { thresholds: [1, 15, 25, 40], values: [13, 15, 17, 19] },
+        lt6: { thresholds: [1, 15, 25, 40], values: [9, 10, 11, 13] }
+      }
+    };
+
+    const FW_MOBILE_AUTO = {
+      "9.95": { thresholds: [1, 15, 25, 40], values: [22, 33, 39, 44] },
+      "11.95": { thresholds: [1, 15, 25, 40], values: [25, 38, 44, 51] },
+      "19.95": { thresholds: [1, 15, 25, 40], values: [31, 55, 63, 71] }
+    };
+
+    const FW_FISSO = {
+      casa_start: {
+        thresholds: [1, 3, 5, 8, 15],
+        values: [50, 55, 60, 70, 90],
+        name: "Casa Start / FWA",
+        mbPointsPer: 0.5
+      },
+      casa_pro: {
+        thresholds: [1, 3, 5, 8, 15],
+        values: [70, 75, 80, 90, 100],
+        name: "Casa Pro",
+        mbPointsPer: 0.5
+      },
+      casa_ultra: {
+        thresholds: [1, 3, 5, 8, 15],
+        values: [100, 105, 110, 120, 130],
+        name: "Casa Ultra",
+        mbPointsPer: 0.5
+      },
+      business_light: {
+        thresholds: [1, 2],
+        values: [100, 140],
+        name: "Business Light",
+        mbPointsPer: 1
+      },
+      business: {
+        thresholds: [1, 2],
+        values: [150, 190],
+        name: "Business",
+        mbPointsPer: 1
+      },
+      business_pro: {
+        thresholds: [1, 2],
+        values: [170, 220],
+        name: "Business+ / Pro",
+        mbPointsPer: 1
+      },
+      web: {
+        thresholds: [1, 2],
+        values: [150, 220],
+        name: "WEB",
+        mbPointsPer: 1
+      },
+      small_2: {
+        thresholds: [1, 2],
+        values: [200, 250],
+        name: "Small 2 linee",
+        mbPointsPer: 1
+      }
+    };
+
+    const FW_ENERGY = {
+      lfm: {
+        thresholds: [1, 5, 10, 15],
+        values: [80, 90, 100, 110],
+        name: "LIGHT / FULL / MAXI"
+      },
+      flex: {
+        thresholds: [1, 5, 10, 15],
+        values: [60, 70, 80, 90],
+        name: "FLEX"
+      },
+      fix: {
+        thresholds: [1, 5, 10, 15],
+        values: [50, 60, 70, 80],
+        name: "FIX"
+      },
+      business: {
+        thresholds: [1, 5, 10, 15],
+        values: [100, 105, 115, 125],
+        name: "BUSINESS (FLEX & FIX)"
+      }
+    };
+
+    const TISC_MOBILE = {
+      mobile_150_5g: {
+        thresholds: [1, 5, 10, 20],
+        values: [16, 18, 20, 22],
+        name: "Mobile 150 5G"
+      },
+      mobile_200: {
+        thresholds: [1, 5, 10, 20],
+        values: [14, 16, 18, 20],
+        name: "Mobile 200"
+      },
+      mobile_250_5g: {
+        thresholds: [1, 5, 10, 20],
+        values: [22, 24, 26, 30],
+        name: "Mobile 250 5G"
+      },
+      mobile_350_5g: {
+        thresholds: [1, 5, 10, 20],
+        values: [30, 33, 36, 40],
+        name: "Mobile 350 5G"
+      },
+      smart_100_affari: {
+        thresholds: [1, 5, 10, 20],
+        values: [28, 30, 33, 36],
+        name: "Smart 100 Affari"
+      },
+      smart_250_affari: {
+        thresholds: [1, 5, 10, 20],
+        values: [32, 35, 38, 41],
+        name: "Smart 250 Affari"
+      },
+      smart_unlimited_affari: {
+        thresholds: [1, 5, 10, 20],
+        values: [50, 55, 60, 65],
+        name: "Smart Unlimited Affari"
+      },
+      mobile_300_pro_5g: {
+        thresholds: [1, 5, 10, 20],
+        values: [22, 24, 26, 30],
+        name: "Mobile 300 Pro 5G"
+      },
+      business_mobile_500_pro_5g: {
+        thresholds: [1, 5, 10, 20],
+        values: [31, 34, 37, 40],
+        name: "Business Mobile 500 Pro 5G"
+      }
+    };
+
+    const TISC_FIXED = {
+      res_fibra: {
+        flat: 70,
+        name: "Residenziale Fibra",
+        mbPointsPer: 0.5
+      },
+      res_fwa: {
+        flat: 55,
+        name: "Residenziale FWA",
+        mbPointsPer: 0.5
+      },
+      business_power: {
+        thresholds: [1, 3, 5],
+        values: [70, 80, 90],
+        name: "Business Power / Ultrainternet Fibra",
+        mbPointsPer: 1
+      },
+      affari_2_linee: {
+        thresholds: [1, 3, 5],
+        values: [75, 85, 95],
+        name: "Ultrainternet Affari 2 linee",
+        mbPointsPer: 1
+      },
+      affari_premium: {
+        thresholds: [1, 3, 5],
+        values: [80, 95, 105],
+        name: "Ultrainternet Affari Premium",
+        mbPointsPer: 1
+      },
+      affari_premium_2: {
+        thresholds: [1, 3, 5],
+        values: [100, 115, 130],
+        name: "Ultrainternet Affari Premium 2 linee",
+        mbPointsPer: 1
+      },
+      business_5g_fwa: {
+        thresholds: [1, 3, 5],
+        values: [65, 75, 85],
+        name: "Business 5G FWA",
+        mbPointsPer: 1
+      }
+    };
+
+    /****************************************************************
+     * FUNZIONI UI
+     ****************************************************************/
+    function refreshConfigVisibility() {
+      const show = (id, on) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.toggle("hidden", !on);
+      };
+
+      show("cfgAcea", brandAttivi.includes("acea"));
+      show("cfgSky", brandAttivi.includes("sky"));
+      show("cfgFastweb", brandAttivi.includes("fastweb"));
+      show("cfgHo", brandAttivi.includes("ho"));
+      show("cfgTiscali", brandAttivi.includes("tiscali"));
+      show("cfgExtra", brandAttivi.includes("eff") || brandAttivi.includes("rent"));
+    }
+
+    function initBrandEvents() {
+      document.querySelectorAll(".chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const brand = chip.dataset.brand;
+
+          if (brandAttivi.includes(brand)) {
+            brandAttivi = brandAttivi.filter((b) => b !== brand);
+            chip.classList.remove("active");
+          } else {
+            brandAttivi.push(brand);
+            chip.classList.add("active");
+          }
+
+          refreshConfigVisibility();
+          renderPercentualiInputs();
+        });
+      });
+    }
+
+    function initCompensi() {
+      const area = document.getElementById("jsonCompensi");
+      if (area) area.value = JSON.stringify(COMPENSI, null, 2);
+    }
+
+    function toggleCompensi() {
+      const panel = document.getElementById("compensiPanel");
+      panel.style.display = panel.style.display === "none" ? "block" : "none";
+    }
+
+    function salvaCompensi() {
+      try {
+        COMPENSI = JSON.parse(document.getElementById("jsonCompensi").value);
+        alert("✔️ Compensi aggiornati correttamente!");
+      } catch (e) {
+        alert("❌ Errore nel JSON. Controlla la sintassi.");
+      }
+    }
+
+    function calcolaTotaleCosti() {
+      const aff = Number(document.getElementById("affitto").value || 0);
+      const per = Number(document.getElementById("personale").value || 0);
+      const ute = Number(document.getElementById("utenze").value || 0);
+      const alt = Number(document.getElementById("altro").value || 0);
+
+      const totale = aff + per + ute + alt;
+      document.getElementById("totCosti").innerText = "Totale: €" + totale;
+      return totale;
+    }
+
+    function initCostEvents() {
+      ["affitto", "personale", "utenze", "altro"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", calcolaTotaleCosti);
+      });
+    }
+
+    /****************************************************************
+     * PERCENTUALI PERSONALIZZATE
+     ****************************************************************/
+    const BRAND_PERCENT_CONFIG = {
+      acea: { label: "ACEA", colorClass: "acea", default: 25 },
+      sky: { label: "SKY", colorClass: "sky", default: 20 },
+      fastweb: { label: "FASTWEB", colorClass: "fastweb", default: 25 },
+      ho: { label: "HO Mobile", colorClass: "ho", default: 10 },
+      tiscali: { label: "TISCALI", colorClass: "tiscali", default: 20 },
+      eff: { label: "EFFICIENCY", colorClass: "eff", default: 5 },
+      rent: { label: "RENT", colorClass: "rent", default: 5 }
+    };
+
+    function renderPercentualiInputs() {
+      const box = document.getElementById("percentualiBox");
+      if (!box) return;
+
+      if (brandAttivi.length === 0) {
+        box.innerHTML = `<div class="muted">Seleziona almeno un brand per configurare le percentuali.</div>`;
+        updatePercentualiSomma();
+        return;
+      }
+
+      box.innerHTML = brandAttivi
+        .map((brand) => {
+          const cfg = BRAND_PERCENT_CONFIG[brand];
+          const inputId = `pct_${brand}`;
+          const existing = document.getElementById(inputId);
+          const value = existing ? existing.value : cfg.default;
+
+          return `
+            <div class="percentRow">
+              <div>
+                <label for="${inputId}">${cfg.label}</label>
+                <div class="muted">Percentuale obiettivo per questo brand</div>
+              </div>
+              <div>
+                <input
+                  id="${inputId}"
+                  type="number"
+                  class="field"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="${value}"
+                />
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      brandAttivi.forEach((brand) => {
+        const input = document.getElementById(`pct_${brand}`);
+        if (input) {
+          input.addEventListener("input", updatePercentualiSomma);
+        }
+      });
+
+      updatePercentualiSomma();
+    }
+
+    function updatePercentualiSomma() {
+      const el = document.getElementById("percentualiSomma");
+      if (!el) return;
+
+      const sum = brandAttivi.reduce((acc, brand) => {
+        return acc + Number(document.getElementById(`pct_${brand}`)?.value || 0);
+      }, 0);
+
+      el.textContent = `Totale percentuali: ${sum}%`;
+
+      el.classList.remove("ok", "warn");
+      if (sum === 100) {
+        el.classList.add("ok");
+      } else {
+        el.classList.add("warn");
+      }
+    }
+
+    function getBrandTargetPercents() {
+      const raw = {};
+      for (const brand of brandAttivi) {
+        raw[brand] = Math.max(0, Number(document.getElementById(`pct_${brand}`)?.value || 0));
+      }
+
+      const sum = Object.values(raw).reduce((a, b) => a + b, 0);
+
+      if (sum <= 0) {
+        const eq = {};
+        const p = brandAttivi.length ? 1 / brandAttivi.length : 0;
+        brandAttivi.forEach((b) => (eq[b] = p));
+        return { raw, normalized: eq, sum };
+      }
+
+      const normalized = {};
+      for (const k in raw) normalized[k] = raw[k] / sum;
+
+      return { raw, normalized, sum };
+    }
+
+    /****************************************************************
+     * UTILITIES
+     ****************************************************************/
+    function pickTierValue(n, thresholds, values) {
+      let v = 0;
+      for (let i = 0; i < thresholds.length; i++) {
+        if (n >= thresholds[i]) v = values[i];
+      }
+      return v;
+    }
+
+    function paretoMinRevMaxPoints(list) {
+      const sorted = list.slice().sort((a, b) => (a.rev - b.rev) || (b.punti - a.punti));
+      const out = [];
+      let bestP = -Infinity;
+
+      for (const x of sorted) {
+        if (x.punti > bestP + 1e-9) {
+          out.push(x);
+          bestP = x.punti;
+        }
+      }
+
+      return out;
+    }
+
+    function getCfg() {
+      return {
+        aceaTipo: document.getElementById("aceaTipo")?.value || "sprint_fix",
+        aceaBollettino: !!document.getElementById("aceaBollettino")?.checked,
+        skyTipo: document.getElementById("skyTipo")?.value || "3p",
+        fwMobilePiano: document.getElementById("fwMobilePiano")?.value || "9.95",
+        fwFissoTipo: document.getElementById("fwFissoTipo")?.value || "casa_start",
+        fwEnergyTipo: document.getElementById("fwEnergyTipo")?.value || "lfm",
+        hoMode: document.getElementById("hoMode")?.value || "auto",
+        hoTier: document.getElementById("hoTier")?.value || "lt6",
+        tiscMobileTipo: document.getElementById("tiscMobileTipo")?.value || "mobile_200",
+        tiscFissoTipo: document.getElementById("tiscFissoTipo")?.value || "res_fibra",
+        effVal: Number(document.getElementById("effVal")?.value || 0),
+        rentVal: Number(document.getElementById("rentVal")?.value || 0)
+      };
+    }
+
+    /****************************************************************
+     * FUNZIONI DI RICAVO
+     ****************************************************************/
+    function skyUnitValue(n, type) {
+      if (n <= 0) return 0;
+      const row = SKY_PRODUCTS[type] || SKY_PRODUCTS["3p"];
+      const totalPoints = n * row.points;
+      return pickTierValue(totalPoints, row.thresholds, row.values);
+    }
+
+    function revenueSky(n, type) {
+      if (n <= 0) return 0;
+
+      let unit = skyUnitValue(n, type);
+      const row = SKY_PRODUCTS[type] || SKY_PRODUCTS["3p"];
+
+      if (row.aprilExtraEligible && (type === "3p" || type === "3p_promo") && n >= 4) {
+        unit += 10;
+      }
+
+      return n * unit;
+    }
+
+    function aceaUnitValue(n, tipo, bollettino, fwEnergyCount) {
+      if (n <= 0) return 0;
+
+      const row = ACEA_TABLE[tipo] || ACEA_TABLE.sprint_fix;
+      let v = row.flat != null ? row.flat : pickTierValue(n, row.thresholds, row.values);
+
+      if (bollettino) v = Math.max(0, v - 20);
+      if (fwEnergyCount >= 5 && tipo !== "allaccio") v += 3;
+
+      return v;
+    }
+
+    function revenueAcea(n, tipo, bollettino, fwEnergyCount) {
+      return n * aceaUnitValue(n, tipo, bollettino, fwEnergyCount);
+    }
+
+    function hoUnitValue(n, mode, tier) {
+      if (n <= 0) return 0;
+      const row = (HO_TABLES[mode] || HO_TABLES.auto)[tier] || HO_TABLES.auto.lt6;
+      return pickTierValue(n, row.thresholds, row.values);
+    }
+
+    function revenueHo(n, mode, tier) {
+      return n * hoUnitValue(n, mode, tier);
+    }
+
+    function fwMobileUnitValue(n, piano) {
+      if (n <= 0) return 0;
+      const row = FW_MOBILE_AUTO[piano] || FW_MOBILE_AUTO["9.95"];
+      return pickTierValue(n, row.thresholds, row.values) + 15;
+    }
+
+    function revenueFastwebMobile(n, piano) {
+      return n * fwMobileUnitValue(n, piano);
+    }
+
+    function fwFissoUnitValue(n, tipo) {
+      if (n <= 0) return 0;
+      const row = FW_FISSO[tipo] || FW_FISSO.casa_start;
+      return pickTierValue(n, row.thresholds, row.values);
+    }
+
+    function revenueFastwebFisso(n, tipo) {
+      return n * fwFissoUnitValue(n, tipo);
+    }
+
+    function fwEnergyUnitValue(n, tipo) {
+      if (n <= 0) return 0;
+      const row = FW_ENERGY[tipo] || FW_ENERGY.lfm;
+      return pickTierValue(n, row.thresholds, row.values);
+    }
+
+    function revenueFastwebEnergy(n, tipo) {
+      return n * fwEnergyUnitValue(n, tipo);
+    }
+
+    function tiscMobileUnitValue(n, tipo) {
+      if (n <= 0) return 0;
+      const row = TISC_MOBILE[tipo] || TISC_MOBILE.mobile_200;
+      return pickTierValue(n, row.thresholds, row.values);
+    }
+
+    function revenueTiscMobile(n, tipo) {
+      return n * tiscMobileUnitValue(n, tipo);
+    }
+
+    function tiscFixedUnitValue(n, tipo) {
+      if (n <= 0) return 0;
+      const row = TISC_FIXED[tipo] || TISC_FIXED.res_fibra;
+      return row.flat != null ? row.flat : pickTierValue(n, row.thresholds, row.values);
+    }
+
+    function revenueTiscFixed(n, tipo) {
+      return n * tiscFixedUnitValue(n, tipo);
+    }
+
+    /****************************************************************
+     * FUNZIONI PUNTI
+     ****************************************************************/
+    function getExtraPointsPerUnit() {
+      return !!document.getElementById("extraPtsMode")?.checked ? 5 : 0.5;
+    }
+
+    function puntiAceaMB(n) {
+      return n * 1;
+    }
+
+    function puntiSkyMB(n, type) {
+      if (type === "prova_nonconv" || type === "prova_conv") return n * 0.25;
+      return n * 1;
+    }
+
+    function puntiHoMB(n) {
+      return n * 0.25;
+    }
+
+    function puntiFastwebMB(nM, nF, nE, fissoTipo) {
+      const fissoRow = FW_FISSO[fissoTipo] || FW_FISSO.casa_start;
+      return nM * 0.25 + nF * (fissoRow.mbPointsPer || 0.5) + nE * 2;
+    }
+
+    function puntiTiscaliMB(nM, nF, tiscFissoTipo) {
+      const fissoRow = TISC_FIXED[tiscFissoTipo] || TISC_FIXED.res_fibra;
+      return nM * 0.25 + nF * (fissoRow.mbPointsPer || 0.5);
+    }
+
+    /****************************************************************
+     * MULTIBRAND
+     ****************************************************************/
+    function getMBLevel(puntiTot) {
+      const soglie = COMPENSI.multibrand.soglie || [];
+      let idx = -1;
+
+      for (let i = 0; i < soglie.length; i++) {
+        if (puntiTot >= soglie[i]) idx = i;
+      }
+
+      return idx;
+    }
+
+    function bonusMultibrand(puntiTot, nBrand, skyCount) {
+      const level = getMBLevel(puntiTot);
+      if (level < 0) return { base: 0, skyExtra: 0, total: 0, level: -1 };
+
+      let base = 0;
+      if (nBrand === 2) base = (COMPENSI.multibrand.bonus_2 || [])[level] || 0;
+      if (nBrand === 3) base = (COMPENSI.multibrand.bonus_3 || [])[level] || 0;
+      if (nBrand === 4) base = (COMPENSI.multibrand.bonus_4 || [])[level] || 0;
+
+      let skyExtra = 0;
+      if (
+        (nBrand === 3 || nBrand === 4) &&
+        skyCount >= (COMPENSI.multibrand.extra_sky_min_contracts || 7)
+      ) {
+        skyExtra = (COMPENSI.multibrand.extra_sky || [])[level] || 0;
+      }
+
+      return {
+        base,
+        skyExtra,
+        total: base + skyExtra,
+        level
+      };
+    }
+
+    /****************************************************************
+     * DISTRIBUZIONE PERSONALIZZATA PER BRAND
+     ****************************************************************/
+    function computeBrandStats(candidate, flags) {
+      const stats = {
+        acea: flags.hasAcea ? (candidate.acea || 0) : 0,
+        sky: flags.hasSky ? (candidate.sky || 0) : 0,
+        fastweb: flags.hasFw ? ((candidate.fm || 0) + (candidate.ff || 0) + (candidate.fe || 0)) : 0,
+        ho: flags.hasHo ? (candidate.ho || 0) : 0,
+        tiscali: flags.hasTisc ? ((candidate.tmob || 0) + (candidate.tfix || 0)) : 0,
+        eff: flags.hasEff ? (candidate.eff || 0) : 0,
+        rent: flags.hasRent ? (candidate.rent || 0) : 0
+      };
+
+      const total = Object.values(stats).reduce((a, b) => a + b, 0);
+      const shares = {};
+
+      for (const k in stats) {
+        shares[k] = total ? stats[k] / total : 0;
+      }
+
+      return { stats, shares, total };
+    }
+
+    function computePreference(candidate, targetRev, flags, targetBrandPercents) {
+      const overshoot = candidate.totRev - targetRev;
+      const overshootNorm = overshoot / Math.max(1, targetRev);
+
+      const { stats, shares, total } = computeBrandStats(candidate, flags);
+
+      let dist = 0;
+      let shortfall = 0;
+
+      for (const brand of brandAttivi) {
+        const tgt = targetBrandPercents[brand] || 0;
+        const act = shares[brand] || 0;
+        dist += Math.abs(act - tgt);
+
+        let minWanted = 0;
+        if (total > 0 && tgt > 0) {
+          if (total < 12) {
+            minWanted = 1;
+          } else {
+            minWanted = Math.max(1, Math.round(total * tgt * 0.4));
+          }
+        }
+
+        const actUnits = stats[brand] || 0;
+        if (actUnits < minWanted) {
+          shortfall += (minWanted - actUnits) / Math.max(1, minWanted);
+        }
+      }
+
+      const objective =
+        overshootNorm * 1.0 +
+        dist * 0.8 +
+        shortfall * 0.8 +
+        (candidate.totContratti || 0) / 600;
+
+      return {
+        objective,
+        overshootNorm,
+        dist,
+        shortfall,
+        brandStats: stats,
+        brandShares: shares,
+        brandTotal: total
+      };
+    }
+
+    /****************************************************************
+     * PRUNING STATI
+     ****************************************************************/
+    function pruneFwStates(states) {
+      const buckets = new Map();
+
+      for (const st of states) {
+        const sum = st.fm + st.ff + st.fe + st.ho;
+        const k1 = sum > 0 ? Math.min(4, Math.floor((st.fe / sum) * 5)) : 0;
+        const k2 = sum > 0 ? Math.min(4, Math.floor((st.ff / sum) * 5)) : 0;
+        const k3 = sum > 0 ? Math.min(4, Math.floor(((st.fm + st.ho) / sum) * 5)) : 0;
+        const key = `${k1}|${k2}|${k3}|${st.brand}`;
+
+        if (!buckets.has(key)) buckets.set(key, []);
+        buckets.get(key).push(st);
+      }
+
+      const out = [];
+      for (const arr of buckets.values()) {
+        for (const x of paretoMinRevMaxPoints(arr).slice(0, 8)) {
+          out.push(x);
+        }
+      }
+
+      return out;
+    }
+
+    function pruneRestStates(states) {
+      const buckets = new Map();
+
+      for (const st of states) {
+        const sum = st.acea + st.sky + st.ho + st.tmob + st.tfix + st.eff + st.rent;
+        const energy = st.acea;
+        const sky = st.sky;
+        const fixed = st.tfix;
+        const mobile = st.ho + st.tmob;
+        const other = st.eff + st.rent;
+
+        const key = [
+          sum > 0 ? Math.min(4, Math.floor((energy / sum) * 5)) : 0,
+          sum > 0 ? Math.min(4, Math.floor((sky / sum) * 5)) : 0,
+          sum > 0 ? Math.min(4, Math.floor((fixed / sum) * 5)) : 0,
+          sum > 0 ? Math.min(4, Math.floor((mobile / sum) * 5)) : 0,
+          sum > 0 ? Math.min(4, Math.floor((other / sum) * 5)) : 0,
+          st.mask
+        ].join("|");
+
+        if (!buckets.has(key)) buckets.set(key, []);
+        buckets.get(key).push(st);
+      }
+
+      const out = [];
+      for (const arr of buckets.values()) {
+        for (const x of paretoMinRevMaxPoints(arr).slice(0, 10)) {
+          out.push(x);
+        }
+      }
+
+      return out;
+    }
+
+    /****************************************************************
+     * COSTRUZIONE STATI REST
+     ****************************************************************/
+    function buildRestBySum(maxTotal, cfg, flags) {
+      const { hasAcea, hasSky, hasHo, hasTisc, hasEff, hasRent, target } = flags;
+
+      const minAcea = hasAcea ? MINIMI.acea : 0;
+      const minSky = hasSky ? MINIMI.sky : 0;
+      const minHo = hasHo ? 1 : 0;
+      const minTMob = hasTisc ? 1 : 0;
+      const minTFix = hasTisc ? 1 : 0;
+      const minEff = hasEff ? 0 : 0;
+      const minRent = hasRent ? 0 : 0;
+
+      const maxAcea = hasAcea ? Math.min(180, minAcea + Math.ceil(target / 60) + 70) : 0;
+      const maxSky = hasSky ? Math.min(120, minSky + Math.ceil(target / 70) + 40) : 0;
+      const maxHo = hasHo ? Math.min(120, 1 + Math.ceil(target / 15) + 30) : 0;
+      const maxTMob = hasTisc ? Math.min(120, 1 + Math.ceil(target / 14) + 30) : 0;
+      const maxTFix = hasTisc ? Math.min(80, 1 + Math.ceil(target / 55) + 20) : 0;
+
+      const extraPts = getExtraPointsPerUnit();
+      const maxEff = hasEff ? Math.min(80, Math.ceil(90 / Math.max(extraPts, 0.1)) + 10) : 0;
+      const maxRent = hasRent ? Math.min(80, Math.ceil(90 / Math.max(extraPts, 0.1)) + 10) : 0;
+
+      document.getElementById("effPtsLabel").innerText = extraPts;
+      document.getElementById("rentPtsLabel").innerText = extraPts;
+
+      const aceaRev = new Array(maxAcea + 1).fill(0);
+      const aceaPts = new Array(maxAcea + 1).fill(0);
+      for (let n = 0; n <= maxAcea; n++) {
+        aceaRev[n] = revenueAcea(n, cfg.aceaTipo, cfg.aceaBollettino, 0);
+        aceaPts[n] = puntiAceaMB(n);
+      }
+
+      const skyRev = new Array(maxSky + 1).fill(0);
+      const skyPts = new Array(maxSky + 1).fill(0);
+      for (let n = 0; n <= maxSky; n++) {
+        skyRev[n] = revenueSky(n, cfg.skyTipo);
+        skyPts[n] = puntiSkyMB(n, cfg.skyTipo);
+      }
+
+      const hoRev = new Array(maxHo + 1).fill(0);
+      const hoPts = new Array(maxHo + 1).fill(0);
+      for (let n = 0; n <= maxHo; n++) {
+        hoRev[n] = revenueHo(n, cfg.hoMode, cfg.hoTier);
+        hoPts[n] = puntiHoMB(n);
+      }
+
+      const tMobRev = new Array(maxTMob + 1).fill(0);
+      const tMobPts = new Array(maxTMob + 1).fill(0);
+      for (let n = 0; n <= maxTMob; n++) {
+        tMobRev[n] = revenueTiscMobile(n, cfg.tiscMobileTipo);
+        tMobPts[n] = n * 0.25;
+      }
+
+      const tFixRev = new Array(maxTFix + 1).fill(0);
+      const tFixPts = new Array(maxTFix + 1).fill(0);
+      const tFixRow = TISC_FIXED[cfg.tiscFissoTipo] || TISC_FIXED.res_fibra;
+      for (let n = 0; n <= maxTFix; n++) {
+        tFixRev[n] = revenueTiscFixed(n, cfg.tiscFissoTipo);
+        tFixPts[n] = n * (tFixRow.mbPointsPer || 0.5);
+      }
+
+      const effRev = new Array(maxEff + 1).fill(0);
+      const effPts = new Array(maxEff + 1).fill(0);
+      for (let n = 0; n <= maxEff; n++) {
+        effRev[n] = n * (cfg.effVal || 0);
+        effPts[n] = n * extraPts;
+      }
+
+      const rentRev = new Array(maxRent + 1).fill(0);
+      const rentPts = new Array(maxRent + 1).fill(0);
+      for (let n = 0; n <= maxRent; n++) {
+        rentRev[n] = n * (cfg.rentVal || 0);
+        rentPts[n] = n * extraPts;
+      }
+
+      let dp = Array.from({ length: maxTotal + 1 }, () => []);
+      dp[0].push({
+        rev: 0,
+        punti: 0,
+        mask: 0,
+        acea: 0,
+        sky: 0,
+        ho: 0,
+        tmob: 0,
+        tfix: 0,
+        eff: 0,
+        rent: 0
+      });
+
+      function addVar(dpIn, minN, maxN, applyFn) {
+        const dpOut = Array.from({ length: maxTotal + 1 }, () => []);
+
+        for (let sum = 0; sum <= maxTotal; sum++) {
+          const list = dpIn[sum];
+          if (!list || list.length === 0) continue;
+
+          for (const st of list) {
+            for (let n = minN; n <= maxN; n++) {
+              const newSum = sum + n;
+              if (newSum > maxTotal) break;
+              dpOut[newSum].push(applyFn(st, n));
+            }
+          }
+        }
+
+        for (let s = 0; s <= maxTotal; s++) {
+          if (dpOut[s].length > 0) {
+            dpOut[s] = pruneRestStates(dpOut[s]);
+            if (dpOut[s].length > 160) dpOut[s] = dpOut[s].slice(0, 160);
+          }
+        }
+
+        return dpOut;
+      }
+
+      dp = addVar(dp, minAcea, maxAcea, (st, n) => ({
+        ...st,
+        acea: n,
+        mask: n > 0 ? (st.mask | 1) : st.mask,
+        rev: st.rev + aceaRev[n],
+        punti: st.punti + aceaPts[n]
+      }));
+
+      dp = addVar(dp, minSky, maxSky, (st, n) => {
+        const row = SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"];
+        return {
+          ...st,
+          sky: n,
+          mask: (n > 0 && row.validBrand) ? (st.mask | 2) : st.mask,
+          rev: st.rev + skyRev[n],
+          punti: st.punti + skyPts[n]
+        };
+      });
+
+      dp = addVar(dp, minHo, maxHo, (st, n) => ({
+        ...st,
+        ho: n,
+        rev: st.rev + hoRev[n],
+        punti: st.punti + hoPts[n]
+      }));
+
+      dp = addVar(dp, minTMob, maxTMob, (st, n) => ({
+        ...st,
+        tmob: n,
+        rev: st.rev + tMobRev[n],
+        punti: st.punti + tMobPts[n]
+      }));
+
+      dp = addVar(dp, minTFix, maxTFix, (st, n) => ({
+        ...st,
+        tfix: n,
+        mask: (n > 0 && st.tmob > 0) ? (st.mask | 4) : st.mask,
+        rev: st.rev + tFixRev[n],
+        punti: st.punti + tFixPts[n]
+      }));
+
+      dp = addVar(dp, minEff, maxEff, (st, n) => ({
+        ...st,
+        eff: n,
+        rev: st.rev + effRev[n],
+        punti: st.punti + effPts[n]
+      }));
+
+      dp = addVar(dp, minRent, maxRent, (st, n) => ({
+        ...st,
+        rent: n,
+        rev: st.rev + rentRev[n],
+        punti: st.punti + rentPts[n]
+      }));
+
+      return dp;
+    }
+
+    /****************************************************************
+     * CALCOLO PRINCIPALE
+     ****************************************************************/
+    function calcola() {
+      const costi = calcolaTotaleCosti();
+      if (costi <= 0) return alert("Inserisci i costi.");
+      if (brandAttivi.length === 0) return alert("Seleziona almeno un brand.");
+
+      const useMarg = !!document.getElementById("useMarg")?.checked;
+      let pct = Number(document.getElementById("margPct")?.value || 20);
+      pct = Math.max(20, Math.min(100, pct || 20));
+      document.getElementById("margPct").value = pct;
+
+      const targetRev = useMarg ? Math.ceil(costi * (1 + pct / 100)) : costi;
+      const cfg = getCfg();
+      const brandTargets = getBrandTargetPercents();
+
+      const hasAcea = brandAttivi.includes("acea");
+      const hasSky = brandAttivi.includes("sky");
+      const hasFw = brandAttivi.includes("fastweb");
+      const hasHo = brandAttivi.includes("ho");
+      const hasTisc = brandAttivi.includes("tiscali");
+      const hasEff = brandAttivi.includes("eff");
+      const hasRent = brandAttivi.includes("rent");
+
+      const minTotal =
+        (hasAcea ? 1 : 0) +
+        (hasSky ? 1 : 0) +
+        (hasTisc ? 2 : 0) +
+        (hasFw ? 3 : 0) +
+        (hasHo ? 1 : 0);
+
+      const maxTotal = Math.min(320, minTotal + 260);
+
+      const selectedMain = ["acea", "sky", "fastweb", "tiscali"].filter((b) =>
+        brandAttivi.includes(b)
+      ).length;
+
+      const requireMBAccess = selectedMain >= 2;
+      const requiredPoints = requireMBAccess ? 10 : 0;
+
+      const flagsForCalc = {
+        hasAcea,
+        hasSky,
+        hasFw,
+        hasHo,
+        hasTisc,
+        hasEff,
+        hasRent
+      };
+
+      /****************************
+       * STATI FASTWEB / HO
+       ****************************/
+      const fwBySum = new Map();
+
+      if (hasFw || hasHo) {
+        const minFm = hasFw ? 1 : 0;
+        const minFf = hasFw ? 1 : 0;
+        const minFe = hasFw ? 1 : 0;
+        const minHoLocal = hasHo ? 1 : 0;
+
+        const maxFm = hasFw ? Math.min(120, minFm + Math.ceil(targetRev / 30) + 40) : 0;
+        const maxFf = hasFw ? Math.min(80, minFf + Math.ceil(targetRev / 60) + 20) : 0;
+        const maxFe = hasFw ? Math.min(120, minFe + Math.ceil(targetRev / 70) + 50) : 0;
+        const maxHoLocal = hasHo ? Math.min(80, minHoLocal + Math.ceil(targetRev / 20) + 25) : 0;
+
+        for (let fm = minFm; fm <= maxFm; fm++) {
+          for (let ff = minFf; ff <= maxFf; ff++) {
+            for (let fe = minFe; fe <= maxFe; fe++) {
+              for (let ho = minHoLocal; ho <= maxHoLocal; ho++) {
+                const sum = fm + ff + fe + ho;
+                if (sum > maxTotal) break;
+
+                const rev =
+                  revenueFastwebMobile(fm, cfg.fwMobilePiano) +
+                  revenueFastwebFisso(ff, cfg.fwFissoTipo) +
+                  revenueFastwebEnergy(fe, cfg.fwEnergyTipo) +
+                  revenueHo(ho, cfg.hoMode, cfg.hoTier);
+
+                const punti =
+                  puntiFastwebMB(fm, ff, fe, cfg.fwFissoTipo) +
+                  puntiHoMB(ho);
+
+                const brand = hasFw
+                  ? !hasHo
+                    ? fm >= 1 && ff >= 1 && fe >= 1
+                    : fm >= 1 && ff >= 1 && fe >= 1 && ho >= 1
+                  : false;
+
+                if (!fwBySum.has(sum)) fwBySum.set(sum, []);
+                fwBySum.get(sum).push({
+                  fm,
+                  ff,
+                  fe,
+                  ho,
+                  rev,
+                  punti,
+                  brand
+                });
+              }
+            }
+          }
+        }
+
+        for (const [sum, list] of fwBySum.entries()) {
+          const p = pruneFwStates(list);
+          fwBySum.set(sum, p.length > 180 ? p.slice(0, 180) : p);
+        }
+      } else {
+        fwBySum.set(0, [
+          {
+            fm: 0,
+            ff: 0,
+            fe: 0,
+            ho: 0,
+            rev: 0,
+            punti: 0,
+            brand: false
+          }
+        ]);
+      }
+
+      /****************************
+       * STATI RESTO BRAND
+       ****************************/
+      const restBySum = buildRestBySum(maxTotal, cfg, {
+        hasAcea,
+        hasSky,
+        hasHo: false,
+        hasTisc,
+        hasEff,
+        hasRent,
+        target: targetRev
+      });
+
+      /****************************
+       * RICERCA MIGLIORE SOLUZIONE
+       ****************************/
+      let best = null;
+
+      for (let tot = minTotal; tot <= maxTotal; tot++) {
+        for (let fwSum = 0; fwSum <= tot; fwSum++) {
+          const fwStates = fwBySum.get(fwSum);
+          if (!fwStates || fwStates.length === 0) continue;
+
+          const restSum = tot - fwSum;
+          const restStates = restBySum[restSum];
+          if (!restStates || restStates.length === 0) continue;
+
+          for (const fw of fwStates) {
+            for (const rs of restStates) {
+              const aceaBrand = hasAcea && rs.acea >= 1;
+              const skyRow = SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"];
+              const skyBrand = hasSky && rs.sky >= 1 && !!skyRow.validBrand;
+              const tiscBrand = hasTisc && rs.tmob >= 1 && rs.tfix >= 1;
+              const fwBrand = hasFw && fw.brand;
+
+              let brandMB = 0;
+              if (aceaBrand) brandMB++;
+              if (skyBrand) brandMB++;
+              if (fwBrand) brandMB++;
+              if (tiscBrand) brandMB++;
+
+              let puntiMB = rs.punti + ((hasFw || hasHo) ? fw.punti : 0);
+
+              const boostEnergy =
+                (hasAcea && hasFw && rs.acea >= 10 && fw.fe >= 10)
+                  ? (COMPENSI.multibrand.boost_energy_points || 10)
+                  : 0;
+
+              puntiMB += boostEnergy;
+
+              if (requireMBAccess) {
+                if (brandMB < 2) continue;
+                if (puntiMB + 1e-9 < requiredPoints) continue;
+              }
+
+              const rAceaCorrected = hasAcea
+                ? revenueAcea(rs.acea, cfg.aceaTipo, cfg.aceaBollettino, fw.fe)
+                : 0;
+
+              const restRevCorrected =
+                rs.rev -
+                (hasAcea
+                  ? revenueAcea(rs.acea, cfg.aceaTipo, cfg.aceaBollettino, 0)
+                  : 0) +
+                rAceaCorrected;
+
+              const mb = bonusMultibrand(puntiMB, brandMB, rs.sky);
+              const totRev = restRevCorrected + fw.rev + mb.total;
+
+              if (totRev >= targetRev) {
+                const candidate = {
+                  totContratti: tot,
+                  acea: rs.acea,
+                  sky: rs.sky,
+                  tmob: rs.tmob,
+                  tfix: rs.tfix,
+                  eff: rs.eff,
+                  rent: rs.rent,
+                  fm: fw.fm,
+                  ff: fw.ff,
+                  fe: fw.fe,
+                  ho: fw.ho,
+
+                  rAcea: rAceaCorrected,
+                  rSky: hasSky ? revenueSky(rs.sky, cfg.skyTipo) : 0,
+                  rTMob: hasTisc ? revenueTiscMobile(rs.tmob, cfg.tiscMobileTipo) : 0,
+                  rTFix: hasTisc ? revenueTiscFixed(rs.tfix, cfg.tiscFissoTipo) : 0,
+                  rEff: hasEff ? rs.eff * (cfg.effVal || 0) : 0,
+                  rRent: hasRent ? rs.rent * (cfg.rentVal || 0) : 0,
+                  rFm: hasFw ? revenueFastwebMobile(fw.fm, cfg.fwMobilePiano) : 0,
+                  rFf: hasFw ? revenueFastwebFisso(fw.ff, cfg.fwFissoTipo) : 0,
+                  rFe: hasFw ? revenueFastwebEnergy(fw.fe, cfg.fwEnergyTipo) : 0,
+                  rHo: hasHo ? revenueHo(fw.ho, cfg.hoMode, cfg.hoTier) : 0,
+
+                  puntiMB,
+                  bonusMB: mb.base,
+                  bonusSkyExtra: mb.skyExtra,
+                  bonusTotal: mb.total,
+                  boostEnergy,
+                  totRev,
+
+                  marginVsCosti: totRev - costi,
+                  marginVsTarget: totRev - targetRev,
+
+                  brandMB,
+                  aceaBrand,
+                  skyBrand,
+                  tiscBrand,
+                  fwBrand
+                };
+
+                const pref = computePreference(
+                  candidate,
+                  targetRev,
+                  flagsForCalc,
+                  brandTargets.normalized
+                );
+
+                candidate.objective = pref.objective;
+                candidate.brandStats = pref.brandStats;
+                candidate.brandShares = pref.brandShares;
+                candidate.brandTotal = pref.brandTotal;
+                candidate.dist = pref.dist;
+                candidate.shortfall = pref.shortfall;
+                candidate.overshootNorm = pref.overshootNorm;
+
+                if (
+                  !best ||
+                  candidate.objective < best.objective - 1e-9 ||
+                  (
+                    Math.abs(candidate.objective - best.objective) < 1e-9 &&
+                    candidate.overshootNorm < best.overshootNorm - 1e-9
+                  ) ||
+                  (
+                    Math.abs(candidate.objective - best.objective) < 1e-9 &&
+                    Math.abs(candidate.overshootNorm - best.overshootNorm) < 1e-9 &&
+                    candidate.totContratti < best.totContratti
+                  )
+                ) {
+                  best = candidate;
+                }
+              }
+            }
+          }
+        }
+
+        if (
+          best &&
+          best.overshootNorm < 0.02 &&
+          best.dist < 0.14 &&
+          best.shortfall < 0.05 &&
+          tot > (minTotal + 18)
+        ) {
+          break;
+        }
+      }
+
+      renderOutput(best, {
+        cfg,
+        costi,
+        targetRev,
+        useMarg,
+        pct,
+        requireMBAccess,
+        requiredPoints,
+        brandTargets
+      });
+    }
+
+    /****************************************************************
+     * RENDER OUTPUT
+     ****************************************************************/
+    function renderOutput(best, meta) {
+      const { cfg, costi, targetRev, useMarg, pct, requireMBAccess, requiredPoints, brandTargets } = meta;
+
+      const out = document.getElementById("output");
+      const btnDett = document.getElementById("btnDettaglio");
+      const dettPanel = document.getElementById("dettaglioPanel");
+      const waBtn = document.getElementById("waBtn");
+
+      if (!best) {
+        out.innerText =
+          `❌ Nessuna combinazione copre il target nei limiti di ricerca attuali.\n\n` +
+          `Suggerimenti:\n` +
+          `- riduci i costi o la marginalità\n` +
+          `- attiva più brand principali\n` +
+          `- rivedi le percentuali obiettivo per brand\n` +
+          `- usa una combinazione più remunerativa su SKY / FASTWEB / TISCALI`;
+
+        out.classList.remove("hidden");
+        btnDett.classList.add("hidden");
+        dettPanel.style.display = "none";
+        waBtn.classList.add("hidden");
+        window._lastOutput = out.innerText;
+        _bestDettaglio = null;
+        return;
+      }
+
+      const hasAcea = brandAttivi.includes("acea");
+      const hasSky = brandAttivi.includes("sky");
+      const hasFw = brandAttivi.includes("fastweb");
+      const hasHo = brandAttivi.includes("ho");
+      const hasTisc = brandAttivi.includes("tiscali");
+      const hasEff = brandAttivi.includes("eff");
+      const hasRent = brandAttivi.includes("rent");
+
+      const brandList = [];
+      if (best.aceaBrand) brandList.push("ACEA");
+      if (best.skyBrand) brandList.push("SKY");
+      if (best.fwBrand) brandList.push(hasHo ? "FASTWEB+HO" : "FASTWEB");
+      if (best.tiscBrand) brandList.push("TISCALI");
+
+      const pctFmt = (v) => `${Math.round((v || 0) * 100)}%`;
+
+      let txt = "";
+      txt += `*🎯 OBIETTIVO*: €${costi}`;
+      if (useMarg) txt += ` + *MARGINALITÀ ${pct}%*`;
+      txt += `\n`;
+
+      if (useMarg) txt += `*📌 Target ricavi*: €${targetRev}\n`;
+
+      txt += `\n*📌 Brand selezionati*: ${brandAttivi.join(", ").toUpperCase()}\n`;
+      txt += `*🏷 Brand conteggiati in Multibrand*: ${brandList.join(", ") || "NESSUNO"}\n`;
+
+      if (requireMBAccess) {
+        txt += `*✅ Accesso Multibrand*: almeno 10 punti (raggiunti: ${best.puntiMB.toFixed(2)})\n`;
+      }
+
+      if (best.boostEnergy > 0) {
+        txt += `*⚡ Extra Boost Energy*: +${best.boostEnergy} punti (10 ACEA + 10 FW Energy)\n`;
+      }
+
+      txt += `\n*📊 Distribuzione brand impostata*:\n`;
+      brandAttivi.forEach((brand) => {
+        const label = BRAND_PERCENT_CONFIG[brand].label;
+        txt += `• ${label}: ${Math.round((brandTargets.normalized[brand] || 0) * 100)}%\n`;
+      });
+
+      txt += `\n*📊 Distribuzione brand reale proposta*:\n`;
+      brandAttivi.forEach((brand) => {
+        const label = BRAND_PERCENT_CONFIG[brand].label;
+        txt += `• ${label}: ${pctFmt(best.brandShares?.[brand])}\n`;
+      });
+
+      txt += `\n*📈 Produzione consigliata* (totale pratiche/contratti: ${best.totContratti})\n\n`;
+
+      if (hasAcea) {
+        txt += `• *ACEA* → ${best.acea} contratti (${ACEA_TABLE[cfg.aceaTipo]?.name || "ACEA"})\n`;
+        txt += ` - €/contratto: €${aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.fe)}\n`;
+        txt += ` - provvigioni: €${best.rAcea}\n`;
+        txt += ` - punti MB: ${puntiAceaMB(best.acea)}\n\n`;
+      }
+
+      if (hasSky) {
+        txt += `• *SKY* → ${best.sky} contratti (${(SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"]).name})\n`;
+        txt += ` - €/contratto: €${best.sky > 0 ? Math.round(best.rSky / best.sky) : 0}\n`;
+        txt += ` - provvigioni: €${best.rSky}\n`;
+        txt += ` - punti MB: ${puntiSkyMB(best.sky, cfg.skyTipo)}\n\n`;
+      }
+
+      if (hasFw) {
+        txt += `• *FASTWEB Mobile (AUTO ${cfg.fwMobilePiano})* → ${best.fm} SIM\n`;
+        txt += ` - €/SIM: €${fwMobileUnitValue(best.fm, cfg.fwMobilePiano)}\n`;
+        txt += ` - provvigioni: €${best.rFm}\n`;
+
+        txt += `• *FASTWEB Fisso (${(FW_FISSO[cfg.fwFissoTipo] || FW_FISSO.casa_start).name})* → ${best.ff} linee\n`;
+        txt += ` - €/linea: €${fwFissoUnitValue(best.ff, cfg.fwFissoTipo)}\n`;
+        txt += ` - provvigioni: €${best.rFf}\n`;
+
+        txt += `• *FASTWEB Energy (${(FW_ENERGY[cfg.fwEnergyTipo] || FW_ENERGY.lfm).name})* → ${best.fe} contratti\n`;
+        txt += ` - €/contratto: €${fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo)}\n`;
+        txt += ` - provvigioni: €${best.rFe}\n`;
+
+        if (hasHo) {
+          txt += `• *HO Mobile (${cfg.hoMode.toUpperCase()} / ${cfg.hoTier})* → ${best.ho} SIM\n`;
+          txt += ` - €/SIM: €${hoUnitValue(best.ho, cfg.hoMode, cfg.hoTier)}\n`;
+          txt += ` - provvigioni: €${best.rHo}\n`;
+        }
+
+        txt += ` 👉 Totale FASTWEB${hasHo ? "+HO" : ""}: €${best.rFm + best.rFf + best.rFe + best.rHo}\n`;
+        txt += ` 👉 Punti MB FASTWEB${hasHo ? "+HO" : ""} (se brand valido): ${
+          best.fwBrand
+            ? (puntiFastwebMB(best.fm, best.ff, best.fe, cfg.fwFissoTipo) + puntiHoMB(best.ho)).toFixed(2)
+            : "0.00"
+        }\n\n`;
+      } else if (hasHo) {
+        txt += `• *HO Mobile* selezionato senza FASTWEB → contribuisce a ricavi, ma non attiva brand MB separato\n`;
+        txt += ` - SIM: ${best.ho}\n`;
+        txt += ` - provvigioni: €${best.rHo}\n\n`;
+      }
+
+      if (hasTisc) {
+        txt += `• *TISCALI Mobile (${(TISC_MOBILE[cfg.tiscMobileTipo] || TISC_MOBILE.mobile_200).name})* → ${best.tmob} contratti\n`;
+        txt += ` - €/contratto: €${tiscMobileUnitValue(best.tmob, cfg.tiscMobileTipo)}\n`;
+        txt += ` - provvigioni: €${best.rTMob}\n`;
+
+        txt += `• *TISCALI Fisso (${(TISC_FIXED[cfg.tiscFissoTipo] || TISC_FIXED.res_fibra).name})* → ${best.tfix} contratti\n`;
+        txt += ` - €/contratto: €${tiscFixedUnitValue(best.tfix, cfg.tiscFissoTipo)}\n`;
+        txt += ` - provvigioni: €${best.rTFix}\n`;
+
+        txt += ` 👉 Totale TISCALI: €${best.rTMob + best.rTFix}\n`;
+        txt += ` 👉 Punti MB TISCALI (se brand valido): ${
+          best.tiscBrand
+            ? puntiTiscaliMB(best.tmob, best.tfix, cfg.tiscFissoTipo).toFixed(2)
+            : "0.00"
+        }\n\n`;
+      }
+
+      if (hasEff) {
+        const p = getExtraPointsPerUnit();
+        txt += `• *EFFICIENCY* → ${best.eff} pratiche\n`;
+        txt += ` - provvigioni stimate: €${best.rEff}\n`;
+        txt += ` - punti MB: ${(best.eff * p).toFixed(2)}\n\n`;
+      }
+
+      if (hasRent) {
+        const p = getExtraPointsPerUnit();
+        txt += `• *RENT* → ${best.rent} pratiche\n`;
+        txt += ` - provvigioni stimate: €${best.rRent}\n`;
+        txt += ` - punti MB: ${(best.rent * p).toFixed(2)}\n\n`;
+      }
+
+      txt += `*🔥 Punti Multibrand totali*: ${best.puntiMB.toFixed(2)}\n`;
+      txt += `*💶 Bonus Multibrand base*: €${best.bonusMB}\n`;
+
+      if (best.bonusSkyExtra > 0) {
+        txt += `*🌟 Extra Aprile SKY*: €${best.bonusSkyExtra}\n`;
+      }
+
+      txt += `*💶 Bonus Multibrand totale*: €${best.bonusTotal}\n`;
+      txt += `\n*💰 TOTALE RICAVI*: €${best.totRev}\n`;
+      txt += `*📊 Margine vs costi*: €${best.marginVsCosti}\n`;
+
+      if (useMarg) {
+        txt += `*📈 Margine vs target*: €${best.marginVsTarget}\n`;
+      }
+
+      txt += `\n✔ Combinazione *realistica e pronta all’uso* aggiornata ad Aprile 2026.`;
+
+      out.innerText = txt;
+      out.classList.remove("hidden");
+      btnDett.classList.remove("hidden");
+      waBtn.classList.remove("hidden");
+      dettPanel.style.display = "none";
+
+      window._lastOutput = txt;
+      _bestDettaglio = {
+        best,
+        cfg,
+        costi,
+        targetRev,
+        useMarg,
+        pct,
+        requireMBAccess,
+        requiredPoints,
+        brandTargets
+      };
+    }
+
+    /****************************************************************
+     * DETTAGLIO
+     ****************************************************************/
+    function toggleDettaglio() {
+      const panel = document.getElementById("dettaglioPanel");
+
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+        return;
+      }
+
+      if (!_bestDettaglio) {
+        panel.style.display = "none";
+        return;
+      }
+
+      const {
+        best,
+        cfg,
+        costi,
+        targetRev,
+        useMarg,
+        pct,
+        requireMBAccess,
+        requiredPoints,
+        brandTargets
+      } = _bestDettaglio;
+
+      const extraPts = getExtraPointsPerUnit();
+      let d = "🔍 Dettaglio provvigioni e punti:\n\n";
+
+      d += `Costi: €${costi}\n`;
+      if (useMarg) d += `Marginalità: ${pct}% → Target: €${targetRev}\n`;
+      if (requireMBAccess) {
+        d += `Accesso Multibrand richiesto: >=${requiredPoints} punti (attuali: ${best.puntiMB.toFixed(2)})\n`;
+      }
+      if (best.boostEnergy > 0) {
+        d += `Extra Boost Energy: +${best.boostEnergy} punti\n`;
+      }
+
+      d += "\nDistribuzione brand impostata:\n";
+      brandAttivi.forEach((brand) => {
+        d += `- ${BRAND_PERCENT_CONFIG[brand].label}: ${Math.round((brandTargets.normalized[brand] || 0) * 100)}%\n`;
+      });
+
+      d += "\nDistribuzione brand reale:\n";
+      brandAttivi.forEach((brand) => {
+        d += `- ${BRAND_PERCENT_CONFIG[brand].label}: ${Math.round((best.brandShares?.[brand] || 0) * 100)}%\n`;
+      });
+
+      d += "\n";
+
+      if (brandAttivi.includes("acea") && best.acea > 0) {
+        d += `• ACEA — ${(ACEA_TABLE[cfg.aceaTipo] || ACEA_TABLE.sprint_fix).name}\n`;
+        d += `- contratti: ${best.acea}\n`;
+        d += `- €/contratto: €${aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.fe).toFixed(2)}\n`;
+        d += `- punti MB/contratto: 1\n\n`;
+      }
+
+      if (brandAttivi.includes("sky") && best.sky > 0) {
+        const row = SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"];
+        d += `• SKY — ${row.name}\n`;
+        d += `- contratti: ${best.sky}\n`;
+        d += `- punti brand totali: ${(best.sky * row.points).toFixed(2)}\n`;
+        d += `- €/contratto: €${(best.sky > 0 ? best.rSky / best.sky : 0).toFixed(2)}\n`;
+        d += `- punti MB/contratto: ${
+          cfg.skyTipo === "prova_nonconv" || cfg.skyTipo === "prova_conv" ? "0,25" : "1"
+        }\n\n`;
+      }
+
+      if (brandAttivi.includes("fastweb")) {
+        if (best.fm > 0) {
+          d += `• FASTWEB Mobile AUTO ${cfg.fwMobilePiano}\n`;
+          d += `- SIM: ${best.fm}\n`;
+          d += `- Protect: SI\n`;
+          d += `- €/SIM: €${fwMobileUnitValue(best.fm, cfg.fwMobilePiano).toFixed(2)}\n`;
+          d += `- punti MB/SIM: 0,25\n\n`;
+        }
+
+        if (best.ff > 0) {
+          const row = FW_FISSO[cfg.fwFissoTipo] || FW_FISSO.casa_start;
+          d += `• FASTWEB Fisso — ${row.name}\n`;
+          d += `- linee: ${best.ff}\n`;
+          d += `- €/linea: €${fwFissoUnitValue(best.ff, cfg.fwFissoTipo).toFixed(2)}\n`;
+          d += `- punti MB/linea: ${row.mbPointsPer}\n\n`;
+        }
+
+        if (best.fe > 0) {
+          const row = FW_ENERGY[cfg.fwEnergyTipo] || FW_ENERGY.lfm;
+          d += `• FASTWEB Energy — ${row.name}\n`;
+          d += `- contratti: ${best.fe}\n`;
+          d += `- €/contratto: €${fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo).toFixed(2)}\n`;
+          d += `- punti MB/contratto: 2\n\n`;
+        }
+      }
+
+      if (brandAttivi.includes("ho") && best.ho > 0) {
+        d += `• HO Mobile\n`;
+        d += `- SIM: ${best.ho}\n`;
+        d += `- modalità: ${cfg.hoMode.toUpperCase()} / ${cfg.hoTier}\n`;
+        d += `- €/SIM: €${hoUnitValue(best.ho, cfg.hoMode, cfg.hoTier).toFixed(2)}\n`;
+        d += `- punti MB/SIM: 0,25\n\n`;
+      }
+
+      if (brandAttivi.includes("tiscali")) {
+        if (best.tmob > 0) {
+          d += `• TISCALI Mobile — ${(TISC_MOBILE[cfg.tiscMobileTipo] || TISC_MOBILE.mobile_200).name}\n`;
+          d += `- contratti: ${best.tmob}\n`;
+          d += `- €/contratto: €${tiscMobileUnitValue(best.tmob, cfg.tiscMobileTipo).toFixed(2)}\n`;
+          d += `- punti MB/contratto: 0,25\n\n`;
+        }
+
+        if (best.tfix > 0) {
+          const row = TISC_FIXED[cfg.tiscFissoTipo] || TISC_FIXED.res_fibra;
+          d += `• TISCALI Fisso — ${row.name}\n`;
+          d += `- contratti: ${best.tfix}\n`;
+          d += `- €/contratto: €${tiscFixedUnitValue(best.tfix, cfg.tiscFissoTipo).toFixed(2)}\n`;
+          d += `- punti MB/contratto: ${row.mbPointsPer}\n\n`;
+        }
+      }
+
+      if (brandAttivi.includes("eff") && best.eff > 0) {
+        d += `• EFFICIENCY\n`;
+        d += `- pratiche: ${best.eff}\n`;
+        d += `- provvigione media: €${(cfg.effVal || 0).toFixed(2)}\n`;
+        d += `- punti MB/pratica: ${extraPts}\n\n`;
+      }
+
+      if (brandAttivi.includes("rent") && best.rent > 0) {
+        d += `• RENT\n`;
+        d += `- pratiche: ${best.rent}\n`;
+        d += `- provvigione media: €${(cfg.rentVal || 0).toFixed(2)}\n`;
+        d += `- punti MB/pratica: ${extraPts}\n\n`;
+      }
+
+      d += `Totale punti MB: ${best.puntiMB.toFixed(2)}\n`;
+      d += `Bonus base: €${best.bonusMB}\n`;
+
+      if (best.bonusSkyExtra > 0) {
+        d += `Extra Aprile SKY: €${best.bonusSkyExtra}\n`;
+      }
+
+      d += `Bonus totale: €${best.bonusTotal}`;
+
+      panel.innerText = d;
+      panel.style.display = "block";
+    }
+
+    /****************************************************************
+     * WHATSAPP
+     ****************************************************************/
+    function whatsapp() {
+      if (!window._lastOutput) {
+        alert("Prima esegui un calcolo.");
+        return;
+      }
+
+      const text = encodeURIComponent(window._lastOutput);
+      window.open("https://wa.me/?text=" + text, "_blank");
+    }
+
+    /****************************************************************
+     * INIT
+     ****************************************************************/
+    initCompensi();
+    initBrandEvents();
+    initCostEvents();
+    refreshConfigVisibility();
+    renderPercentualiInputs();
+  </script>
+</body>
+</html>

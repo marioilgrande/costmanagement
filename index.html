@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
   />
-  <title>GESTIONE COSTI – MAGGIO 2026</title>
+  <title>GESTIONE COSTI – GIUGNO 2026</title>
 
   <style>
     :root {
@@ -347,7 +347,7 @@
 <body>
   <div class="topbar">
     <div class="topbar-inner">
-      <div class="brand-title">Cost Management - Dealer E2K • Maggio 2026</div>
+      <div class="brand-title">Cost Management - Dealer E2K • Giugno 2026</div>
     </div>
   </div>
 
@@ -440,11 +440,12 @@
 
     <!-- CONFIGURAZIONE -->
     <div class="section">
-      <h2>Configurazione gare (Maggio 2026)</h2>
+      <h2>Configurazione gare (Giugno 2026)</h2>
 
       <p class="muted" style="margin-bottom: 12px;">
-        Logiche aggiornate al piano di maggio 2026: nuova Multibrand, Tiscali brand valido,
-        Fastweb con HO opzionale ma integrato nello stesso brand.
+        Logiche aggiornate al piano di giugno 2026: Multibrand semplificato (FW Energy 1pt,
+        fissi tutti 0,5pt), Tiscali brand valido con ≥5 mobili, FW Mobile/HO con tier in PUNTI
+        (FW SIM × 1 + HO SIM × 0,5), nuove offerte SKY e FW Energy (Gas + Dual).
       </p>
 
       <div class="grid-3">
@@ -487,14 +488,14 @@
           <label for="skyTipo">Prodotto Sky considerato</label>
           <select id="skyTipo" class="field">
             <option value="3p" selected>3P e 3P + Glass</option>
-            <option value="3p_promo">3P promo 29,90€</option>
+            <option value="3p_promo">3P 27,90 / 29,90€</option>
             <option value="tv">Sky TV</option>
             <option value="wifi">Sky WiFi</option>
-            <option value="wifi_gia_tv">Sky WiFi per già clienti TV</option>
-            <option value="wifi_prova_nonconv">Sky WiFi + Prova (non conv.)</option>
+            <option value="wifi_2590">Sky WiFi 25,90 / 29,90€</option>
             <option value="wifi_prova_conv">Sky WiFi + Prova (conv.)</option>
             <option value="glass_new">Sky Glass nuovo cliente</option>
             <option value="wifi_business">Sky WiFi Business</option>
+            <option value="skybus">Sky Bus negozi e uffici</option>
             <option value="prova_conv">Prova TV (convertito)</option>
             <option value="prova_nonconv">Prova TV (non convertito)</option>
             <option value="skybar">Sky Bar</option>
@@ -543,14 +544,16 @@
 
           <div class="hr"></div>
 
-          <label for="fwEnergyTipo">Energy FW</label>
+          <label for="fwEnergyTipo">Energy FW (Luce, Gas, Dual)</label>
           <select id="fwEnergyTipo" class="field">
-            <option value="lfm" selected>LIGHT / FULL / MAXI</option>
-            <option value="flex">FLEX</option>
-            <option value="fix">FIX</option>
-            <option value="business">BUSINESS (FLEX & FIX)</option>
-            <option value="nuova_res">Nuova offerta residenziale (a breve)</option>
-            <option value="nuova_bus">Nuova offerta business (a breve)</option>
+            <option value="lfm" selected>LUCE FLAT (pacchetti)</option>
+            <option value="flex">LUCE FLEX</option>
+            <option value="fix">LUCE FIX</option>
+            <option value="business">LUCE BUSINESS (FLEX & FIX)</option>
+            <option value="gas_flex">GAS FLEX residenziale</option>
+            <option value="gas_flex_bus">GAS FLEX Business</option>
+            <option value="dual_res">DUAL RES (LUCE FLAT + GAS FLEX)</option>
+            <option value="dual_bus">DUAL BUSINESS</option>
           </select>
 
           <div class="noteBox">
@@ -674,7 +677,7 @@
 
       <div id="compensiPanel">
         <p style="margin-top: 10px; font-size: 14px; font-weight: 700;">
-          ⚙️ Modifica qui i compensi del mese (Multibrand – Maggio 2026)
+          ⚙️ Modifica qui i compensi del mese (Multibrand – Giugno 2026)
         </p>
 
         <textarea id="jsonCompensi"></textarea>
@@ -755,7 +758,7 @@
         extra_sky_min_brands: 3,
         extra_sky_min_contracts: 7,
         note:
-          "Fastweb+HO è un unico brand. Tiscali è brand valido. Extra Boost: 10 FW energia + 10 ACEA = +10 punti. (Extra SKY non più previsto a Maggio 2026)."
+          "Giugno 2026 — Fastweb+HO è un unico brand (richiede HO se selezionato). Tiscali è brand valido con ≥5 mobili. Punti: FW Mobile 0,25 · HO 0,25 · FW Fisso (tutti) 0,5 · FW Energy 1 · Tiscali Mobile 0,25 · Tiscali Fisso 0,5 · ACEA 1 · SKY 1 · Prova SKY 0. Extra Boost: 10 FW Energia + 10 ACEA = +10 punti. Tier FW Mobile/HO calcolato su PUNTI: FW SIM × 1 + HO SIM × 0,5 → soglie 15/25/40."
       }
     };
 
@@ -768,8 +771,8 @@
       acea: 1,
       sky: 1,
       ho: 0,
-      tiscMob: 1,
-      tiscFix: 1,
+      tiscMob: 5,
+      tiscFix: 0,
       eff: 0,
       rent: 0,
       fwMobile: 1,
@@ -780,109 +783,98 @@
     const SKY_PRODUCTS = {
       skybar: {
         points: 0,
-        values: [200, 200, 200, 200, 200, 200],
+        values: [300, 300, 300, 300, 300, 300],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Sky Bar",
         validBrand: false
       },
       "3p": {
         points: 3,
-        values: [140, 150, 170, 195, 225, 245],
+        values: [130, 140, 160, 185, 215, 235],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "3P e 3P + Glass",
-        validBrand: true,
-        aprilExtraEligible: true
+        validBrand: true
       },
       "3p_promo": {
         points: 3,
-        values: [140, 150, 170, 195, 225, 245],
+        values: [100, 110, 130, 150, 180, 200],
         thresholds: [0, 5, 10, 15, 25, 50],
-        name: "3P promo 29,90€",
-        validBrand: true,
-        aprilExtraEligible: true
+        name: "3P 27,90 / 29,90€",
+        validBrand: true
       },
       tv: {
         points: 2,
         values: [90, 100, 110, 125, 145, 150],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Sky TV",
-        validBrand: true,
-        aprilExtraEligible: true
+        validBrand: true
       },
       wifi: {
         points: 1,
-        values: [70, 75, 80, 85, 95, 95],
+        values: [70, 75, 80, 85, 95, 105],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Sky WiFi",
-        validBrand: true,
-        aprilExtraEligible: true
+        validBrand: true
       },
-      wifi_gia_tv: {
+      wifi_2590: {
         points: 1,
-        values: [70, 75, 80, 85, 95, 95],
+        values: [50, 55, 60, 65, 75, 75],
         thresholds: [0, 5, 10, 15, 25, 50],
-        name: "Sky WiFi già clienti TV",
-        validBrand: true,
-        aprilExtraEligible: true
-      },
-      wifi_prova_nonconv: {
-        points: 1.5,
-        values: [70, 75, 80, 85, 95, 95],
-        thresholds: [0, 5, 10, 15, 25, 50],
-        name: "Sky WiFi + Prova (non conv.)",
-        validBrand: true,
-        aprilExtraEligible: false
+        name: "Sky WiFi 25,90 / 29,90€",
+        validBrand: true
       },
       wifi_prova_conv: {
         points: 1.5,
         values: [105, 115, 130, 150, 175, 185],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Sky WiFi + Prova (conv.)",
-        validBrand: true,
-        aprilExtraEligible: false
+        validBrand: true
       },
       prova_nonconv: {
         points: 0.5,
         values: [5, 5, 5, 5, 5, 5],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Prova TV (non convertito)",
-        validBrand: false,
-        aprilExtraEligible: false
+        validBrand: false
       },
       prova_conv: {
         points: 0.5,
         values: [60, 60, 60, 60, 60, 60],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Prova TV (convertito)",
-        validBrand: false,
-        aprilExtraEligible: false
+        validBrand: false
       },
       glass_new: {
         points: 2,
         values: [90, 100, 110, 130, 145, 155],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Sky Glass nuovo cliente",
-        validBrand: true,
-        aprilExtraEligible: false
+        validBrand: true
       },
       wifi_business: {
         points: 1,
         values: [90, 100, 120, 130, 130, 130],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Sky WiFi Business",
-        validBrand: true,
-        aprilExtraEligible: true
+        validBrand: true
+      },
+      skybus: {
+        points: 0,
+        values: [100, 100, 100, 100, 100, 100],
+        thresholds: [0, 5, 10, 15, 25, 50],
+        name: "Sky Bus negozi e uffici (promo Smart)",
+        validBrand: false
       }
     };
 
     const ACEA_TABLE = {
       sprint_fix: {
-        thresholds: [1, 5, 12, 25, 45],
+        thresholds: [1, 5, 15, 30, 55],
         values: [60, 70, 75, 85, 90],
         name: "SPRINT & FIX Casa"
       },
       flex: {
-        thresholds: [1, 5, 12, 25, 45],
+        thresholds: [1, 5, 15, 30, 55],
         values: [70, 80, 85, 95, 100],
         name: "FLEX Casa"
       },
@@ -892,7 +884,7 @@
         name: "BUSINESS"
       },
       subentro: {
-        thresholds: [1, 5, 12, 25, 45],
+        thresholds: [1, 5, 15, 30, 55],
         values: [60, 70, 75, 85, 90],
         name: "SUBENTRO Luce+Gas"
       },
@@ -902,24 +894,25 @@
       }
     };
 
+    // Giugno 2026: tier in PUNTI (FW SIM × 1 + HO SIM × 0,5) → soglie 0/15/25/40
     const HO_TABLES = {
       auto: {
-        gt9: { thresholds: [1, 15, 25, 40], values: [21, 27, 31, 35] },
-        mid: { thresholds: [1, 15, 25, 40], values: [20, 25, 28, 31] },
-        lt6: { thresholds: [1, 15, 25, 40], values: [18, 20, 23, 25] }
+        gt9: { thresholds: [0, 15, 25, 40], values: [21, 27, 31, 35] },
+        mid: { thresholds: [0, 15, 25, 40], values: [20, 25, 28, 31] },
+        lt6: { thresholds: [0, 15, 25, 40], values: [18, 20, 23, 25] }
       },
       pura: {
-        gt9: { thresholds: [1, 15, 25, 40], values: [16, 18, 20, 23] },
-        mid: { thresholds: [1, 15, 25, 40], values: [13, 15, 17, 19] },
-        lt6: { thresholds: [1, 15, 25, 40], values: [9, 10, 11, 13] }
+        gt9: { thresholds: [0, 15, 25, 40], values: [11, 17, 21, 25] },
+        mid: { thresholds: [0, 15, 25, 40], values: [10, 15, 18, 21] },
+        lt6: { thresholds: [0, 15, 25, 40], values: [8, 10, 13, 15] }
       }
     };
 
     const FW_MOBILE_AUTO = {
-      "9.95": { thresholds: [1, 15, 25, 40], values: [22, 33, 39, 44] },
-      "11.95": { thresholds: [1, 15, 25, 40], values: [25, 38, 44, 51] },
-      "14.95": { thresholds: [1, 15, 25, 40], values: [29, 51, 59, 66] },
-      "19.95": { thresholds: [1, 15, 25, 40], values: [31, 55, 63, 71] }
+      "9.95": { thresholds: [0, 15, 25, 40], values: [22, 33, 39, 44] },
+      "11.95": { thresholds: [0, 15, 25, 40], values: [25, 38, 44, 51] },
+      "14.95": { thresholds: [0, 15, 25, 40], values: [29, 51, 59, 66] },
+      "19.95": { thresholds: [0, 15, 25, 40], values: [31, 55, 63, 71] }
     };
 
     const FW_FISSO = {
@@ -945,64 +938,75 @@
         thresholds: [1, 2],
         values: [100, 140],
         name: "Business Light",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       },
       business: {
         thresholds: [1, 2],
         values: [150, 190],
         name: "Business",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       },
       business_pro: {
         thresholds: [1, 2],
         values: [170, 220],
         name: "Business+ / Pro",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       },
       web: {
         thresholds: [1, 2],
         values: [150, 220],
         name: "WEB",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       },
       small_2: {
         thresholds: [1, 2],
         values: [200, 250],
         name: "Small 2 linee",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       }
     };
 
+    // Giugno 2026: nuove soglie 1/5/14/20
     const FW_ENERGY = {
       lfm: {
-        thresholds: [1, 5, 10, 15],
+        thresholds: [1, 5, 14, 20],
         values: [80, 90, 100, 110],
-        name: "LIGHT / FULL / MAXI"
+        name: "LUCE FLAT (pacchetti)"
       },
       flex: {
-        thresholds: [1, 5, 10, 15],
+        thresholds: [1, 5, 14, 20],
         values: [60, 70, 80, 90],
-        name: "FLEX"
+        name: "LUCE FLEX"
       },
       fix: {
-        thresholds: [1, 5, 10, 15],
+        thresholds: [1, 5, 14, 20],
         values: [50, 60, 70, 80],
-        name: "FIX"
+        name: "LUCE FIX"
       },
       business: {
-        thresholds: [1, 5, 10, 15],
+        thresholds: [1, 5, 14, 20],
         values: [100, 105, 115, 125],
-        name: "BUSINESS (FLEX & FIX)"
+        name: "LUCE BUSINESS (FLEX & FIX)"
       },
-      nuova_res: {
-        thresholds: [1, 5, 10, 15],
+      gas_flex: {
+        thresholds: [1, 5, 14, 20],
         values: [45, 55, 65, 75],
-        name: "Nuova offerta residenziale"
+        name: "GAS FLEX residenziale"
       },
-      nuova_bus: {
-        thresholds: [1, 5, 10, 15],
+      gas_flex_bus: {
+        thresholds: [1, 5, 14, 20],
         values: [60, 70, 80, 90],
-        name: "Nuova offerta business"
+        name: "GAS FLEX Business"
+      },
+      dual_res: {
+        thresholds: [1, 5, 14, 20],
+        values: [125, 145, 165, 185],
+        name: "DUAL RES (LUCE FLAT + GAS FLEX)"
+      },
+      dual_bus: {
+        thresholds: [1, 5, 14, 20],
+        values: [160, 175, 195, 215],
+        name: "DUAL BUSINESS"
       }
     };
 
@@ -1074,31 +1078,31 @@
         thresholds: [1, 3, 5],
         values: [70, 80, 90],
         name: "Business Power / Ultrainternet Fibra",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       },
       affari_2_linee: {
         thresholds: [1, 3, 5],
         values: [75, 85, 95],
         name: "Ultrainternet Affari 2 linee",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       },
       affari_premium: {
         thresholds: [1, 3, 5],
         values: [80, 95, 105],
         name: "Ultrainternet Affari Premium",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       },
       affari_premium_2: {
         thresholds: [1, 3, 5],
         values: [100, 115, 130],
         name: "Ultrainternet Affari Premium 2 linee",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       },
       business_5g_fwa: {
         thresholds: [1, 3, 5],
         values: [65, 75, 85],
         name: "Business 5G FWA",
-        mbPointsPer: 1
+        mbPointsPer: 0.5
       }
     };
 
@@ -1379,25 +1383,35 @@
       return n * aceaUnitValue(n, tipo, bollettino, fwEnergyCount);
     }
 
-    function hoUnitValue(n, mode, tier) {
-      if (n <= 0) return 0;
+    // Giugno 2026: tier FW Mobile / HO determinato dai PUNTI complessivi
+    // (FW SIM × 1 + HO SIM × 0,5). Soglie: 15 / 25 / 40 punti.
+    function combinedFwHoPunti(fmCount, hoCount) {
+      return (Number(fmCount) || 0) * 1 + (Number(hoCount) || 0) * 0.5;
+    }
+
+    function hoUnitValue(fmCount, hoCount, mode, tier) {
+      if ((Number(hoCount) || 0) <= 0) return 0;
       const row = (HO_TABLES[mode] || HO_TABLES.auto)[tier] || HO_TABLES.auto.lt6;
-      return pickTierValue(n, row.thresholds, row.values);
+      const punti = combinedFwHoPunti(fmCount, hoCount);
+      return pickTierValue(punti, row.thresholds, row.values);
     }
 
-    function revenueHo(n, mode, tier) {
-      return n * hoUnitValue(n, mode, tier);
+    function revenueHo(fmCount, hoCount, mode, tier) {
+      const n = Number(hoCount) || 0;
+      return n * hoUnitValue(fmCount, hoCount, mode, tier);
     }
 
-    function fwMobileUnitValue(n, piano) {
-      if (n <= 0) return 0;
+    function fwMobileUnitValue(fmCount, hoCount, piano) {
+      if ((Number(fmCount) || 0) <= 0) return 0;
       const row = FW_MOBILE_AUTO[piano] || FW_MOBILE_AUTO["9.95"];
-      // Protect (+15€/SIM) NON incluso a Maggio 2026: va aggiunto a parte solo per le SIM su cui viene venduto.
-      return pickTierValue(n, row.thresholds, row.values);
+      // Giugno 2026: tier in PUNTI (FW × 1 + HO × 0,5). Protect +15€/SIM NON incluso.
+      const punti = combinedFwHoPunti(fmCount, hoCount);
+      return pickTierValue(punti, row.thresholds, row.values);
     }
 
-    function revenueFastwebMobile(n, piano) {
-      return n * fwMobileUnitValue(n, piano);
+    function revenueFastwebMobile(fmCount, hoCount, piano) {
+      const n = Number(fmCount) || 0;
+      return n * fwMobileUnitValue(fmCount, hoCount, piano);
     }
 
     function fwFissoUnitValue(n, tipo) {
@@ -1452,7 +1466,8 @@
     }
 
     function puntiSkyMB(n, type) {
-      if (type === "prova_nonconv" || type === "prova_conv") return n * 0.25;
+      // Giugno 2026: Prova SKY non fa più punto gara (era 0,25)
+      if (type === "prova_nonconv" || type === "prova_conv") return 0;
       return n * 1;
     }
 
@@ -1461,8 +1476,9 @@
     }
 
     function puntiFastwebMB(nM, nF, nE, fissoTipo) {
+      // Giugno 2026: FW Energy = 1pt (era 2); fissi (res+bus) tutti 0,5pt
       const fissoRow = FW_FISSO[fissoTipo] || FW_FISSO.casa_start;
-      return nM * 0.25 + nF * (fissoRow.mbPointsPer || 0.5) + nE * 2;
+      return nM * 0.25 + nF * (fissoRow.mbPointsPer || 0.5) + nE * 1;
     }
 
     function puntiTiscaliMB(nM, nF, tiscFissoTipo) {
@@ -1653,8 +1669,9 @@
       const minAcea = hasAcea ? MINIMI.acea : 0;
       const minSky = hasSky ? MINIMI.sky : 0;
       const minHo = hasHo ? 1 : 0;
-      const minTMob = hasTisc ? 1 : 0;
-      const minTFix = hasTisc ? 1 : 0;
+      // Giugno 2026: Tiscali brand attivo con ≥ 5 mobili (fisso non obbligatorio)
+      const minTMob = hasTisc ? MINIMI.tiscMob : 0;
+      const minTFix = hasTisc ? MINIMI.tiscFix : 0;
       const minEff = hasEff ? 0 : 0;
       const minRent = hasRent ? 0 : 0;
 
@@ -1685,10 +1702,15 @@
         skyPts[n] = puntiSkyMB(n, cfg.skyTipo);
       }
 
+      // Giugno 2026: HO ricavo dipende dal tier COMBINATO (FW+HO punti).
+      // Memorizziamo solo il ricavo "base" (tier base = values[0]) nel DP;
+      // l'upgrade al tier reale verrà calcolato nel main loop quando fm è noto.
+      const hoBaseUnit =
+        (HO_TABLES[cfg.hoMode] || HO_TABLES.auto)[cfg.hoTier]?.values?.[0] || 0;
       const hoRev = new Array(maxHo + 1).fill(0);
       const hoPts = new Array(maxHo + 1).fill(0);
       for (let n = 0; n <= maxHo; n++) {
-        hoRev[n] = revenueHo(n, cfg.hoMode, cfg.hoTier);
+        hoRev[n] = n * hoBaseUnit;
         hoPts[n] = puntiHoMB(n);
       }
 
@@ -1844,10 +1866,11 @@
       const hasEff = brandAttivi.includes("eff");
       const hasRent = brandAttivi.includes("rent");
 
+      // Giugno 2026: brand Tiscali richiede ≥ 5 mobili (fisso non obbligatorio)
       const minTotal =
         (hasAcea ? 1 : 0) +
         (hasSky ? 1 : 0) +
-        (hasTisc ? 2 : 0) +
+        (hasTisc ? MINIMI.tiscMob : 0) +
         (hasFw ? 3 : 0) +
         (hasHo ? 1 : 0);
 
@@ -1875,6 +1898,10 @@
        ****************************/
       const fwBySum = new Map();
 
+      // Giugno 2026: FW Mobile rev al "base tier" (values[0]); upgrade tier in main loop
+      const fwMobileRowGlobal = FW_MOBILE_AUTO[cfg.fwMobilePiano] || FW_MOBILE_AUTO["9.95"];
+      const fmBaseUnit = fwMobileRowGlobal.values[0] || 0;
+
       if (hasFw) {
         const minFm = 1;
         const minFf = 1;
@@ -1891,7 +1918,7 @@
               if (sum > maxTotal) break;
 
               const rev =
-                revenueFastwebMobile(fm, cfg.fwMobilePiano) +
+                fm * fmBaseUnit +
                 revenueFastwebFisso(ff, cfg.fwFissoTipo) +
                 revenueFastwebEnergy(fe, cfg.fwEnergyTipo);
 
@@ -1950,7 +1977,20 @@
       let best = null;
 
       const skyRowCached = SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"];
-      const BONUS_UPPER = 1300;
+
+      // Giugno 2026: bonus tier FW Mobile/HO calcolato dinamicamente in main loop
+      // (dipende da punti = fw.fm × 1 + rs.ho × 0,5). Aggiungo overhead all'upper bound.
+      const hoRowGlobal =
+        (HO_TABLES[cfg.hoMode] || HO_TABLES.auto)[cfg.hoTier] || HO_TABLES.auto.lt6;
+      const hoBaseUnitMain = hoRowGlobal.values?.[0] || 0;
+      const fmTierMaxVal = Math.max(...fwMobileRowGlobal.values);
+      const hoTierMaxVal = Math.max(...hoRowGlobal.values);
+      const fmTierDelta = Math.max(0, fmTierMaxVal - fmBaseUnit);
+      const hoTierDelta = Math.max(0, hoTierMaxVal - hoBaseUnitMain);
+      const TIER_BONUS_UPPER =
+        (hasFw ? 120 * fmTierDelta : 0) + (hasHo ? 120 * hoTierDelta : 0);
+
+      const BONUS_UPPER = 1300 + TIER_BONUS_UPPER;
 
       let maxAceaEncountered = 0;
       for (let s = 0; s <= maxTotal; s++) {
@@ -2016,7 +2056,8 @@
 
               const aceaBrand = hasAcea && rs.acea >= 1;
               const skyBrand = hasSky && rs.sky >= 1 && !!skyRowCached.validBrand;
-              const tiscBrand = hasTisc && rs.tmob >= 1 && rs.tfix >= 1;
+              // Giugno 2026: brand Tiscali con ≥ 5 mobili (fisso non obbligatorio)
+              const tiscBrand = hasTisc && rs.tmob >= MINIMI.tiscMob;
               const fwBrand = hasFw && fw.brand && (!hasHo || rs.ho >= 1);
 
               let brandMB = 0;
@@ -2049,8 +2090,19 @@
                 (hasAcea ? aceaRevNoBoost[rs.acea] : 0) +
                 rAceaCorrected;
 
+              // Giugno 2026: tier FW Mobile/HO calcolato sui PUNTI combinati
+              const tierPunti = (fw.fm || 0) * 1 + (rs.ho || 0) * 0.5;
+              const fmTierUnit = hasFw
+                ? pickTierValue(tierPunti, fwMobileRowGlobal.thresholds, fwMobileRowGlobal.values)
+                : 0;
+              const hoTierUnit = hasHo
+                ? pickTierValue(tierPunti, hoRowGlobal.thresholds, hoRowGlobal.values)
+                : 0;
+              const fmTierBonus = (fw.fm || 0) * Math.max(0, fmTierUnit - fmBaseUnit);
+              const hoTierBonus = (rs.ho || 0) * Math.max(0, hoTierUnit - hoBaseUnitMain);
+
               const mb = bonusMultibrand(puntiMB, brandMB, rs.sky);
-              const totRev = restRevCorrected + fw.rev + mb.total;
+              const totRev = restRevCorrected + fw.rev + fmTierBonus + hoTierBonus + mb.total;
 
               if (totRev >= targetRev) {
                 const candidate = {
@@ -2072,10 +2124,10 @@
                   rTFix: hasTisc ? revenueTiscFixed(rs.tfix, cfg.tiscFissoTipo) : 0,
                   rEff: hasEff ? rs.eff * (cfg.effVal || 0) : 0,
                   rRent: hasRent ? rs.rent * (cfg.rentVal || 0) : 0,
-                  rFm: hasFw ? revenueFastwebMobile(fw.fm, cfg.fwMobilePiano) : 0,
+                  rFm: hasFw ? revenueFastwebMobile(fw.fm, rs.ho, cfg.fwMobilePiano) : 0,
                   rFf: hasFw ? revenueFastwebFisso(fw.ff, cfg.fwFissoTipo) : 0,
                   rFe: hasFw ? revenueFastwebEnergy(fw.fe, cfg.fwEnergyTipo) : 0,
-                  rHo: hasHo ? revenueHo(rs.ho, cfg.hoMode, cfg.hoTier) : 0,
+                  rHo: hasHo ? revenueHo(fw.fm, rs.ho, cfg.hoMode, cfg.hoTier) : 0,
 
                   puntiMB,
                   bonusMB: mb.base,
@@ -2203,7 +2255,7 @@
       if (nomeNegozio) {
         txt += `*🏬 NEGOZIO*: ${nomeNegozio}\n`;
       }
-      txt += `*📅 MESE*: Maggio 2026\n\n`;
+      txt += `*📅 MESE*: Giugno 2026\n\n`;
 
       txt += `*🎯 OBIETTIVO*: €${costi}`;
       if (useMarg) txt += ` + *MARGINALITÀ ${pct}%*`;
@@ -2254,7 +2306,7 @@
 
       if (hasFw) {
         txt += `• *FASTWEB Mobile (AUTO ${cfg.fwMobilePiano})* → ${best.fm} SIM\n`;
-        txt += ` - €/SIM: €${fwMobileUnitValue(best.fm, cfg.fwMobilePiano)}\n`;
+        txt += ` - €/SIM: €${fwMobileUnitValue(best.fm, best.ho, cfg.fwMobilePiano)}\n`;
         txt += ` - provvigioni: €${best.rFm}\n`;
 
         txt += `• *FASTWEB Fisso (${(FW_FISSO[cfg.fwFissoTipo] || FW_FISSO.casa_start).name})* → ${best.ff} linee\n`;
@@ -2267,7 +2319,7 @@
 
         if (hasHo) {
           txt += `• *HO Mobile (${cfg.hoMode.toUpperCase()} / ${cfg.hoTier})* → ${best.ho} SIM\n`;
-          txt += ` - €/SIM: €${hoUnitValue(best.ho, cfg.hoMode, cfg.hoTier)}\n`;
+          txt += ` - €/SIM: €${hoUnitValue(best.fm, best.ho, cfg.hoMode, cfg.hoTier)}\n`;
           txt += ` - provvigioni: €${best.rHo}\n`;
         }
 
@@ -2331,7 +2383,7 @@
 
       txt += `\n*💡 Convergenze*: se fai contratti in convergenza puoi guadagnare da +10€ a +40€ per ogni combinazione.\n`;
 
-      txt += `\n✔ Combinazione *realistica e pronta all’uso* aggiornata a Maggio 2026.`;
+      txt += `\n✔ Combinazione *realistica e pronta all’uso* aggiornata a Giugno 2026.`;
 
       out.innerText = txt;
       out.classList.remove("hidden");
@@ -2431,7 +2483,7 @@
           d += `• FASTWEB Mobile AUTO ${cfg.fwMobilePiano}\n`;
           d += `- SIM: ${best.fm}\n`;
           d += `- Protect: non incluso (eventuali +15€/SIM da aggiungere a parte)\n`;
-          d += `- €/SIM: €${fwMobileUnitValue(best.fm, cfg.fwMobilePiano).toFixed(2)}\n`;
+          d += `- €/SIM: €${fwMobileUnitValue(best.fm, best.ho, cfg.fwMobilePiano).toFixed(2)}\n`;
           d += `- punti MB/SIM: 0,25\n\n`;
         }
 
@@ -2456,7 +2508,7 @@
         d += `• HO Mobile\n`;
         d += `- SIM: ${best.ho}\n`;
         d += `- modalità: ${cfg.hoMode.toUpperCase()} / ${cfg.hoTier}\n`;
-        d += `- €/SIM: €${hoUnitValue(best.ho, cfg.hoMode, cfg.hoTier).toFixed(2)}\n`;
+        d += `- €/SIM: €${hoUnitValue(best.fm, best.ho, cfg.hoMode, cfg.hoTier).toFixed(2)}\n`;
         d += `- punti MB/SIM: 0,25\n\n`;
       }
 
@@ -2640,7 +2692,7 @@
           subtitle: `AUTO ${cfg.fwMobilePiano}`,
           qty: best.fm,
           qtyLabel: "SIM",
-          unit: fwMobileUnitValue(best.fm, cfg.fwMobilePiano),
+          unit: fwMobileUnitValue(best.fm, best.ho, cfg.fwMobilePiano),
           totale: best.rFm,
           punti: best.fm * 0.25
         });
@@ -2674,7 +2726,7 @@
           subtitle: `${cfg.hoMode.toUpperCase()} / ${cfg.hoTier}`,
           qty: best.ho,
           qtyLabel: "SIM",
-          unit: hoUnitValue(best.ho, cfg.hoMode, cfg.hoTier),
+          unit: hoUnitValue(best.fm, best.ho, cfg.hoMode, cfg.hoTier),
           totale: best.rHo,
           punti: puntiHoMB(best.ho)
         });
@@ -3047,7 +3099,7 @@
 <body>
   <div class="topbar">
     <div class="left">
-      <div class="eyebrow">Cost Management • Maggio 2026</div>
+      <div class="eyebrow">Cost Management • Giugno 2026</div>
       <h1>${escapeHtml(titolo)}</h1>
       <div class="sub">Report produzione brand multibrand</div>
     </div>
@@ -3183,7 +3235,7 @@
   </div>
 
   <footer>
-    Cost Management Dealer E2K · Maggio 2026 · Documento generato automaticamente${nomeNegozio ? ` per ${escapeHtml(nomeNegozio)}` : ""}
+    Cost Management Dealer E2K · Giugno 2026 · Documento generato automaticamente${nomeNegozio ? ` per ${escapeHtml(nomeNegozio)}` : ""}
   </footer>
 
   <script>

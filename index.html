@@ -1966,10 +1966,11 @@
       const hoTierMaxVal = Math.max(...hoRowGlobal.values);
       const fmTierDelta = Math.max(0, fmTierMaxVal - fmBaseUnit);
       const hoTierDelta = Math.max(0, hoTierMaxVal - hoBaseUnitMain);
-      const TIER_BONUS_UPPER =
-        (hasFw ? 120 * fmTierDelta : 0) + (hasHo ? 120 * hoTierDelta : 0);
 
-      const BONUS_UPPER = 1300 + TIER_BONUS_UPPER;
+      // Upper bound bonus Multibrand (base max 1100 + extra sky 200 = 1300).
+      // Il bonus tier FW/HO viene calcolato per ogni coppia in modo TIGHT
+      // (per evitare un upper bound così largo da neutralizzare il pruning).
+      const BONUS_UPPER = 1300;
 
       let maxAceaEncountered = 0;
       for (let s = 0; s <= maxTotal; s++) {
@@ -1994,18 +1995,26 @@
         : 0;
 
       const maxFwRevBySum = new Map();
+      const maxFmBySum = new Map();
       for (const [s, list] of fwBySum.entries()) {
         let m = -Infinity;
-        for (const x of list) if (x.rev > m) m = x.rev;
+        let mf = 0;
+        for (const x of list) {
+          if (x.rev > m) m = x.rev;
+          if (x.fm > mf) mf = x.fm;
+        }
         maxFwRevBySum.set(s, m === -Infinity ? 0 : m);
+        maxFmBySum.set(s, mf);
       }
 
       const maxRestRevBySum = new Array(maxTotal + 1).fill(-Infinity);
+      const maxHoBySum = new Array(maxTotal + 1).fill(0);
       for (let s = 0; s <= maxTotal; s++) {
         const list = restBySum[s];
         if (!list) continue;
         for (const rs of list) {
           if (rs.rev > maxRestRevBySum[s]) maxRestRevBySum[s] = rs.rev;
+          if (rs.ho > maxHoBySum[s]) maxHoBySum[s] = rs.ho;
         }
         if (maxRestRevBySum[s] === -Infinity) maxRestRevBySum[s] = 0;
       }
@@ -2019,19 +2028,31 @@
           const restStates = restBySum[restSum];
           if (!restStates || restStates.length === 0) continue;
 
+          // Bonus tier max per questa coppia: max fm × fmTierDelta + max ho × hoTierDelta
+          const pairTierBonusUpper =
+            (maxFmBySum.get(fwSum) || 0) * fmTierDelta +
+            (maxHoBySum[restSum] || 0) * hoTierDelta;
+
           const pairUpper =
             (maxFwRevBySum.get(fwSum) || 0) +
             (maxRestRevBySum[restSum] || 0) +
+            pairTierBonusUpper +
             ACEA_CORR_UPPER +
             BONUS_UPPER;
           if (pairUpper < targetRev) continue;
 
+          const maxHoForRest = maxHoBySum[restSum] || 0;
+
           for (const fw of fwStates) {
-            const fwUpper = fw.rev + (maxRestRevBySum[restSum] || 0) + ACEA_CORR_UPPER + BONUS_UPPER;
+            // Bonus tier max per questo fw (fm fissato) + max ho del restSum
+            const fwTierBonusUpper = fw.fm * fmTierDelta + maxHoForRest * hoTierDelta;
+            const fwUpper =
+              fw.rev + (maxRestRevBySum[restSum] || 0) + fwTierBonusUpper + ACEA_CORR_UPPER + BONUS_UPPER;
             if (fwUpper < targetRev) continue;
 
             for (const rs of restStates) {
-              if (fw.rev + rs.rev + ACEA_CORR_UPPER + BONUS_UPPER < targetRev) continue;
+              const tightBonusUpper = fw.fm * fmTierDelta + rs.ho * hoTierDelta;
+              if (fw.rev + rs.rev + tightBonusUpper + ACEA_CORR_UPPER + BONUS_UPPER < targetRev) continue;
 
               const aceaBrand = hasAcea && rs.acea >= 1;
               const skyBrand = hasSky && rs.sky >= 1 && !!skyRowCached.validBrand;

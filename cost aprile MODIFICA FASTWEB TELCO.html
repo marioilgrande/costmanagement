@@ -428,7 +428,10 @@
       <p class="muted" style="margin-bottom: 12px;">
         Inserisci la percentuale di produzione desiderata per ogni brand attivo.
         Il sistema userà queste percentuali come riferimento del calcolo.
-        Se il totale non è 100%, verrà normalizzato automaticamente.
+        Se il totale non è 100%, verrà normalizzato automaticamente.<br />
+        Puoi impostare <b>0%</b> su un brand: il sistema rispetterà la tua scelta
+        e non spingerà la produzione su quel brand (resta il vincolo minimo del brand
+        chip se selezionato).
       </p>
 
       <div id="percentualiBox" class="percentBox">
@@ -465,8 +468,9 @@
           </div>
 
           <div class="noteBox">
-            Se nel mese il dealer produce almeno <b>5 Fastweb Energy</b>, su ACEA si attiva
-            il bonus <b>+3€</b> su tutti i contratti Acea.
+            Soglie ACEA Sprint & Fix / Flex / Subentro: <b>1 / 5 / 15 / 30 / 55</b>.<br />
+            Brand ACEA in Multibrand attivo con almeno <b>1 contratto</b>.<br />
+            <b>Boost Multibrand</b>: 10 ACEA + 10 FW Energia = <b>+10 punti</b>.
           </div>
         </div>
 
@@ -552,7 +556,9 @@
             Brand FASTWEB attivo in Multibrand:<br />
             • senza HO selezionato → almeno <b>1 Mobile FW + 1 Fisso FW + 1 Energy FW</b><br />
             • con HO selezionato → almeno
-            <b>1 Mobile FW + 1 Mobile HO + 1 Fisso FW + 1 Energy FW</b>
+            <b>1 Mobile FW + 1 Mobile HO + 1 Fisso FW + 1 Energy FW</b><br /><br />
+            <b>Giugno 2026 — Tier €/SIM in PUNTI</b>: FW SIM × 1 + HO SIM × 0,5 → soglie
+            <b>15 / 25 / 40 punti</b>.
           </div>
         </div>
 
@@ -586,7 +592,7 @@
         <div id="cfgTiscali" class="brand-box hidden">
           <div class="brand-head">
             <div style="font-weight: 900;">TISCALI</div>
-            <span class="badge tiscali">Mobile + Fisso</span>
+            <span class="badge tiscali">Mobile (≥5 SIM) · Fisso opzionale</span>
           </div>
 
           <label for="tiscMobileTipo">Mobile Tiscali</label>
@@ -615,7 +621,9 @@
           </select>
 
           <div class="noteBox">
-            Il brand TISCALI si attiva in Multibrand solo con almeno <b>1 mobile + 1 fisso</b>.
+            <b>Giugno 2026</b>: il brand TISCALI si attiva in Multibrand con almeno
+            <b>5 contratti mobili</b> nel mese. Il fisso non è più obbligatorio per
+            l'attivazione del brand (resta opzionale per generare ricavi).
           </div>
         </div>
 
@@ -1254,16 +1262,20 @@
       const virtualBrands = getVirtualBrands();
       const raw = {};
       for (const brand of virtualBrands) {
-        raw[brand] = Math.max(0, Number(document.getElementById(`pct_${brand}`)?.value || 0));
+        // Legge anche stringhe vuote come 0 (così l'utente può lasciare il campo a 0).
+        const el = document.getElementById(`pct_${brand}`);
+        const v = el ? Number(el.value) : 0;
+        raw[brand] = Math.max(0, Number.isFinite(v) ? v : 0);
       }
 
       const sum = Object.values(raw).reduce((a, b) => a + b, 0);
 
+      // Se l'utente mette 0 su tutto, NON forziamo una distribuzione equa:
+      // rispettiamo l'input (target 0 per ogni brand → nessun vincolo di distribuzione).
       if (sum <= 0) {
-        const eq = {};
-        const p = virtualBrands.length ? 1 / virtualBrands.length : 0;
-        virtualBrands.forEach((b) => (eq[b] = p));
-        return { raw, normalized: eq, sum };
+        const zeros = {};
+        virtualBrands.forEach((b) => (zeros[b] = 0));
+        return { raw, normalized: zeros, sum };
       }
 
       const normalized = {};

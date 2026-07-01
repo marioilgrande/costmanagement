@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
   />
-  <title>GESTIONE COSTI – GIUGNO 2026</title>
+  <title>GESTIONE COSTI – LUGLIO 2026</title>
 
   <style>
     :root {
@@ -17,6 +17,7 @@
       --acea: #05a8b0;
       --wa: #03bf62;
       --ho: #5f58a1;
+      --alperia: #12a56b;
       --eff: #16a34a;
       --rent: #2563eb;
 
@@ -192,6 +193,7 @@
     .chip.acea { color: var(--acea); background: rgba(5, 168, 176, 0.12); }
     .chip.ho { color: var(--ho); background: rgba(95, 88, 161, 0.12); }
     .chip.tiscali { color: var(--tiscali); background: rgba(59, 39, 131, 0.12); }
+    .chip.alperia { color: var(--alperia); background: rgba(18, 165, 107, 0.12); }
     .chip.eff { color: var(--eff); background: rgba(22, 163, 74, 0.12); }
     .chip.rent { color: var(--rent); background: rgba(37, 99, 235, 0.12); }
 
@@ -229,6 +231,7 @@
     .badge.acea { background: rgba(5, 168, 176, 0.12); border-color: rgba(5, 168, 176, 0.3); color: var(--acea); }
     .badge.ho { background: rgba(95, 88, 161, 0.12); border-color: rgba(95, 88, 161, 0.3); color: var(--ho); }
     .badge.tiscali { background: rgba(59, 39, 131, 0.12); border-color: rgba(59, 39, 131, 0.3); color: var(--tiscali); }
+    .badge.alperia { background: rgba(18, 165, 107, 0.12); border-color: rgba(18, 165, 107, 0.3); color: var(--alperia); }
     .badge.eff { background: rgba(22, 163, 74, 0.12); border-color: rgba(22, 163, 74, 0.3); color: var(--eff); }
     .badge.rent { background: rgba(37, 99, 235, 0.12); border-color: rgba(37, 99, 235, 0.3); color: var(--rent); }
 
@@ -347,7 +350,7 @@
 <body>
   <div class="topbar">
     <div class="topbar-inner">
-      <div class="brand-title">Cost Management - Dealer E2K • Giugno 2026</div>
+      <div class="brand-title">Cost Management - Dealer E2K • Luglio 2026</div>
     </div>
   </div>
 
@@ -407,6 +410,7 @@
         <div class="chip fastweb" data-brand="fastweb">FASTWEB</div>
         <div class="chip ho" data-brand="ho">HO Mobile (agganciato a Fastweb)</div>
         <div class="chip tiscali" data-brand="tiscali">TISCALI</div>
+        <div class="chip alperia" data-brand="alperia">ALPERIA (Luglio 2026)</div>
 
         <div class="hr"></div>
 
@@ -415,8 +419,10 @@
       </div>
 
       <p class="muted" style="margin-top: 8px;">
-        Brand principali Multibrand: <b>ACEA, SKY, FASTWEB(+HO), TISCALI</b>.<br />
+        Brand principali Multibrand: <b>ACEA, SKY, FASTWEB(+HO), TISCALI, ALPERIA</b>
+        (max 4 nella tabella bonus).<br />
         <b>HO</b> si seleziona a parte, ma conta come parte del brand <b>FASTWEB</b> nella Multibrand.<br />
+        <b>ACEA · FW Energy · ALPERIA</b> hanno soglie <b>UNIFICATE</b> (1/7/18/35/60) sul totale contratti energia.<br />
         Brand secondari invariati: <b>EFFICIENCY</b> e <b>RENT</b>.
       </p>
     </div>
@@ -557,8 +563,9 @@
             • senza HO selezionato → almeno <b>1 Mobile FW + 1 Fisso FW + 1 Energy FW</b><br />
             • con HO selezionato → almeno
             <b>1 Mobile FW + 1 Mobile HO + 1 Fisso FW + 1 Energy FW</b><br /><br />
-            <b>Giugno 2026 — Tier €/SIM in PUNTI</b>: FW SIM × 1 + HO SIM × 0,5 → soglie
-            <b>15 / 25 / 40 punti</b>.
+            <b>Luglio 2026 — Tier €/SIM in PUNTI</b>: FW SIM × 1 + HO SIM × 0,5 → soglie
+            <b>15 / 25 / 40 punti</b>. Senza almeno <b>1 FW Energia</b> nel mese le SIM FW
+            restano bloccate alla soglia BASE.
           </div>
         </div>
 
@@ -577,9 +584,8 @@
 
           <label for="hoTier" style="margin-top: 10px;">Fascia offerta HO</label>
           <select id="hoTier" class="field">
-            <option value="lt6" selected>&lt; 6€</option>
-            <option value="mid">da 6€ a 9€</option>
-            <option value="gt9">&gt; 9€</option>
+            <option value="lt6MainMpd" selected>&lt; 6€ da virtuali + MAIN MPD</option>
+            <option value="gt6">&gt; 6€ da virtuali</option>
           </select>
 
           <div class="noteBox">
@@ -621,9 +627,37 @@
           </select>
 
           <div class="noteBox">
-            <b>Giugno 2026</b>: il brand TISCALI si attiva in Multibrand con almeno
+            <b>Luglio 2026</b>: il brand TISCALI si attiva in Multibrand con almeno
             <b>5 contratti mobili</b> nel mese. Il fisso non è più obbligatorio per
             l'attivazione del brand (resta opzionale per generare ricavi).
+          </div>
+        </div>
+
+        <!-- ALPERIA -->
+        <div id="cfgAlperia" class="brand-box hidden">
+          <div class="brand-head">
+            <div style="font-weight: 900;">ALPERIA</div>
+            <span class="badge alperia">Energia (Luglio 2026)</span>
+          </div>
+
+          <label for="alperiaTipo">Prodotto ALPERIA</label>
+          <select id="alperiaTipo" class="field">
+            <option value="premium" selected>Alperia Premium (RES) — 70€</option>
+            <option value="prime">Alperia Prime (RES) — 50€</option>
+            <option value="clear_pro">Alperia Clear e Pro (RES) — 50€</option>
+            <option value="standard_pure">Alperia Standard e Pure (RES) — 37€</option>
+            <option value="start">Alperia Start (RES) — 25€</option>
+            <option value="digital_safety">Alperia Digital / Safety / T.Tempo (RES) — 18€</option>
+            <option value="neves">Alperia Business Neves — 70€</option>
+            <option value="braies">Alperia Business Braies — 50€</option>
+            <option value="caldaro">Alperia Business Caldaro — 35€</option>
+          </select>
+
+          <div class="noteBox">
+            <b>Luglio 2026 — NUOVO brand</b>. Compensi <b>flat one-shot</b>: non variano con la soglia.<br />
+            I contratti Alperia entrano nel <b>totale energia unificato</b> (ACEA + FW Energy + Alperia)
+            per determinare la <b>soglia</b> comune (1/7/18/35/60) applicata ad ACEA e FW Energy.<br />
+            Brand ALPERIA in Multibrand attivo con almeno <b>1 contratto</b>. Punti MB: <b>1 pt/contratto</b>.
           </div>
         </div>
 
@@ -733,7 +767,7 @@
         extra_sky_min_brands: 3,
         extra_sky_min_contracts: 7,
         note:
-          "Giugno 2026 — Fastweb+HO è un unico brand (richiede HO se selezionato). Tiscali è brand valido con ≥5 mobili. Punti: FW Mobile 0,25 · HO 0,25 · FW Fisso (tutti) 0,5 · FW Energy 1 · Tiscali Mobile 0,25 · Tiscali Fisso 0,5 · ACEA 1 · SKY 1 · Prova SKY 0. Extra Boost: 10 FW Energia + 10 ACEA = +10 punti. Tier FW Mobile/HO calcolato su PUNTI: FW SIM × 1 + HO SIM × 0,5 → soglie 15/25/40."
+          "Luglio 2026 — 5 brand attivabili: Fastweb+HO, SKY, ACEA, TISCALI, ALPERIA (max 4 nella tabella bonus). Soglie ENERGIA UNIFICATE (ACEA + FW Energy + Alperia): 1/7/18/35/60. Tiscali brand con ≥5 mobili. Punti: FW Mobile 0,25 · HO 0,25 · FW Fisso 0,5 · FW Energy 1 · Tisc Mobile 0,25 · Tisc Fisso 0,5 · ACEA 1 · ALPERIA 1 · SKY 1 · Prova SKY 0. Extra Boost: 10 FW Energia + 10 ACEA = +10 punti. Tier FW Mobile/HO in PUNTI (FW×1 + HO×0,5) → soglie 15/25/40."
       }
     };
 
@@ -748,6 +782,7 @@
       ho: 0,
       tiscMob: 5,
       tiscFix: 0,
+      alperia: 1,
       eff: 0,
       rent: 0,
       fwMobile: 1,
@@ -757,11 +792,11 @@
 
     const SKY_PRODUCTS = {
       skybar: {
-        points: 0,
+        points: 4,
         values: [300, 300, 300, 300, 300, 300],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Sky Bar",
-        validBrand: false
+        validBrand: true
       },
       "3p": {
         points: 3,
@@ -834,32 +869,35 @@
         validBrand: true
       },
       skybus: {
-        points: 0,
+        points: 2,
         values: [100, 100, 100, 100, 100, 100],
         thresholds: [0, 5, 10, 15, 25, 50],
         name: "Sky Bus negozi e uffici (promo Smart)",
-        validBrand: false
+        validBrand: true
       }
     };
 
+    // Luglio 2026: soglie ENERGIA UNIFICATE (ACEA + FW Energy + Alperia): [1, 7, 18, 35, 60]
+    const ENERGY_THRESHOLDS = [1, 7, 18, 35, 60];
+
     const ACEA_TABLE = {
       sprint_fix: {
-        thresholds: [1, 5, 15, 30, 55],
+        thresholds: ENERGY_THRESHOLDS,
         values: [60, 70, 75, 85, 90],
         name: "SPRINT & FIX Casa"
       },
       flex: {
-        thresholds: [1, 5, 15, 30, 55],
+        thresholds: ENERGY_THRESHOLDS,
         values: [70, 80, 85, 95, 100],
         name: "FLEX Casa"
       },
       business: {
-        thresholds: [1, 15, 55],
-        values: [85, 100, 105],
+        thresholds: ENERGY_THRESHOLDS,
+        values: [80, 85, 95, 100, 105],
         name: "BUSINESS"
       },
       subentro: {
-        thresholds: [1, 5, 15, 30, 55],
+        thresholds: ENERGY_THRESHOLDS,
         values: [60, 70, 75, 85, 90],
         name: "SUBENTRO Luce+Gas"
       },
@@ -869,17 +907,31 @@
       }
     };
 
-    // Giugno 2026: tier in PUNTI (FW SIM × 1 + HO SIM × 0,5) → soglie 0/15/25/40
+    // Luglio 2026 — NUOVO BRAND: ALPERIA (energia)
+    // Compensi FLAT (one-shot). Contribuiscono alle soglie energia unificate ma i loro
+    // compensi non variano con la soglia (sono gettoni one-shot fissi).
+    const ALPERIA_TABLE = {
+      premium:        { flat: 70, name: "Alperia Premium (RES)" },
+      prime:          { flat: 50, name: "Alperia Prime (RES)" },
+      clear_pro:      { flat: 50, name: "Alperia Clear e Pro (RES)" },
+      standard_pure:  { flat: 37, name: "Alperia Standard e Pure (RES)" },
+      start:          { flat: 25, name: "Alperia Start (RES)" },
+      digital_safety: { flat: 18, name: "Alperia Digital / Safety / T.Tempo (RES)" },
+      neves:          { flat: 70, name: "Alperia Business Neves" },
+      braies:         { flat: 50, name: "Alperia Business Braies" },
+      caldaro:        { flat: 35, name: "Alperia Business Caldaro" }
+    };
+
+    // Luglio 2026: struttura SEMPLIFICATA in 2 fasce (>6€ da virtuali vs. <6€ + MAIN MPD)
+    // Tier in PUNTI (FW SIM × 1 + HO SIM × 0,5) → soglie 0/15/25/40
     const HO_TABLES = {
       auto: {
-        gt9: { thresholds: [0, 15, 25, 40], values: [21, 27, 31, 35] },
-        mid: { thresholds: [0, 15, 25, 40], values: [20, 25, 28, 31] },
-        lt6: { thresholds: [0, 15, 25, 40], values: [18, 20, 23, 25] }
+        gt6:        { thresholds: [0, 15, 25, 40], values: [20, 25, 29, 32] },
+        lt6MainMpd: { thresholds: [0, 15, 25, 40], values: [18, 20, 23, 25] }
       },
       pura: {
-        gt9: { thresholds: [0, 15, 25, 40], values: [11, 17, 21, 25] },
-        mid: { thresholds: [0, 15, 25, 40], values: [10, 15, 18, 21] },
-        lt6: { thresholds: [0, 15, 25, 40], values: [8, 10, 13, 15] }
+        gt6:        { thresholds: [0, 15, 25, 40], values: [10, 15, 19, 22] },
+        lt6MainMpd: { thresholds: [0, 15, 25, 40], values: [8, 10, 13, 15] }
       }
     };
 
@@ -941,47 +993,38 @@
       }
     };
 
-    // Giugno 2026: nuove soglie 1/5/14/20
+    // Luglio 2026: soglie ENERGIA UNIFICATE [1, 7, 18, 35, 60] con ACEA + Alperia.
+    // Rimosse le offerte DUAL. Gas FLEX residenziale interpretato a scaglioni (60/60/65/75/75).
     const FW_ENERGY = {
       lfm: {
-        thresholds: [1, 5, 14, 20],
-        values: [80, 90, 100, 110],
+        thresholds: ENERGY_THRESHOLDS,
+        values: [80, 85, 90, 100, 110],
         name: "LUCE FLAT (pacchetti)"
       },
       flex: {
-        thresholds: [1, 5, 14, 20],
-        values: [60, 70, 80, 90],
+        thresholds: ENERGY_THRESHOLDS,
+        values: [60, 70, 75, 85, 90],
         name: "LUCE FLEX"
       },
       fix: {
-        thresholds: [1, 5, 14, 20],
-        values: [50, 60, 70, 80],
+        thresholds: ENERGY_THRESHOLDS,
+        values: [45, 55, 65, 70, 75],
         name: "LUCE FIX"
       },
       business: {
-        thresholds: [1, 5, 14, 20],
-        values: [100, 105, 115, 125],
+        thresholds: ENERGY_THRESHOLDS,
+        values: [100, 105, 110, 115, 125],
         name: "LUCE BUSINESS (FLEX & FIX)"
       },
       gas_flex: {
-        thresholds: [1, 5, 14, 20],
-        values: [45, 55, 65, 75],
+        thresholds: ENERGY_THRESHOLDS,
+        values: [60, 60, 65, 75, 75],
         name: "GAS FLEX residenziale"
       },
       gas_flex_bus: {
-        thresholds: [1, 5, 14, 20],
-        values: [60, 70, 80, 90],
+        thresholds: ENERGY_THRESHOLDS,
+        values: [60, 70, 80, 90, 90],
         name: "GAS FLEX Business"
-      },
-      dual_res: {
-        thresholds: [1, 5, 14, 20],
-        values: [125, 145, 165, 185],
-        name: "DUAL RES (LUCE FLAT + GAS FLEX)"
-      },
-      dual_bus: {
-        thresholds: [1, 5, 14, 20],
-        values: [160, 175, 195, 215],
-        name: "DUAL BUSINESS"
       }
     };
 
@@ -1096,6 +1139,7 @@
       show("cfgFastweb", brandAttivi.includes("fastweb"));
       show("cfgHo", brandAttivi.includes("ho"));
       show("cfgTiscali", brandAttivi.includes("tiscali"));
+      show("cfgAlperia", brandAttivi.includes("alperia"));
       show("cfgExtra", brandAttivi.includes("eff") || brandAttivi.includes("rent"));
     }
 
@@ -1159,16 +1203,17 @@
      * PERCENTUALI PERSONALIZZATE
      ****************************************************************/
     const BRAND_PERCENT_CONFIG = {
-      acea: { label: "ACEA", colorClass: "acea", default: 25 },
-      sky: { label: "SKY", colorClass: "sky", default: 20 },
+      acea: { label: "ACEA", colorClass: "acea", default: 20 },
+      sky: { label: "SKY", colorClass: "sky", default: 15 },
       fwsim: { label: "FASTWEB SIM (Mobile)", colorClass: "fastweb", default: 10 },
       fwfisso: { label: "FASTWEB Fisso", colorClass: "fastweb", default: 5 },
       fwenergy: { label: "FASTWEB Energia", colorClass: "fastweb", default: 10 },
       ho: { label: "HO Mobile", colorClass: "ho", default: 10 },
       tiscsim: { label: "TISCALI SIM (Mobile)", colorClass: "tiscali", default: 10 },
-      tiscfisso: { label: "TISCALI Fisso", colorClass: "tiscali", default: 10 },
-      eff: { label: "EFFICIENCY", colorClass: "eff", default: 5 },
-      rent: { label: "RENT", colorClass: "rent", default: 5 }
+      tiscfisso: { label: "TISCALI Fisso", colorClass: "tiscali", default: 5 },
+      alperia: { label: "ALPERIA (Energia)", colorClass: "alperia", default: 10 },
+      eff: { label: "EFFICIENCY", colorClass: "eff", default: 3 },
+      rent: { label: "RENT", colorClass: "rent", default: 2 }
     };
 
     function getVirtualBrands() {
@@ -1319,9 +1364,10 @@
         fwFissoTipo: document.getElementById("fwFissoTipo")?.value || "casa_start",
         fwEnergyTipo: document.getElementById("fwEnergyTipo")?.value || "lfm",
         hoMode: document.getElementById("hoMode")?.value || "auto",
-        hoTier: document.getElementById("hoTier")?.value || "lt6",
+        hoTier: document.getElementById("hoTier")?.value || "lt6MainMpd",
         tiscMobileTipo: document.getElementById("tiscMobileTipo")?.value || "mobile_200",
         tiscFissoTipo: document.getElementById("tiscFissoTipo")?.value || "res_fibra",
+        alperiaTipo: document.getElementById("alperiaTipo")?.value || "premium",
         effVal: Number(document.getElementById("effVal")?.value || 0),
         rentVal: Number(document.getElementById("rentVal")?.value || 0)
       };
@@ -1346,20 +1392,39 @@
       return n * unit;
     }
 
-    function aceaUnitValue(n, tipo, bollettino, fwEnergyCount) {
+    // Luglio 2026: la soglia ACEA è determinata dal TOTALE ENERGIA UNIFICATO
+    // (ACEA + FW Energy + Alperia). Il parametro "totalEnergy" sostituisce
+    // il vecchio "fwEnergyCount".
+    function aceaUnitValue(n, tipo, bollettino, totalEnergy) {
       if (n <= 0) return 0;
 
       const row = ACEA_TABLE[tipo] || ACEA_TABLE.sprint_fix;
-      let v = row.flat != null ? row.flat : pickTierValue(n, row.thresholds, row.values);
+      const tierN = (totalEnergy != null) ? totalEnergy : n;
+      let v = row.flat != null ? row.flat : pickTierValue(tierN, row.thresholds, row.values);
 
       if (bollettino) v = Math.max(0, v - 20);
-      // Boost +3€ ACEA con FW Energia >=5 rimosso a Maggio 2026
 
       return v;
     }
 
-    function revenueAcea(n, tipo, bollettino, fwEnergyCount) {
-      return n * aceaUnitValue(n, tipo, bollettino, fwEnergyCount);
+    function revenueAcea(n, tipo, bollettino, totalEnergy) {
+      return n * aceaUnitValue(n, tipo, bollettino, totalEnergy);
+    }
+
+    // Luglio 2026: NUOVO BRAND — Alperia. Compensi FLAT (one-shot).
+    function alperiaUnitValue(tipo) {
+      const row = ALPERIA_TABLE[tipo] || ALPERIA_TABLE.premium;
+      return row.flat || 0;
+    }
+
+    function revenueAlperia(n, tipo) {
+      if (n <= 0) return 0;
+      return n * alperiaUnitValue(tipo);
+    }
+
+    function puntiAlperiaMB(n) {
+      // Luglio 2026: Alperia = 1 pt/contratto (come ACEA)
+      return n * 1;
     }
 
     // Giugno 2026: tier FW Mobile / HO determinato dai PUNTI complessivi
@@ -1370,7 +1435,7 @@
 
     function hoUnitValue(fmCount, hoCount, mode, tier) {
       if ((Number(hoCount) || 0) <= 0) return 0;
-      const row = (HO_TABLES[mode] || HO_TABLES.auto)[tier] || HO_TABLES.auto.lt6;
+      const row = (HO_TABLES[mode] || HO_TABLES.auto)[tier] || HO_TABLES.auto.lt6MainMpd;
       const punti = combinedFwHoPunti(fmCount, hoCount);
       return pickTierValue(punti, row.thresholds, row.values);
     }
@@ -1403,14 +1468,18 @@
       return n * fwFissoUnitValue(n, tipo);
     }
 
-    function fwEnergyUnitValue(n, tipo) {
+    // Luglio 2026: la soglia FW Energy è determinata dal TOTALE ENERGIA UNIFICATO
+    // (ACEA + FW Energy + Alperia). Il parametro "totalEnergy" (opzionale) sostituisce
+    // il tier basato solo su fe.
+    function fwEnergyUnitValue(n, tipo, totalEnergy) {
       if (n <= 0) return 0;
       const row = FW_ENERGY[tipo] || FW_ENERGY.lfm;
-      return pickTierValue(n, row.thresholds, row.values);
+      const tierN = (totalEnergy != null) ? totalEnergy : n;
+      return pickTierValue(tierN, row.thresholds, row.values);
     }
 
-    function revenueFastwebEnergy(n, tipo) {
-      return n * fwEnergyUnitValue(n, tipo);
+    function revenueFastwebEnergy(n, tipo, totalEnergy) {
+      return n * fwEnergyUnitValue(n, tipo, totalEnergy);
     }
 
     function tiscMobileUnitValue(n, tipo) {
@@ -1517,6 +1586,7 @@
         ho: flags.hasHo ? (candidate.ho || 0) : 0,
         tiscsim: flags.hasTisc ? (candidate.tmob || 0) : 0,
         tiscfisso: flags.hasTisc ? (candidate.tfix || 0) : 0,
+        alperia: flags.hasAlperia ? (candidate.alperia || 0) : 0,
         eff: flags.hasEff ? (candidate.eff || 0) : 0,
         rent: flags.hasRent ? (candidate.rent || 0) : 0
       };
@@ -1643,14 +1713,16 @@
      * COSTRUZIONE STATI REST
      ****************************************************************/
     function buildRestBySum(maxTotal, cfg, flags) {
-      const { hasAcea, hasSky, hasHo, hasTisc, hasEff, hasRent, target } = flags;
+      const { hasAcea, hasSky, hasHo, hasTisc, hasAlperia, hasEff, hasRent, target } = flags;
 
       const minAcea = hasAcea ? MINIMI.acea : 0;
       const minSky = hasSky ? MINIMI.sky : 0;
       const minHo = hasHo ? 1 : 0;
-      // Giugno 2026: Tiscali brand attivo con ≥ 5 mobili (fisso non obbligatorio)
+      // Luglio 2026: Tiscali brand attivo con ≥ 5 mobili (fisso non obbligatorio)
       const minTMob = hasTisc ? MINIMI.tiscMob : 0;
       const minTFix = hasTisc ? MINIMI.tiscFix : 0;
+      // Luglio 2026: nuovo brand Alperia
+      const minAlperia = hasAlperia ? MINIMI.alperia : 0;
       const minEff = hasEff ? 0 : 0;
       const minRent = hasRent ? 0 : 0;
 
@@ -1659,6 +1731,10 @@
       const maxHo = hasHo ? Math.min(120, 1 + Math.ceil(target / 15) + 30) : 0;
       const maxTMob = hasTisc ? Math.min(120, 1 + Math.ceil(target / 14) + 30) : 0;
       const maxTFix = hasTisc ? Math.min(80, 1 + Math.ceil(target / 55) + 20) : 0;
+      const alperiaFlat = ALPERIA_TABLE[cfg.alperiaTipo]?.flat || 25;
+      const maxAlperia = hasAlperia
+        ? Math.min(120, minAlperia + Math.ceil(target / Math.max(alperiaFlat, 15)) + 30)
+        : 0;
 
       const extraPts = getExtraPointsPerUnit();
       const maxEff = hasEff ? Math.min(80, Math.ceil(90 / Math.max(extraPts, 0.1)) + 10) : 0;
@@ -1667,10 +1743,16 @@
       document.getElementById("effPtsLabel").innerText = extraPts;
       document.getElementById("rentPtsLabel").innerText = extraPts;
 
+      // Luglio 2026: ACEA rev al "base tier" (values[0], t1); l'upgrade al tier reale
+      // (basato sul TOTALE energia unificato) viene calcolato nel main loop.
+      const aceaRow = ACEA_TABLE[cfg.aceaTipo] || ACEA_TABLE.sprint_fix;
+      const aceaBaseUnit = aceaRow.flat != null
+        ? Math.max(0, aceaRow.flat - (cfg.aceaBollettino ? 20 : 0))
+        : Math.max(0, (aceaRow.values?.[0] || 0) - (cfg.aceaBollettino ? 20 : 0));
       const aceaRev = new Array(maxAcea + 1).fill(0);
       const aceaPts = new Array(maxAcea + 1).fill(0);
       for (let n = 0; n <= maxAcea; n++) {
-        aceaRev[n] = revenueAcea(n, cfg.aceaTipo, cfg.aceaBollettino, 0);
+        aceaRev[n] = n * aceaBaseUnit;
         aceaPts[n] = puntiAceaMB(n);
       }
 
@@ -1722,6 +1804,14 @@
         rentPts[n] = n * extraPts;
       }
 
+      // Luglio 2026: Alperia — compensi FLAT (non variano con la soglia).
+      const alperiaRev = new Array(maxAlperia + 1).fill(0);
+      const alperiaPts = new Array(maxAlperia + 1).fill(0);
+      for (let n = 0; n <= maxAlperia; n++) {
+        alperiaRev[n] = revenueAlperia(n, cfg.alperiaTipo);
+        alperiaPts[n] = puntiAlperiaMB(n);
+      }
+
       let dp = Array.from({ length: maxTotal + 1 }, () => []);
       dp[0].push({
         rev: 0,
@@ -1732,6 +1822,7 @@
         ho: 0,
         tmob: 0,
         tfix: 0,
+        alperia: 0,
         eff: 0,
         rent: 0
       });
@@ -1817,6 +1908,16 @@
         punti: st.punti + rentPts[n]
       }));
 
+      // Luglio 2026: NUOVO BRAND — Alperia. Compensi FLAT, punti 1/contratto.
+      // Mask bit 8 (16) usato per il brand Alperia (attivo con n ≥ 1).
+      dp = addVar(dp, minAlperia, maxAlperia, (st, n) => ({
+        ...st,
+        alperia: n,
+        mask: n > 0 ? (st.mask | 16) : st.mask,
+        rev: st.rev + alperiaRev[n],
+        punti: st.punti + alperiaPts[n]
+      }));
+
       return dp;
     }
 
@@ -1842,20 +1943,23 @@
       const hasFw = brandAttivi.includes("fastweb");
       const hasHo = brandAttivi.includes("ho");
       const hasTisc = brandAttivi.includes("tiscali");
+      const hasAlperia = brandAttivi.includes("alperia");
       const hasEff = brandAttivi.includes("eff");
       const hasRent = brandAttivi.includes("rent");
 
-      // Giugno 2026: brand Tiscali richiede ≥ 5 mobili (fisso non obbligatorio)
+      // Luglio 2026: brand Tiscali richiede ≥ 5 mobili (fisso non obbligatorio)
       const minTotal =
         (hasAcea ? 1 : 0) +
         (hasSky ? 1 : 0) +
         (hasTisc ? MINIMI.tiscMob : 0) +
         (hasFw ? 3 : 0) +
-        (hasHo ? 1 : 0);
+        (hasHo ? 1 : 0) +
+        (hasAlperia ? MINIMI.alperia : 0);
 
       const maxTotal = Math.min(320, minTotal + 260);
 
-      const selectedMain = ["acea", "sky", "fastweb", "tiscali"].filter((b) =>
+      // Luglio 2026: 5 brand principali (aggiunto Alperia), max 4 nella tabella bonus MB
+      const selectedMain = ["acea", "sky", "fastweb", "tiscali", "alperia"].filter((b) =>
         brandAttivi.includes(b)
       ).length;
 
@@ -1868,6 +1972,7 @@
         hasFw,
         hasHo,
         hasTisc,
+        hasAlperia,
         hasEff,
         hasRent
       };
@@ -1877,9 +1982,13 @@
        ****************************/
       const fwBySum = new Map();
 
-      // Giugno 2026: FW Mobile rev al "base tier" (values[0]); upgrade tier in main loop
+      // Luglio 2026: FW Mobile rev al "base tier" (values[0]); upgrade tier in main loop
       const fwMobileRowGlobal = FW_MOBILE_AUTO[cfg.fwMobilePiano] || FW_MOBILE_AUTO["9.95"];
       const fmBaseUnit = fwMobileRowGlobal.values[0] || 0;
+      // Luglio 2026: FW Energy rev al "base tier" (t1); upgrade al tier UNIFICATO
+      // (basato sul totale ACEA + FW Energy + Alperia) viene calcolato in main loop.
+      const fwEnergyRowGlobal = FW_ENERGY[cfg.fwEnergyTipo] || FW_ENERGY.lfm;
+      const feBaseUnit = fwEnergyRowGlobal.values?.[0] || 0;
 
       if (hasFw) {
         const minFm = 1;
@@ -1899,7 +2008,7 @@
               const rev =
                 fm * fmBaseUnit +
                 revenueFastwebFisso(ff, cfg.fwFissoTipo) +
-                revenueFastwebEnergy(fe, cfg.fwEnergyTipo);
+                fe * feBaseUnit;
 
               const punti = puntiFastwebMB(fm, ff, fe, cfg.fwFissoTipo);
 
@@ -1945,6 +2054,7 @@
         hasSky,
         hasHo,
         hasTisc,
+        hasAlperia,
         hasEff,
         hasRent,
         target: targetRev
@@ -1957,64 +2067,72 @@
 
       const skyRowCached = SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"];
 
-      // Giugno 2026: bonus tier FW Mobile/HO calcolato dinamicamente in main loop
+      // Luglio 2026: bonus tier FW Mobile/HO calcolato dinamicamente in main loop
       // (dipende da punti = fw.fm × 1 + rs.ho × 0,5). Aggiungo overhead all'upper bound.
       const hoRowGlobal =
-        (HO_TABLES[cfg.hoMode] || HO_TABLES.auto)[cfg.hoTier] || HO_TABLES.auto.lt6;
+        (HO_TABLES[cfg.hoMode] || HO_TABLES.auto)[cfg.hoTier] || HO_TABLES.auto.lt6MainMpd;
       const hoBaseUnitMain = hoRowGlobal.values?.[0] || 0;
       const fmTierMaxVal = Math.max(...fwMobileRowGlobal.values);
       const hoTierMaxVal = Math.max(...hoRowGlobal.values);
       const fmTierDelta = Math.max(0, fmTierMaxVal - fmBaseUnit);
       const hoTierDelta = Math.max(0, hoTierMaxVal - hoBaseUnitMain);
 
-      // Upper bound bonus Multibrand (base max 1100 + extra sky 200 = 1300).
-      // Il bonus tier FW/HO viene calcolato per ogni coppia in modo TIGHT
-      // (per evitare un upper bound così largo da neutralizzare il pruning).
-      const BONUS_UPPER = 1300;
-
-      let maxAceaEncountered = 0;
-      for (let s = 0; s <= maxTotal; s++) {
-        const list = restBySum[s];
-        if (!list) continue;
-        for (const rs of list) {
-          if (rs.acea > maxAceaEncountered) maxAceaEncountered = rs.acea;
-        }
-      }
-
-      const aceaRevNoBoost = new Array(maxAceaEncountered + 1).fill(0);
-      const aceaRevBoost = new Array(maxAceaEncountered + 1).fill(0);
+      // Luglio 2026: soglie ENERGIA UNIFICATE (1/7/18/35/60) su totale ACEA + FW Energy + Alperia.
+      // Precompute valori ACEA e FW Energy per ogni tier (indice 0..4).
+      const aceaRowMain = ACEA_TABLE[cfg.aceaTipo] || ACEA_TABLE.sprint_fix;
+      const aceaBaseUnitMain = aceaRowMain.flat != null
+        ? Math.max(0, aceaRowMain.flat - (cfg.aceaBollettino ? 20 : 0))
+        : Math.max(0, (aceaRowMain.values?.[0] || 0) - (cfg.aceaBollettino ? 20 : 0));
+      const aceaValByTier = new Array(5).fill(0);
+      const feValByTier = new Array(5).fill(0);
       if (hasAcea) {
-        for (let n = 0; n <= maxAceaEncountered; n++) {
-          aceaRevNoBoost[n] = revenueAcea(n, cfg.aceaTipo, cfg.aceaBollettino, 0);
-          aceaRevBoost[n] = revenueAcea(n, cfg.aceaTipo, cfg.aceaBollettino, 5);
+        const bollMinus = cfg.aceaBollettino ? 20 : 0;
+        for (let t = 0; t < 5; t++) {
+          const vt = aceaRowMain.flat != null ? aceaRowMain.flat : (aceaRowMain.values?.[t] || 0);
+          aceaValByTier[t] = Math.max(0, vt - bollMinus);
         }
       }
-
-      const ACEA_CORR_UPPER = hasAcea && maxAceaEncountered > 0
-        ? Math.max(0, aceaRevBoost[maxAceaEncountered] - aceaRevNoBoost[maxAceaEncountered])
+      if (hasFw) {
+        for (let t = 0; t < 5; t++) {
+          feValByTier[t] = fwEnergyRowGlobal.values?.[t] || 0;
+        }
+      }
+      const aceaTierDelta = hasAcea
+        ? Math.max(0, Math.max(...aceaValByTier) - aceaBaseUnitMain)
+        : 0;
+      const feTierDelta = hasFw
+        ? Math.max(0, Math.max(...feValByTier) - feBaseUnit)
         : 0;
 
+      // Upper bound bonus Multibrand (base max 1100 + extra sky 200 = 1300).
+      const BONUS_UPPER = 1300;
+
+      // Precompute max per sum: FW rev, rest rev, fm, ho, acea, fe
       const maxFwRevBySum = new Map();
       const maxFmBySum = new Map();
+      const maxFeBySum = new Map();
       for (const [s, list] of fwBySum.entries()) {
-        let m = -Infinity;
-        let mf = 0;
+        let m = -Infinity, mf = 0, mfe = 0;
         for (const x of list) {
           if (x.rev > m) m = x.rev;
           if (x.fm > mf) mf = x.fm;
+          if (x.fe > mfe) mfe = x.fe;
         }
         maxFwRevBySum.set(s, m === -Infinity ? 0 : m);
         maxFmBySum.set(s, mf);
+        maxFeBySum.set(s, mfe);
       }
 
       const maxRestRevBySum = new Array(maxTotal + 1).fill(-Infinity);
       const maxHoBySum = new Array(maxTotal + 1).fill(0);
+      const maxAceaBySum = new Array(maxTotal + 1).fill(0);
       for (let s = 0; s <= maxTotal; s++) {
         const list = restBySum[s];
         if (!list) continue;
         for (const rs of list) {
           if (rs.rev > maxRestRevBySum[s]) maxRestRevBySum[s] = rs.rev;
           if (rs.ho > maxHoBySum[s]) maxHoBySum[s] = rs.ho;
+          if ((rs.acea || 0) > maxAceaBySum[s]) maxAceaBySum[s] = rs.acea;
         }
         if (maxRestRevBySum[s] === -Infinity) maxRestRevBySum[s] = 0;
       }
@@ -2028,43 +2146,62 @@
           const restStates = restBySum[restSum];
           if (!restStates || restStates.length === 0) continue;
 
-          // Bonus tier max per questa coppia: max fm × fmTierDelta + max ho × hoTierDelta
-          const pairTierBonusUpper =
+          // Bonus tier max per questa coppia (SIM + energia unificata)
+          const pairSimBonusUpper =
             (maxFmBySum.get(fwSum) || 0) * fmTierDelta +
             (maxHoBySum[restSum] || 0) * hoTierDelta;
+          const pairEnergyBonusUpper =
+            (maxAceaBySum[restSum] || 0) * aceaTierDelta +
+            (maxFeBySum.get(fwSum) || 0) * feTierDelta;
 
           const pairUpper =
             (maxFwRevBySum.get(fwSum) || 0) +
             (maxRestRevBySum[restSum] || 0) +
-            pairTierBonusUpper +
-            ACEA_CORR_UPPER +
+            pairSimBonusUpper +
+            pairEnergyBonusUpper +
             BONUS_UPPER;
           if (pairUpper < targetRev) continue;
 
           const maxHoForRest = maxHoBySum[restSum] || 0;
+          const maxAceaForRest = maxAceaBySum[restSum] || 0;
 
           for (const fw of fwStates) {
-            // Bonus tier max per questo fw (fm fissato) + max ho del restSum
-            const fwTierBonusUpper = fw.fm * fmTierDelta + maxHoForRest * hoTierDelta;
+            // Bonus tier max per questo fw
+            const fwTierBonusUpper =
+              fw.fm * fmTierDelta +
+              maxHoForRest * hoTierDelta +
+              maxAceaForRest * aceaTierDelta +
+              fw.fe * feTierDelta;
             const fwUpper =
-              fw.rev + (maxRestRevBySum[restSum] || 0) + fwTierBonusUpper + ACEA_CORR_UPPER + BONUS_UPPER;
+              fw.rev + (maxRestRevBySum[restSum] || 0) + fwTierBonusUpper + BONUS_UPPER;
             if (fwUpper < targetRev) continue;
 
             for (const rs of restStates) {
-              const tightBonusUpper = fw.fm * fmTierDelta + rs.ho * hoTierDelta;
-              if (fw.rev + rs.rev + tightBonusUpper + ACEA_CORR_UPPER + BONUS_UPPER < targetRev) continue;
+              // Upper bound tight per (fw, rs)
+              const tightBonusUpper =
+                fw.fm * fmTierDelta +
+                rs.ho * hoTierDelta +
+                (rs.acea || 0) * aceaTierDelta +
+                fw.fe * feTierDelta;
+              if (fw.rev + rs.rev + tightBonusUpper + BONUS_UPPER < targetRev) continue;
 
               const aceaBrand = hasAcea && rs.acea >= 1;
               const skyBrand = hasSky && rs.sky >= 1 && !!skyRowCached.validBrand;
-              // Giugno 2026: brand Tiscali con ≥ 5 mobili (fisso non obbligatorio)
+              // Luglio 2026: brand Tiscali con ≥ 5 mobili (fisso non obbligatorio)
               const tiscBrand = hasTisc && rs.tmob >= MINIMI.tiscMob;
+              // Luglio 2026: FW brand richiede FW Energy ≥ 1 (già garantito da fw.brand)
               const fwBrand = hasFw && fw.brand && (!hasHo || rs.ho >= 1);
+              // Luglio 2026: NUOVO — brand Alperia attivo con ≥ 1 contratto
+              const alperiaBrand = hasAlperia && (rs.alperia || 0) >= 1;
 
               let brandMB = 0;
               if (aceaBrand) brandMB++;
               if (skyBrand) brandMB++;
               if (fwBrand) brandMB++;
               if (tiscBrand) brandMB++;
+              if (alperiaBrand) brandMB++;
+              // Luglio 2026: la tabella bonus MB scala su max 4 brand
+              const brandMBCapped = Math.min(4, brandMB);
 
               let puntiMB = rs.punti + ((hasFw || hasHo) ? fw.punti : 0);
 
@@ -2080,17 +2217,21 @@
                 if (puntiMB + 1e-9 < requiredPoints) continue;
               }
 
-              const aceaBoosted = hasAcea && fw.fe >= 5;
-              const rAceaCorrected = hasAcea
-                ? (aceaBoosted ? aceaRevBoost[rs.acea] : aceaRevNoBoost[rs.acea])
-                : 0;
+              // Luglio 2026: tier ENERGIA UNIFICATO
+              // (basato sul totale rs.acea + fw.fe + rs.alperia)
+              const totalEnergy = (rs.acea || 0) + (fw.fe || 0) + (rs.alperia || 0);
+              let energyTierIdx = 0;
+              if (totalEnergy >= 60) energyTierIdx = 4;
+              else if (totalEnergy >= 35) energyTierIdx = 3;
+              else if (totalEnergy >= 18) energyTierIdx = 2;
+              else if (totalEnergy >= 7) energyTierIdx = 1;
 
-              const restRevCorrected =
-                rs.rev -
-                (hasAcea ? aceaRevNoBoost[rs.acea] : 0) +
-                rAceaCorrected;
+              const aceaTierUnit = hasAcea ? aceaValByTier[energyTierIdx] : 0;
+              const feTierUnit = hasFw ? feValByTier[energyTierIdx] : 0;
+              const aceaTierBonus = (rs.acea || 0) * Math.max(0, aceaTierUnit - aceaBaseUnitMain);
+              const feTierBonus = (fw.fe || 0) * Math.max(0, feTierUnit - feBaseUnit);
 
-              // Giugno 2026: tier FW Mobile/HO calcolato sui PUNTI combinati
+              // Luglio 2026: tier FW Mobile/HO calcolato sui PUNTI combinati
               const tierPunti = (fw.fm || 0) * 1 + (rs.ho || 0) * 0.5;
               const fmTierUnit = hasFw
                 ? pickTierValue(tierPunti, fwMobileRowGlobal.thresholds, fwMobileRowGlobal.values)
@@ -2101,8 +2242,11 @@
               const fmTierBonus = (fw.fm || 0) * Math.max(0, fmTierUnit - fmBaseUnit);
               const hoTierBonus = (rs.ho || 0) * Math.max(0, hoTierUnit - hoBaseUnitMain);
 
-              const mb = bonusMultibrand(puntiMB, brandMB, rs.sky);
-              const totRev = restRevCorrected + fw.rev + fmTierBonus + hoTierBonus + mb.total;
+              const mb = bonusMultibrand(puntiMB, brandMBCapped, rs.sky);
+              const totRev =
+                rs.rev + fw.rev +
+                fmTierBonus + hoTierBonus + aceaTierBonus + feTierBonus +
+                mb.total;
 
               if (totRev >= targetRev) {
                 const candidate = {
@@ -2111,6 +2255,7 @@
                   sky: rs.sky,
                   tmob: rs.tmob,
                   tfix: rs.tfix,
+                  alperia: rs.alperia || 0,
                   eff: rs.eff,
                   rent: rs.rent,
                   fm: fw.fm,
@@ -2118,15 +2263,16 @@
                   fe: fw.fe,
                   ho: rs.ho,
 
-                  rAcea: rAceaCorrected,
+                  rAcea: hasAcea ? (rs.acea || 0) * aceaTierUnit : 0,
                   rSky: hasSky ? revenueSky(rs.sky, cfg.skyTipo) : 0,
                   rTMob: hasTisc ? revenueTiscMobile(rs.tmob, cfg.tiscMobileTipo) : 0,
                   rTFix: hasTisc ? revenueTiscFixed(rs.tfix, cfg.tiscFissoTipo) : 0,
+                  rAlperia: hasAlperia ? revenueAlperia(rs.alperia || 0, cfg.alperiaTipo) : 0,
                   rEff: hasEff ? rs.eff * (cfg.effVal || 0) : 0,
                   rRent: hasRent ? rs.rent * (cfg.rentVal || 0) : 0,
                   rFm: hasFw ? revenueFastwebMobile(fw.fm, rs.ho, cfg.fwMobilePiano) : 0,
                   rFf: hasFw ? revenueFastwebFisso(fw.ff, cfg.fwFissoTipo) : 0,
-                  rFe: hasFw ? revenueFastwebEnergy(fw.fe, cfg.fwEnergyTipo) : 0,
+                  rFe: hasFw ? (fw.fe || 0) * feTierUnit : 0,
                   rHo: hasHo ? revenueHo(fw.fm, rs.ho, cfg.hoMode, cfg.hoTier) : 0,
 
                   puntiMB,
@@ -2135,6 +2281,8 @@
                   bonusTotal: mb.total,
                   boostEnergy,
                   totRev,
+                  totalEnergy,
+                  energyTierIdx,
 
                   marginVsCosti: totRev - costi,
                   marginVsTarget: totRev - targetRev,
@@ -2143,7 +2291,8 @@
                   aceaBrand,
                   skyBrand,
                   tiscBrand,
-                  fwBrand
+                  fwBrand,
+                  alperiaBrand
                 };
 
                 const pref = computePreference(
@@ -2239,6 +2388,7 @@
       const hasFw = brandAttivi.includes("fastweb");
       const hasHo = brandAttivi.includes("ho");
       const hasTisc = brandAttivi.includes("tiscali");
+      const hasAlperia = brandAttivi.includes("alperia");
       const hasEff = brandAttivi.includes("eff");
       const hasRent = brandAttivi.includes("rent");
 
@@ -2247,6 +2397,7 @@
       if (best.skyBrand) brandList.push("SKY");
       if (best.fwBrand) brandList.push(hasHo ? "FASTWEB+HO" : "FASTWEB");
       if (best.tiscBrand) brandList.push("TISCALI");
+      if (best.alperiaBrand) brandList.push("ALPERIA");
 
       const pctFmt = (v) => `${Math.round((v || 0) * 100)}%`;
 
@@ -2255,7 +2406,7 @@
       if (nomeNegozio) {
         txt += `*🏬 NEGOZIO*: ${nomeNegozio}\n`;
       }
-      txt += `*📅 MESE*: Giugno 2026\n\n`;
+      txt += `*📅 MESE*: Luglio 2026\n\n`;
 
       txt += `*🎯 OBIETTIVO*: €${costi}`;
       if (useMarg) txt += ` + *MARGINALITÀ ${pct}%*`;
@@ -2292,7 +2443,7 @@
 
       if (hasAcea) {
         txt += `• *ACEA* → ${best.acea} contratti (${ACEA_TABLE[cfg.aceaTipo]?.name || "ACEA"})\n`;
-        txt += ` - €/contratto: €${aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.fe)}\n`;
+        txt += ` - €/contratto: €${aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.totalEnergy)}\n`;
         txt += ` - provvigioni: €${best.rAcea}\n`;
         txt += ` - punti MB: ${puntiAceaMB(best.acea)}\n\n`;
       }
@@ -2314,7 +2465,7 @@
         txt += ` - provvigioni: €${best.rFf}\n`;
 
         txt += `• *FASTWEB Energy (${(FW_ENERGY[cfg.fwEnergyTipo] || FW_ENERGY.lfm).name})* → ${best.fe} contratti\n`;
-        txt += ` - €/contratto: €${fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo)}\n`;
+        txt += ` - €/contratto: €${fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo, best.totalEnergy)}\n`;
         txt += ` - provvigioni: €${best.rFe}\n`;
 
         if (hasHo) {
@@ -2352,6 +2503,20 @@
         }\n\n`;
       }
 
+      if (hasAlperia) {
+        const alpName = (ALPERIA_TABLE[cfg.alperiaTipo] || ALPERIA_TABLE.premium).name;
+        txt += `• *ALPERIA (${alpName})* → ${best.alperia} contratti\n`;
+        txt += ` - €/contratto (FLAT): €${alperiaUnitValue(cfg.alperiaTipo)}\n`;
+        txt += ` - provvigioni: €${best.rAlperia}\n`;
+        txt += ` - punti MB: ${puntiAlperiaMB(best.alperia)}\n\n`;
+      }
+
+      if (hasAcea || hasFw || hasAlperia) {
+        const totE = best.totalEnergy || 0;
+        const tierLabels = ["t1 (1)", "t7 (7)", "t18 (18)", "t35 (35)", "t60 (60)"];
+        txt += `*⚡ Tier ENERGIA unificato* (ACEA + FW Energy + Alperia): ${totE} contratti → *${tierLabels[best.energyTierIdx || 0]}*\n\n`;
+      }
+
       if (hasEff) {
         const p = getExtraPointsPerUnit();
         txt += `• *EFFICIENCY* → ${best.eff} pratiche\n`;
@@ -2383,7 +2548,7 @@
 
       txt += `\n*💡 Convergenze*: se fai contratti in convergenza puoi guadagnare da +10€ a +40€ per ogni combinazione.\n`;
 
-      txt += `\n✔ Combinazione *realistica e pronta all’uso* aggiornata a Giugno 2026.`;
+      txt += `\n✔ Combinazione *realistica e pronta all’uso* aggiornata a Luglio 2026.`;
 
       out.innerText = txt;
       out.classList.remove("hidden");
@@ -2463,7 +2628,7 @@
       if (brandAttivi.includes("acea") && best.acea > 0) {
         d += `• ACEA — ${(ACEA_TABLE[cfg.aceaTipo] || ACEA_TABLE.sprint_fix).name}\n`;
         d += `- contratti: ${best.acea}\n`;
-        d += `- €/contratto: €${aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.fe).toFixed(2)}\n`;
+        d += `- €/contratto: €${aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.totalEnergy).toFixed(2)}\n`;
         d += `- punti MB/contratto: 1\n\n`;
       }
 
@@ -2499,8 +2664,8 @@
           const row = FW_ENERGY[cfg.fwEnergyTipo] || FW_ENERGY.lfm;
           d += `• FASTWEB Energy — ${row.name}\n`;
           d += `- contratti: ${best.fe}\n`;
-          d += `- €/contratto: €${fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo).toFixed(2)}\n`;
-          d += `- punti MB/contratto: 2\n\n`;
+          d += `- €/contratto: €${fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo, best.totalEnergy).toFixed(2)}\n`;
+          d += `- punti MB/contratto: 1\n\n`;
         }
       }
 
@@ -2527,6 +2692,19 @@
           d += `- €/contratto: €${tiscFixedUnitValue(best.tfix, cfg.tiscFissoTipo).toFixed(2)}\n`;
           d += `- punti MB/contratto: ${row.mbPointsPer}\n\n`;
         }
+      }
+
+      if (brandAttivi.includes("alperia") && best.alperia > 0) {
+        const alpRow = ALPERIA_TABLE[cfg.alperiaTipo] || ALPERIA_TABLE.premium;
+        d += `• ALPERIA — ${alpRow.name}\n`;
+        d += `- contratti: ${best.alperia}\n`;
+        d += `- €/contratto (FLAT): €${alperiaUnitValue(cfg.alperiaTipo).toFixed(2)}\n`;
+        d += `- punti MB/contratto: 1\n\n`;
+      }
+
+      if (best.totalEnergy != null) {
+        const tierLbls = ["t1 (1)", "t7 (7)", "t18 (18)", "t35 (35)", "t60 (60)"];
+        d += `Tier ENERGIA unificato: ${best.totalEnergy} contratti totali → ${tierLbls[best.energyTierIdx || 0]}\n\n`;
       }
 
       if (brandAttivi.includes("eff") && best.eff > 0) {
@@ -2601,6 +2779,7 @@
         fastweb: "#e4b002",
         ho: "#5f58a1",
         tiscali: "#3b2783",
+        alperia: "#12a56b",
         eff: "#16a34a",
         rent: "#2563eb"
       };
@@ -2614,6 +2793,7 @@
         ho: "#5f58a1",
         tiscsim: "#3b2783",
         tiscfisso: "#3b2783",
+        alperia: "#12a56b",
         eff: "#16a34a",
         rent: "#2563eb"
       };
@@ -2625,6 +2805,7 @@
       const hasFw = brandAttivi.includes("fastweb");
       const hasHo = brandAttivi.includes("ho");
       const hasTisc = brandAttivi.includes("tiscali");
+      const hasAlperia = brandAttivi.includes("alperia");
       const hasEff = brandAttivi.includes("eff");
       const hasRent = brandAttivi.includes("rent");
       const extraPts = getExtraPointsPerUnit();
@@ -2634,6 +2815,7 @@
       if (best.skyBrand) mbBrandList.push("SKY");
       if (best.fwBrand) mbBrandList.push(hasHo ? "FASTWEB+HO" : "FASTWEB");
       if (best.tiscBrand) mbBrandList.push("TISCALI");
+      if (best.alperiaBrand) mbBrandList.push("ALPERIA");
 
       // KPI cards
       const margineColor = best.marginVsCosti >= 0 ? "#059669" : "#dc2626";
@@ -2657,7 +2839,7 @@
 
       if (hasAcea) {
         const name = (ACEA_TABLE[cfg.aceaTipo] || ACEA_TABLE.sprint_fix).name;
-        const unit = aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.fe);
+        const unit = aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.totalEnergy);
         prodRows.push({
           color: BRAND_COLOR.acea,
           brand: "ACEA",
@@ -2713,9 +2895,9 @@
           subtitle: (FW_ENERGY[cfg.fwEnergyTipo] || FW_ENERGY.lfm).name,
           qty: best.fe,
           qtyLabel: "contratti",
-          unit: fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo),
+          unit: fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo, best.totalEnergy),
           totale: best.rFe,
-          punti: best.fe * 2
+          punti: best.fe * 1
         });
       }
 
@@ -2753,6 +2935,20 @@
           unit: tiscFixedUnitValue(best.tfix, cfg.tiscFissoTipo),
           totale: best.rTFix,
           punti: best.tfix * (tFissoRow.mbPointsPer || 0.5)
+        });
+      }
+
+      if (hasAlperia) {
+        const alpRow = ALPERIA_TABLE[cfg.alperiaTipo] || ALPERIA_TABLE.premium;
+        prodRows.push({
+          color: BRAND_COLOR.alperia,
+          brand: "ALPERIA",
+          subtitle: alpRow.name + " · FLAT",
+          qty: best.alperia || 0,
+          qtyLabel: "contratti",
+          unit: alperiaUnitValue(cfg.alperiaTipo),
+          totale: best.rAlperia,
+          punti: puntiAlperiaMB(best.alperia || 0)
         });
       }
 
@@ -2804,7 +3000,7 @@
       const totaleProvvigioni =
         (best.rAcea || 0) + (best.rSky || 0) + (best.rFm || 0) + (best.rFf || 0) +
         (best.rFe || 0) + (best.rHo || 0) + (best.rTMob || 0) + (best.rTFix || 0) +
-        (best.rEff || 0) + (best.rRent || 0);
+        (best.rAlperia || 0) + (best.rEff || 0) + (best.rRent || 0);
 
       const html = `<!doctype html>
 <html lang="it">
@@ -3099,7 +3295,7 @@
 <body>
   <div class="topbar">
     <div class="left">
-      <div class="eyebrow">Cost Management • Giugno 2026</div>
+      <div class="eyebrow">Cost Management • Luglio 2026</div>
       <h1>${escapeHtml(titolo)}</h1>
       <div class="sub">Report produzione brand multibrand</div>
     </div>
@@ -3235,7 +3431,7 @@
   </div>
 
   <footer>
-    Cost Management Dealer E2K · Giugno 2026 · Documento generato automaticamente${nomeNegozio ? ` per ${escapeHtml(nomeNegozio)}` : ""}
+    Cost Management Dealer E2K · Luglio 2026 · Documento generato automaticamente${nomeNegozio ? ` per ${escapeHtml(nomeNegozio)}` : ""}
   </footer>
 
   <script>

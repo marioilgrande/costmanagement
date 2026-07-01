@@ -1679,8 +1679,11 @@
       const buckets = new Map();
 
       for (const st of states) {
-        const sum = st.acea + st.sky + st.ho + st.tmob + st.tfix + st.eff + st.rent;
-        const energy = st.acea;
+        // Luglio 2026: include st.alperia nel sum di bucketing (era omesso).
+        const alperia = st.alperia || 0;
+        const sum = st.acea + st.sky + st.ho + st.tmob + st.tfix + st.eff + st.rent + alperia;
+        // Energia = ACEA + Alperia (per tier unificato di gara)
+        const energy = st.acea + alperia;
         const sky = st.sky;
         const fixed = st.tfix;
         const mobile = st.ho + st.tmob;
@@ -1726,14 +1729,19 @@
       const minEff = hasEff ? 0 : 0;
       const minRent = hasRent ? 0 : 0;
 
-      const maxAcea = hasAcea ? Math.min(180, minAcea + Math.ceil(target / 60) + 70) : 0;
-      const maxSky = hasSky ? Math.min(120, minSky + Math.ceil(target / 70) + 40) : 0;
-      const maxHo = hasHo ? Math.min(120, 1 + Math.ceil(target / 15) + 30) : 0;
-      const maxTMob = hasTisc ? Math.min(120, 1 + Math.ceil(target / 14) + 30) : 0;
-      const maxTFix = hasTisc ? Math.min(80, 1 + Math.ceil(target / 55) + 20) : 0;
+      // Luglio 2026: soglia energia unificata max = 60 → oltre 90 ACEA / FW Energy non
+      // ha senso (tier bloccato). Bound più stretti per contenere l'esplosione DP.
+      const maxAcea = hasAcea ? Math.min(100, minAcea + Math.ceil(target / 60) + 30) : 0;
+      const maxSky = hasSky ? Math.min(90, minSky + Math.ceil(target / 70) + 25) : 0;
+      const maxHo = hasHo ? Math.min(90, 1 + Math.ceil(target / 15) + 25) : 0;
+      const maxTMob = hasTisc ? Math.min(90, 1 + Math.ceil(target / 14) + 25) : 0;
+      const maxTFix = hasTisc ? Math.min(50, 1 + Math.ceil(target / 55) + 15) : 0;
+      // Luglio 2026: alperiaFlat può essere alto (fino a 70€ flat), quindi non serve iterare
+      // fino a 120. Soglia energia unificata al max = 60 → maxAlperia ≥ 60 è sufficiente
+      // (oltre non porta benefici tier). Bound stretto per contenere l'esplosione di stati.
       const alperiaFlat = ALPERIA_TABLE[cfg.alperiaTipo]?.flat || 25;
       const maxAlperia = hasAlperia
-        ? Math.min(120, minAlperia + Math.ceil(target / Math.max(alperiaFlat, 15)) + 30)
+        ? Math.min(60, minAlperia + Math.ceil(target / Math.max(alperiaFlat, 30)) + 12)
         : 0;
 
       const extraPts = getExtraPointsPerUnit();
@@ -1846,7 +1854,9 @@
         for (let s = 0; s <= maxTotal; s++) {
           if (dpOut[s].length > 0) {
             dpOut[s] = pruneRestStates(dpOut[s]);
-            if (dpOut[s].length > 160) dpOut[s] = dpOut[s].slice(0, 160);
+            // Luglio 2026: cap ridotto (160→100) per contenere la crescita degli stati
+            // dopo l'aggiunta della dim Alperia. Il pruning pareto preserva la qualità.
+            if (dpOut[s].length > 100) dpOut[s] = dpOut[s].slice(0, 100);
           }
         }
 
@@ -1995,9 +2005,10 @@
         const minFf = 1;
         const minFe = 1;
 
-        const maxFm = Math.min(120, minFm + Math.ceil(targetRev / 30) + 40);
-        const maxFf = Math.min(80, minFf + Math.ceil(targetRev / 60) + 20);
-        const maxFe = Math.min(120, minFe + Math.ceil(targetRev / 70) + 50);
+        // Luglio 2026: soglia energia unificata max=60 → maxFe cap 90; SIM soglie 40→ maxFm 90
+        const maxFm = Math.min(90, minFm + Math.ceil(targetRev / 30) + 25);
+        const maxFf = Math.min(50, minFf + Math.ceil(targetRev / 60) + 15);
+        const maxFe = Math.min(90, minFe + Math.ceil(targetRev / 70) + 25);
 
         for (let fm = minFm; fm <= maxFm && fm <= maxTotal; fm++) {
           for (let ff = minFf; ff <= maxFf && fm + ff <= maxTotal; ff++) {
@@ -2030,7 +2041,8 @@
 
         for (const [sum, list] of fwBySum.entries()) {
           const p = pruneFwStates(list);
-          fwBySum.set(sum, p.length > 180 ? p.slice(0, 180) : p);
+          // Luglio 2026: cap ridotto (180→100) per performance.
+          fwBySum.set(sum, p.length > 100 ? p.slice(0, 100) : p);
         }
       } else {
         fwBySum.set(0, [

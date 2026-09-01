@@ -7,7 +7,7 @@ aggiornata mensilmente in base alla gara ufficiale.
 
 ## Stato gara
 
-Aggiornato a **Maggio 2026** secondo la gara ufficiale E2K.
+Aggiornato a **Settembre 2026** secondo la gara ufficiale E2K.
 
 ## Funzionalità
 

@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
   />
-  <title>GESTIONE COSTI – LUGLIO 2026</title>
+  <title>GESTIONE COSTI – SETTEMBRE 2026</title>
 
   <style>
     :root {
@@ -18,6 +18,7 @@
       --wa: #03bf62;
       --ho: #5f58a1;
       --alperia: #12a56b;
+      --sorgenia: #e8410a;
       --eff: #16a34a;
       --rent: #2563eb;
 
@@ -194,6 +195,7 @@
     .chip.ho { color: var(--ho); background: rgba(95, 88, 161, 0.12); }
     .chip.tiscali { color: var(--tiscali); background: rgba(59, 39, 131, 0.12); }
     .chip.alperia { color: var(--alperia); background: rgba(18, 165, 107, 0.12); }
+    .chip.sorgenia { color: var(--sorgenia); background: rgba(232, 65, 10, 0.12); }
     .chip.eff { color: var(--eff); background: rgba(22, 163, 74, 0.12); }
     .chip.rent { color: var(--rent); background: rgba(37, 99, 235, 0.12); }
 
@@ -232,6 +234,7 @@
     .badge.ho { background: rgba(95, 88, 161, 0.12); border-color: rgba(95, 88, 161, 0.3); color: var(--ho); }
     .badge.tiscali { background: rgba(59, 39, 131, 0.12); border-color: rgba(59, 39, 131, 0.3); color: var(--tiscali); }
     .badge.alperia { background: rgba(18, 165, 107, 0.12); border-color: rgba(18, 165, 107, 0.3); color: var(--alperia); }
+    .badge.sorgenia { background: rgba(232, 65, 10, 0.12); border-color: rgba(232, 65, 10, 0.3); color: var(--sorgenia); }
     .badge.eff { background: rgba(22, 163, 74, 0.12); border-color: rgba(22, 163, 74, 0.3); color: var(--eff); }
     .badge.rent { background: rgba(37, 99, 235, 0.12); border-color: rgba(37, 99, 235, 0.3); color: var(--rent); }
 
@@ -350,7 +353,7 @@
 <body>
   <div class="topbar">
     <div class="topbar-inner">
-      <div class="brand-title">Cost Management - Dealer E2K • Luglio 2026</div>
+      <div class="brand-title">Cost Management - Dealer E2K • Settembre 2026</div>
     </div>
   </div>
 
@@ -410,7 +413,8 @@
         <div class="chip fastweb" data-brand="fastweb">FASTWEB</div>
         <div class="chip ho" data-brand="ho">HO Mobile (agganciato a Fastweb)</div>
         <div class="chip tiscali" data-brand="tiscali">TISCALI</div>
-        <div class="chip alperia" data-brand="alperia">ALPERIA (Luglio 2026)</div>
+        <div class="chip alperia" data-brand="alperia">ALPERIA (energia)</div>
+        <div class="chip sorgenia" data-brand="sorgenia">SORGENIA (Settembre 2026)</div>
 
         <div class="hr"></div>
 
@@ -419,10 +423,15 @@
       </div>
 
       <p class="muted" style="margin-top: 8px;">
-        Brand principali Multibrand: <b>ACEA, SKY, FASTWEB(+HO), TISCALI, ALPERIA</b>
-        (max 4 nella tabella bonus).<br />
-        <b>HO</b> si seleziona a parte, ma conta come parte del brand <b>FASTWEB</b> nella Multibrand.<br />
-        <b>ACEA · FW Energy · ALPERIA</b> hanno soglie <b>UNIFICATE</b> (1/7/18/35/60) sul totale contratti energia.<br />
+        <b>Settembre 2026 — Multibrand riscritta.</b> 8 prodotti in 3 categorie:<br />
+        • <b>ENERGIA</b> (4): ACEA · FW Energia · SORGENIA · ALPERIA<br />
+        • <b>TELCO</b> (3): FASTWEB (SIM+Fisso) · HO Mobile · TISCALI (SIM+Fisso)<br />
+        • <b>INTRATTENIMENTO</b> (1): SKY<br />
+        <b>Accesso gara</b>: almeno <b>4 prodotti attivi</b> (bastano <b>3</b> se produci solo energia).
+        L'energia è <b>sempre</b> necessaria.<br />
+        <b>Punti per tipo offerta</b>: ENERGIA 1 · MOBILE 0,5 · FISSO 1 · SKY 1.
+        Con <b>3+ prodotti energia da ≥5 contratti</b> → 1,25 / 0,75 / 1,25 / 1,25.<br />
+        I 4 brand energia hanno soglie <b>UNIFICATE</b> (1/7/18/35/60) sul totale contratti energia.<br />
         Brand secondari invariati: <b>EFFICIENCY</b> e <b>RENT</b>.
       </p>
     </div>
@@ -437,7 +446,9 @@
         Se il totale non è 100%, verrà normalizzato automaticamente.<br />
         Puoi impostare <b>0%</b> su un brand: il sistema rispetterà la tua scelta
         e non spingerà la produzione su quel brand (resta il vincolo minimo del brand
-        chip se selezionato).
+        chip se selezionato).<br />
+        <b>Settembre 2026</b>: per accedere alla Multibrand servono <b>4 prodotti attivi</b>
+        (3 se produci solo energia), quindi distribuisci le percentuali su almeno 4 voci.
       </p>
 
       <div id="percentualiBox" class="percentBox">
@@ -559,13 +570,15 @@
           </select>
 
           <div class="noteBox">
-            Brand FASTWEB attivo in Multibrand:<br />
-            • senza HO selezionato → almeno <b>1 Mobile FW + 1 Fisso FW + 1 Energy FW</b><br />
-            • con HO selezionato → almeno
-            <b>1 Mobile FW + 1 Mobile HO + 1 Fisso FW + 1 Energy FW</b><br /><br />
-            <b>Luglio 2026 — Tier €/SIM in PUNTI</b>: FW SIM × 1 + HO SIM × 0,5 → soglie
-            <b>15 / 25 / 40 punti</b>. Senza almeno <b>1 FW Energia</b> nel mese le SIM FW
-            restano bloccate alla soglia BASE.
+            <b>Settembre 2026</b> — FASTWEB conta come <b>2 prodotti separati</b> in Multibrand:<br />
+            • <b>FW Energia</b> (categoria ENERGIA) → attivo con ≥1 contratto energia<br />
+            • <b>Fastweb SIM+Fisso</b> (categoria TELCO) → attivo con ≥1 SIM o fisso<br />
+            <b>HO Mobile</b> è un prodotto TELCO a sé (attivo con ≥1 SIM HO).<br /><br />
+            <b>Settembre 2026 — Tier €/SIM in PUNTI</b>: FW SIM × 1 + HO SIM × 0,5 → soglie
+            <b>3 / 10 / 20 / 30 punti</b>.<br />
+            Sotto i <b>3 punti</b> si applica il compenso base contrattuale: <b>5€ a SIM</b>.<br />
+            Le soglie <b>t20</b> e <b>t30</b> sono riservate ai <b>DEALER ENERGY</b>: servono
+            almeno <b>2 contratti FW Energia</b> nel mese, altrimenti il compenso scala a t10.
           </div>
         </div>
 
@@ -598,7 +611,7 @@
         <div id="cfgTiscali" class="brand-box hidden">
           <div class="brand-head">
             <div style="font-weight: 900;">TISCALI</div>
-            <span class="badge tiscali">Mobile (≥5 SIM) · Fisso opzionale</span>
+            <span class="badge tiscali">Prodotto TELCO (SIM + Fisso)</span>
           </div>
 
           <label for="tiscMobileTipo">Mobile Tiscali</label>
@@ -627,9 +640,9 @@
           </select>
 
           <div class="noteBox">
-            <b>Luglio 2026</b>: il brand TISCALI si attiva in Multibrand con almeno
-            <b>5 contratti mobili</b> nel mese. Il fisso non è più obbligatorio per
-            l'attivazione del brand (resta opzionale per generare ricavi).
+            <b>Settembre 2026</b>: TISCALI è <b>1 prodotto TELCO</b> (SIM + Fisso insieme),
+            attivo in Multibrand con almeno <b>1 contratto</b> (mobile o fisso).<br />
+            Punti: SIM 0,5 · Fisso 1 (maggiorati a 0,75 / 1,25 con il boost energia).
           </div>
         </div>
 
@@ -637,7 +650,7 @@
         <div id="cfgAlperia" class="brand-box hidden">
           <div class="brand-head">
             <div style="font-weight: 900;">ALPERIA</div>
-            <span class="badge alperia">Energia (Luglio 2026)</span>
+            <span class="badge alperia">Energia (Settembre 2026)</span>
           </div>
 
           <label for="alperiaTipo">Prodotto ALPERIA</label>
@@ -654,10 +667,32 @@
           </select>
 
           <div class="noteBox">
-            <b>Luglio 2026 — NUOVO brand</b>. Compensi <b>flat one-shot</b>: non variano con la soglia.<br />
-            I contratti Alperia entrano nel <b>totale energia unificato</b> (ACEA + FW Energy + Alperia)
-            per determinare la <b>soglia</b> comune (1/7/18/35/60) applicata ad ACEA e FW Energy.<br />
-            Brand ALPERIA in Multibrand attivo con almeno <b>1 contratto</b>. Punti MB: <b>1 pt/contratto</b>.
+            Compensi <b>flat one-shot</b>: non variano con la soglia.<br />
+            I contratti Alperia entrano nel <b>totale energia unificato</b>
+            (ACEA + FW Energy + Alperia + Sorgenia) che determina la soglia comune
+            <b>1/7/18/35/60</b>.<br />
+            Prodotto ENERGIA in Multibrand: attivo con ≥ <b>1 contratto</b> · <b>1 pt</b>/contratto.
+          </div>
+        </div>
+
+        <!-- SORGENIA -->
+        <div id="cfgSorgenia" class="brand-box hidden">
+          <div class="brand-head">
+            <div style="font-weight: 900;">SORGENIA</div>
+            <span class="badge sorgenia">Energia (Settembre 2026)</span>
+          </div>
+
+          <label for="sorgeniaTipo">Prodotto SORGENIA</label>
+          <select id="sorgeniaTipo" class="field">
+            <option value="fissa_variabile" selected>Sorgenia Fissa &amp; Variabile (RES)</option>
+            <option value="business">Sorgenia Business</option>
+          </select>
+
+          <div class="noteBox">
+            <b>Settembre 2026 — NUOVO brand energia</b>.<br />
+            Usa le <b>soglie energia unificate</b> (1/7/18/35/60) sul totale
+            ACEA + FW Energy + Alperia + Sorgenia.<br />
+            Prodotto ENERGIA in Multibrand: attivo con ≥ <b>1 contratto</b> · <b>1 pt</b>/contratto.
           </div>
         </div>
 
@@ -756,18 +791,36 @@
     /****************************************************************
      * CONFIGURAZIONE MULTIBRAND
      ****************************************************************/
+    // ============================================================
+    // SETTEMBRE 2026 — GARA MULTIBRAND COMPLETAMENTE RISCRITTA
+    // ============================================================
+    // I punti NON dipendono più dal brand ma dal TIPO DI OFFERTA:
+    //   ENERGIA (luce/gas) 1 • MOBILE 0,5 • FISSO 1 • SKY 1
+    // Maggiorazione "3 prodotti energy attivi con ≥5 contratti":
+    //   ENERGIA 1,25 • MOBILE 0,75 • FISSO 1,25 • SKY 1,25
+    //
+    // 8 PRODOTTI in 3 CATEGORIE (attivi con ≥1 contratto):
+    //   ENERGIA (4): Acea • Fastweb Energia • Sorgenia • Alperia
+    //   TELCO   (3): Fastweb (SIM+Fisso) • HO Mobile • Tiscali (SIM+Fisso)
+    //   INTRATT (1): Sky
+    //
+    // ACCESSO: ≥4 prodotti attivi (≥3 se si produce SOLO energia).
+    // COLONNA GETTONE (energia sempre necessaria):
+    //   e1 = solo ENERGIA • e2 = ENERGIA + TELCO/SKY • e3 = ENERGIA + TELCO + SKY
     const COMPENSI_DEFAULT = {
       multibrand: {
-        soglie: [10, 20, 30, 40, 50, 70, 90],
-        bonus_2: [50, 75, 125, 175, 225, 275, 350],
-        bonus_3: [100, 150, 250, 350, 450, 550, 700],
-        bonus_4: [150, 225, 375, 525, 675, 825, 1100],
-        extra_sky: [0, 0, 0, 0, 0, 0, 0],
-        boost_energy_points: 10,
-        extra_sky_min_brands: 3,
-        extra_sky_min_contracts: 7,
+        soglie: [20, 30, 40, 50, 70, 90, 110],
+        bonus_e1: [50, 75, 125, 175, 225, 275, 350],
+        bonus_e2: [100, 150, 250, 350, 450, 550, 700],
+        bonus_e3: [150, 225, 375, 525, 675, 825, 1100],
+        punti: { energia: 1, mobile: 0.5, fisso: 1, sky: 1 },
+        punti_boost: { energia: 1.25, mobile: 0.75, fisso: 1.25, sky: 1.25 },
+        min_prodotti: 4,
+        min_prodotti_energia: 3,
+        boost_min_prodotti: 3,
+        boost_min_contratti: 5,
         note:
-          "Luglio 2026 — 5 brand attivabili: Fastweb+HO, SKY, ACEA, TISCALI, ALPERIA (max 4 nella tabella bonus). Soglie ENERGIA UNIFICATE (ACEA + FW Energy + Alperia): 1/7/18/35/60. Tiscali brand con ≥5 mobili. Punti: FW Mobile 0,25 · HO 0,25 · FW Fisso 0,5 · FW Energy 1 · Tisc Mobile 0,25 · Tisc Fisso 0,5 · ACEA 1 · ALPERIA 1 · SKY 1 · Prova SKY 0. Extra Boost: 10 FW Energia + 10 ACEA = +10 punti. Tier FW Mobile/HO in PUNTI (FW×1 + HO×0,5) → soglie 15/25/40."
+          "Settembre 2026 — MULTIBRAND RISCRITTA. Punti per TIPO OFFERTA: ENERGIA 1 · MOBILE 0,5 · FISSO 1 · SKY 1. Maggiorazione (3 prodotti energia con ≥5 contratti): ENERGIA 1,25 · MOBILE 0,75 · FISSO 1,25 · SKY 1,25. 8 prodotti in 3 categorie — ENERGIA: Acea, FW Energia, Sorgenia, Alperia · TELCO: Fastweb, HO, Tiscali · INTRATT: Sky. Accesso: ≥4 prodotti attivi (≥3 se solo energia). Colonne gettone: e1 solo energia, e2 energia+telco/sky, e3 energia+telco+sky. Soglie punti: 20/30/40/50/70/90/110. Soglie ENERGIA UNIFICATE (Acea+FW Energy+Alperia+Sorgenia): 1/7/18/35/60. Soglie SIM in PUNTI: 3/10/20/30 (t20/t30 solo DEALER ENERGY con ≥2 FW Energia; sotto 3 punti = 5€ base)."
       }
     };
 
@@ -780,9 +833,10 @@
       acea: 1,
       sky: 1,
       ho: 0,
-      tiscMob: 5,
+      tiscMob: 1,
       tiscFix: 0,
       alperia: 1,
+      sorgenia: 1,
       eff: 0,
       rent: 0,
       fwMobile: 1,
@@ -877,7 +931,7 @@
       }
     };
 
-    // Luglio 2026: soglie ENERGIA UNIFICATE (ACEA + FW Energy + Alperia): [1, 7, 18, 35, 60]
+    // Settembre 2026: soglie ENERGIA UNIFICATE (ACEA + FW Energy + Alperia): [1, 7, 18, 35, 60]
     const ENERGY_THRESHOLDS = [1, 7, 18, 35, 60];
 
     const ACEA_TABLE = {
@@ -907,7 +961,7 @@
       }
     };
 
-    // Luglio 2026 — NUOVO BRAND: ALPERIA (energia)
+    // Settembre 2026 — NUOVO BRAND: ALPERIA (energia)
     // Compensi FLAT (one-shot). Contribuiscono alle soglie energia unificate ma i loro
     // compensi non variano con la soglia (sono gettoni one-shot fissi).
     const ALPERIA_TABLE = {
@@ -922,24 +976,48 @@
       caldaro:        { flat: 35, name: "Alperia Business Caldaro" }
     };
 
-    // Luglio 2026: struttura SEMPLIFICATA in 2 fasce (>6€ da virtuali vs. <6€ + MAIN MPD)
-    // Tier in PUNTI (FW SIM × 1 + HO SIM × 0,5) → soglie 0/15/25/40
-    const HO_TABLES = {
-      auto: {
-        gt6:        { thresholds: [0, 15, 25, 40], values: [20, 25, 29, 32] },
-        lt6MainMpd: { thresholds: [0, 15, 25, 40], values: [18, 20, 23, 25] }
+    // Settembre 2026 — NUOVO BRAND: SORGENIA (energia)
+    // Contribuisce alle soglie energia unificate (1/7/18/35/60) e usa il tier unificato.
+    const SORGENIA_TABLE = {
+      fissa_variabile: {
+        thresholds: ENERGY_THRESHOLDS,
+        values: [60, 70, 75, 85, 90],
+        name: "Sorgenia Fissa & Variabile (RES)"
       },
-      pura: {
-        gt6:        { thresholds: [0, 15, 25, 40], values: [10, 15, 19, 22] },
-        lt6MainMpd: { thresholds: [0, 15, 25, 40], values: [8, 10, 13, 15] }
+      business: {
+        thresholds: ENERGY_THRESHOLDS,
+        values: [80, 85, 95, 100, 105],
+        name: "Sorgenia Business"
       }
     };
 
+    // Settembre 2026 — NUOVE SOGLIE SIM in PUNTI: 3 / 10 / 20 / 30
+    // (FW SIM × 1 + HO SIM × 0,5). Sotto i 3 punti si applica il base contrattuale.
+    // t20 e t30 = "DEALER ENERGY": richiedono ≥2 contratti FW Energia, altrimenti
+    // il compenso scala a t10 (vedi applyDealerEnergyCap).
+    const SIM_THRESHOLDS = [3, 10, 20, 30];
+
+    // Settembre 2026: sotto i 3 punti il compenso è il base contrattuale (5€ a SIM)
+    const FW_MOBILE_BASE_PAY = 5;
+    const DEALER_ENERGY_MIN_CONTRACTS = 2;
+
+    const HO_TABLES = {
+      auto: {
+        gt6:        { thresholds: SIM_THRESHOLDS, values: [20, 25, 29, 32] },
+        lt6MainMpd: { thresholds: SIM_THRESHOLDS, values: [18, 20, 23, 25] }
+      },
+      pura: {
+        gt6:        { thresholds: SIM_THRESHOLDS, values: [10, 15, 19, 22] },
+        lt6MainMpd: { thresholds: SIM_THRESHOLDS, values: [8, 10, 13, 15] }
+      }
+    };
+
+    // Settembre 2026 — compensi RESIDENZIALI aumentati
     const FW_MOBILE_AUTO = {
-      "9.95": { thresholds: [0, 15, 25, 40], values: [22, 33, 39, 44] },
-      "11.95": { thresholds: [0, 15, 25, 40], values: [25, 38, 44, 51] },
-      "14.95": { thresholds: [0, 15, 25, 40], values: [29, 51, 59, 66] },
-      "19.95": { thresholds: [0, 15, 25, 40], values: [31, 55, 63, 71] }
+      "9.95":  { thresholds: SIM_THRESHOLDS, values: [20, 33, 43, 49] },
+      "11.95": { thresholds: SIM_THRESHOLDS, values: [24, 38, 45, 56] },
+      "14.95": { thresholds: SIM_THRESHOLDS, values: [28, 51, 64, 71] },
+      "19.95": { thresholds: SIM_THRESHOLDS, values: [30, 55, 68, 76] }
     };
 
     const FW_FISSO = {
@@ -993,7 +1071,7 @@
       }
     };
 
-    // Luglio 2026: soglie ENERGIA UNIFICATE [1, 7, 18, 35, 60] con ACEA + Alperia.
+    // Settembre 2026: soglie ENERGIA UNIFICATE [1, 7, 18, 35, 60] con ACEA + Alperia.
     // Rimosse le offerte DUAL. Gas FLEX residenziale interpretato a scaglioni (60/60/65/75/75).
     const FW_ENERGY = {
       lfm: {
@@ -1140,6 +1218,7 @@
       show("cfgHo", brandAttivi.includes("ho"));
       show("cfgTiscali", brandAttivi.includes("tiscali"));
       show("cfgAlperia", brandAttivi.includes("alperia"));
+      show("cfgSorgenia", brandAttivi.includes("sorgenia"));
       show("cfgExtra", brandAttivi.includes("eff") || brandAttivi.includes("rent"));
     }
 
@@ -1211,7 +1290,8 @@
       ho: { label: "HO Mobile", colorClass: "ho", default: 10 },
       tiscsim: { label: "TISCALI SIM (Mobile)", colorClass: "tiscali", default: 10 },
       tiscfisso: { label: "TISCALI Fisso", colorClass: "tiscali", default: 5 },
-      alperia: { label: "ALPERIA (Energia)", colorClass: "alperia", default: 10 },
+      alperia: { label: "ALPERIA (Energia)", colorClass: "alperia", default: 8 },
+      sorgenia: { label: "SORGENIA (Energia)", colorClass: "sorgenia", default: 8 },
       eff: { label: "EFFICIENCY", colorClass: "eff", default: 3 },
       rent: { label: "RENT", colorClass: "rent", default: 2 }
     };
@@ -1368,6 +1448,7 @@
         tiscMobileTipo: document.getElementById("tiscMobileTipo")?.value || "mobile_200",
         tiscFissoTipo: document.getElementById("tiscFissoTipo")?.value || "res_fibra",
         alperiaTipo: document.getElementById("alperiaTipo")?.value || "premium",
+        sorgeniaTipo: document.getElementById("sorgeniaTipo")?.value || "fissa_variabile",
         effVal: Number(document.getElementById("effVal")?.value || 0),
         rentVal: Number(document.getElementById("rentVal")?.value || 0)
       };
@@ -1392,7 +1473,7 @@
       return n * unit;
     }
 
-    // Luglio 2026: la soglia ACEA è determinata dal TOTALE ENERGIA UNIFICATO
+    // Settembre 2026: la soglia ACEA è determinata dal TOTALE ENERGIA UNIFICATO
     // (ACEA + FW Energy + Alperia). Il parametro "totalEnergy" sostituisce
     // il vecchio "fwEnergyCount".
     function aceaUnitValue(n, tipo, bollettino, totalEnergy) {
@@ -1411,7 +1492,7 @@
       return n * aceaUnitValue(n, tipo, bollettino, totalEnergy);
     }
 
-    // Luglio 2026: NUOVO BRAND — Alperia. Compensi FLAT (one-shot).
+    // Settembre 2026: NUOVO BRAND — Alperia. Compensi FLAT (one-shot).
     function alperiaUnitValue(tipo) {
       const row = ALPERIA_TABLE[tipo] || ALPERIA_TABLE.premium;
       return row.flat || 0;
@@ -1422,40 +1503,67 @@
       return n * alperiaUnitValue(tipo);
     }
 
-    function puntiAlperiaMB(n) {
-      // Luglio 2026: Alperia = 1 pt/contratto (come ACEA)
-      return n * 1;
-    }
+    // Settembre 2026: i punti sono per TIPO OFFERTA (vedi getMBPointsTable).
+    // I contratti energia (Acea/FW Energy/Sorgenia/Alperia) valgono tutti "energia".
 
-    // Giugno 2026: tier FW Mobile / HO determinato dai PUNTI complessivi
-    // (FW SIM × 1 + HO SIM × 0,5). Soglie: 15 / 25 / 40 punti.
+    // Settembre 2026: tier SIM determinato dai PUNTI complessivi
+    // (FW SIM × 1 + HO SIM × 0,5). Soglie: 3 / 10 / 20 / 30 punti.
     function combinedFwHoPunti(fmCount, hoCount) {
       return (Number(fmCount) || 0) * 1 + (Number(hoCount) || 0) * 0.5;
     }
 
-    function hoUnitValue(fmCount, hoCount, mode, tier) {
+    // Settembre 2026: indice tier SIM (-1 = sotto soglia 3 → base contrattuale)
+    function simTierIdx(punti, fwEnergyCount) {
+      let idx = -1;
+      if (punti >= 30) idx = 3;
+      else if (punti >= 20) idx = 2;
+      else if (punti >= 10) idx = 1;
+      else if (punti >= 3) idx = 0;
+      // DEALER ENERGY: t20/t30 richiedono ≥2 contratti FW Energia, altrimenti scalano a t10
+      const isDealerEnergy = (Number(fwEnergyCount) || 0) >= DEALER_ENERGY_MIN_CONTRACTS;
+      if (!isDealerEnergy && idx >= 2) idx = 1;
+      return idx;
+    }
+
+    function hoUnitValue(fmCount, hoCount, mode, tier, fwEnergyCount) {
       if ((Number(hoCount) || 0) <= 0) return 0;
       const row = (HO_TABLES[mode] || HO_TABLES.auto)[tier] || HO_TABLES.auto.lt6MainMpd;
       const punti = combinedFwHoPunti(fmCount, hoCount);
-      return pickTierValue(punti, row.thresholds, row.values);
+      const idx = simTierIdx(punti, fwEnergyCount);
+      // Settembre 2026: sotto 3 punti → base contrattuale (5€ a SIM)
+      return idx < 0 ? FW_MOBILE_BASE_PAY : (row.values[idx] || 0);
     }
 
-    function revenueHo(fmCount, hoCount, mode, tier) {
+    function revenueHo(fmCount, hoCount, mode, tier, fwEnergyCount) {
       const n = Number(hoCount) || 0;
-      return n * hoUnitValue(fmCount, hoCount, mode, tier);
+      return n * hoUnitValue(fmCount, hoCount, mode, tier, fwEnergyCount);
     }
 
-    function fwMobileUnitValue(fmCount, hoCount, piano) {
+    function fwMobileUnitValue(fmCount, hoCount, piano, fwEnergyCount) {
       if ((Number(fmCount) || 0) <= 0) return 0;
       const row = FW_MOBILE_AUTO[piano] || FW_MOBILE_AUTO["9.95"];
-      // Giugno 2026: tier in PUNTI (FW × 1 + HO × 0,5). Protect +15€/SIM NON incluso.
+      // Settembre 2026: tier in PUNTI (FW × 1 + HO × 0,5). Protect +15€/SIM NON incluso.
       const punti = combinedFwHoPunti(fmCount, hoCount);
-      return pickTierValue(punti, row.thresholds, row.values);
+      const idx = simTierIdx(punti, fwEnergyCount);
+      // Settembre 2026: sotto 3 punti → base contrattuale (5€ a SIM)
+      return idx < 0 ? FW_MOBILE_BASE_PAY : (row.values[idx] || 0);
     }
 
-    function revenueFastwebMobile(fmCount, hoCount, piano) {
+    function revenueFastwebMobile(fmCount, hoCount, piano, fwEnergyCount) {
       const n = Number(fmCount) || 0;
-      return n * fwMobileUnitValue(fmCount, hoCount, piano);
+      return n * fwMobileUnitValue(fmCount, hoCount, piano, fwEnergyCount);
+    }
+
+    // Settembre 2026: NUOVO BRAND — Sorgenia (energia, tier unificato)
+    function sorgeniaUnitValue(n, tipo, totalEnergy) {
+      if (n <= 0) return 0;
+      const row = SORGENIA_TABLE[tipo] || SORGENIA_TABLE.fissa_variabile;
+      const tierN = (totalEnergy != null) ? totalEnergy : n;
+      return pickTierValue(tierN, row.thresholds, row.values);
+    }
+
+    function revenueSorgenia(n, tipo, totalEnergy) {
+      return n * sorgeniaUnitValue(n, tipo, totalEnergy);
     }
 
     function fwFissoUnitValue(n, tipo) {
@@ -1468,7 +1576,7 @@
       return n * fwFissoUnitValue(n, tipo);
     }
 
-    // Luglio 2026: la soglia FW Energy è determinata dal TOTALE ENERGIA UNIFICATO
+    // Settembre 2026: la soglia FW Energy è determinata dal TOTALE ENERGIA UNIFICATO
     // (ACEA + FW Energy + Alperia). Il parametro "totalEnergy" (opzionale) sostituisce
     // il tier basato solo su fe.
     function fwEnergyUnitValue(n, tipo, totalEnergy) {
@@ -1509,29 +1617,36 @@
       return !!document.getElementById("extraPtsMode")?.checked ? 5 : 0.5;
     }
 
-    function puntiAceaMB(n) {
-      return n * 1;
+    // ============================================================
+    // SETTEMBRE 2026 — PUNTI MULTIBRAND PER TIPO DI OFFERTA
+    // ============================================================
+    // ENERGIA (luce/gas) 1 · MOBILE 0,5 · FISSO 1 · SKY 1
+    // Con maggiorazione: ENERGIA 1,25 · MOBILE 0,75 · FISSO 1,25 · SKY 1,25
+    function getMBPointsTable(boostActive) {
+      const mb = COMPENSI.multibrand;
+      return boostActive
+        ? (mb.punti_boost || { energia: 1.25, mobile: 0.75, fisso: 1.25, sky: 1.25 })
+        : (mb.punti || { energia: 1, mobile: 0.5, fisso: 1, sky: 1 });
+    }
+
+    // Settembre 2026: la maggiorazione si attiva con ≥3 prodotti energia
+    // che abbiano ciascuno ≥5 contratti.
+    function isMBBoostActive(qtyAcea, qtyFwEnergy, qtySorgenia, qtyAlperia) {
+      const mb = COMPENSI.multibrand;
+      const minC = mb.boost_min_contratti || 5;
+      const minP = mb.boost_min_prodotti || 3;
+      let sopra = 0;
+      if ((qtyAcea || 0) >= minC) sopra++;
+      if ((qtyFwEnergy || 0) >= minC) sopra++;
+      if ((qtySorgenia || 0) >= minC) sopra++;
+      if ((qtyAlperia || 0) >= minC) sopra++;
+      return sopra >= minP;
     }
 
     function puntiSkyMB(n, type) {
-      // Giugno 2026: Prova SKY non fa più punto gara (era 0,25)
+      // Settembre 2026: Prova SKY non fa punto gara e non attiva il prodotto Sky
       if (type === "prova_nonconv" || type === "prova_conv") return 0;
       return n * 1;
-    }
-
-    function puntiHoMB(n) {
-      return n * 0.25;
-    }
-
-    function puntiFastwebMB(nM, nF, nE, fissoTipo) {
-      // Giugno 2026: FW Energy = 1pt (era 2); fissi (res+bus) tutti 0,5pt
-      const fissoRow = FW_FISSO[fissoTipo] || FW_FISSO.casa_start;
-      return nM * 0.25 + nF * (fissoRow.mbPointsPer || 0.5) + nE * 1;
-    }
-
-    function puntiTiscaliMB(nM, nF, tiscFissoTipo) {
-      const fissoRow = TISC_FIXED[tiscFissoTipo] || TISC_FIXED.res_fibra;
-      return nM * 0.25 + nF * (fissoRow.mbPointsPer || 0.5);
     }
 
     /****************************************************************
@@ -1548,29 +1663,21 @@
       return idx;
     }
 
-    function bonusMultibrand(puntiTot, nBrand, skyCount) {
+    // Settembre 2026: il gettone dipende dalla COLONNA (e1/e2/e3), non più dal n. brand.
+    //   e1 = solo ENERGIA · e2 = ENERGIA + TELCO/SKY · e3 = ENERGIA + TELCO + SKY
+    function bonusMultibrand(puntiTot, colonna) {
       const level = getMBLevel(puntiTot);
-      if (level < 0) return { base: 0, skyExtra: 0, total: 0, level: -1 };
-
-      let base = 0;
-      if (nBrand === 2) base = (COMPENSI.multibrand.bonus_2 || [])[level] || 0;
-      if (nBrand === 3) base = (COMPENSI.multibrand.bonus_3 || [])[level] || 0;
-      if (nBrand === 4) base = (COMPENSI.multibrand.bonus_4 || [])[level] || 0;
-
-      let skyExtra = 0;
-      if (
-        (nBrand === 3 || nBrand === 4) &&
-        skyCount >= (COMPENSI.multibrand.extra_sky_min_contracts || 7)
-      ) {
-        skyExtra = (COMPENSI.multibrand.extra_sky || [])[level] || 0;
+      if (level < 0 || !colonna) {
+        return { base: 0, skyExtra: 0, total: 0, level: -1, colonna: colonna || null };
       }
 
-      return {
-        base,
-        skyExtra,
-        total: base + skyExtra,
-        level
-      };
+      const mb = COMPENSI.multibrand;
+      let base = 0;
+      if (colonna === "e1") base = (mb.bonus_e1 || [])[level] || 0;
+      else if (colonna === "e2") base = (mb.bonus_e2 || [])[level] || 0;
+      else if (colonna === "e3") base = (mb.bonus_e3 || [])[level] || 0;
+
+      return { base, skyExtra: 0, total: base, level, colonna };
     }
 
     /****************************************************************
@@ -1587,6 +1694,7 @@
         tiscsim: flags.hasTisc ? (candidate.tmob || 0) : 0,
         tiscfisso: flags.hasTisc ? (candidate.tfix || 0) : 0,
         alperia: flags.hasAlperia ? (candidate.alperia || 0) : 0,
+        sorgenia: flags.hasSorgenia ? (candidate.sorgenia || 0) : 0,
         eff: flags.hasEff ? (candidate.eff || 0) : 0,
         rent: flags.hasRent ? (candidate.rent || 0) : 0
       };
@@ -1667,7 +1775,7 @@
 
       const out = [];
       for (const arr of buckets.values()) {
-        for (const x of paretoMinRevMaxPoints(arr).slice(0, 8)) {
+        for (const x of paretoMinRevMaxPoints(arr).slice(0, 5)) {
           out.push(x);
         }
       }
@@ -1679,11 +1787,12 @@
       const buckets = new Map();
 
       for (const st of states) {
-        // Luglio 2026: include st.alperia nel sum di bucketing (era omesso).
+        // Settembre 2026: include st.alperia nel sum di bucketing (era omesso).
         const alperia = st.alperia || 0;
-        const sum = st.acea + st.sky + st.ho + st.tmob + st.tfix + st.eff + st.rent + alperia;
-        // Energia = ACEA + Alperia (per tier unificato di gara)
-        const energy = st.acea + alperia;
+        const sorgenia = st.sorgenia || 0;
+        const sum = st.acea + st.sky + st.ho + st.tmob + st.tfix + st.eff + st.rent + alperia + sorgenia;
+        // Settembre 2026: Energia = ACEA + Alperia + Sorgenia (tier unificato)
+        const energy = st.acea + alperia + sorgenia;
         const sky = st.sky;
         const fixed = st.tfix;
         const mobile = st.ho + st.tmob;
@@ -1704,7 +1813,7 @@
 
       const out = [];
       for (const arr of buckets.values()) {
-        for (const x of paretoMinRevMaxPoints(arr).slice(0, 10)) {
+        for (const x of paretoMinRevMaxPoints(arr).slice(0, 4)) {
           out.push(x);
         }
       }
@@ -1716,59 +1825,62 @@
      * COSTRUZIONE STATI REST
      ****************************************************************/
     function buildRestBySum(maxTotal, cfg, flags) {
-      const { hasAcea, hasSky, hasHo, hasTisc, hasAlperia, hasEff, hasRent, target } = flags;
+      const { hasAcea, hasSky, hasHo, hasTisc, hasAlperia, hasSorgenia, hasEff, hasRent, target } = flags;
 
       const minAcea = hasAcea ? MINIMI.acea : 0;
       const minSky = hasSky ? MINIMI.sky : 0;
       const minHo = hasHo ? 1 : 0;
-      // Luglio 2026: Tiscali brand attivo con ≥ 5 mobili (fisso non obbligatorio)
+      // Settembre 2026: Tiscali = 1 prodotto TELCO, attivo con ≥1 contratto (SIM o fisso)
       const minTMob = hasTisc ? MINIMI.tiscMob : 0;
       const minTFix = hasTisc ? MINIMI.tiscFix : 0;
-      // Luglio 2026: nuovo brand Alperia
+      // Settembre 2026: nuovo brand Alperia
       const minAlperia = hasAlperia ? MINIMI.alperia : 0;
       const minEff = hasEff ? 0 : 0;
       const minRent = hasRent ? 0 : 0;
 
-      // Luglio 2026: soglia energia unificata max = 60 → oltre 90 ACEA / FW Energy non
-      // ha senso (tier bloccato). Bound più stretti per contenere l'esplosione DP.
-      const maxAcea = hasAcea ? Math.min(100, minAcea + Math.ceil(target / 60) + 30) : 0;
-      const maxSky = hasSky ? Math.min(90, minSky + Math.ceil(target / 70) + 25) : 0;
-      const maxHo = hasHo ? Math.min(90, 1 + Math.ceil(target / 15) + 25) : 0;
-      const maxTMob = hasTisc ? Math.min(90, 1 + Math.ceil(target / 14) + 25) : 0;
-      const maxTFix = hasTisc ? Math.min(50, 1 + Math.ceil(target / 55) + 15) : 0;
-      // Luglio 2026: alperiaFlat può essere alto (fino a 70€ flat), quindi non serve iterare
+      // Settembre 2026 — PERFORMANCE: ogni dimensione è limitata anche da maxTotal
+      // (non può superarlo) e dalla soglia energia massima (60). Con 9 dimensioni
+      // il costo del DP cresce col prodotto dei range: bound stretti sono essenziali.
+      const dimCap = (v) => Math.max(0, Math.min(v, maxTotal));
+      const maxAcea = hasAcea ? dimCap(Math.min(70, minAcea + Math.ceil(target / 60) + 15)) : 0;
+      const maxSky = hasSky ? dimCap(Math.min(60, minSky + Math.ceil(target / 70) + 15)) : 0;
+      const maxHo = hasHo ? dimCap(Math.min(60, 1 + Math.ceil(target / 20) + 15)) : 0;
+      const maxTMob = hasTisc ? dimCap(Math.min(60, 1 + Math.ceil(target / 18) + 15)) : 0;
+      const maxTFix = hasTisc ? dimCap(Math.min(40, 1 + Math.ceil(target / 60) + 10)) : 0;
+      // Settembre 2026: alperiaFlat può essere alto (fino a 70€ flat), quindi non serve iterare
       // fino a 120. Soglia energia unificata al max = 60 → maxAlperia ≥ 60 è sufficiente
       // (oltre non porta benefici tier). Bound stretto per contenere l'esplosione di stati.
       const alperiaFlat = ALPERIA_TABLE[cfg.alperiaTipo]?.flat || 25;
       const maxAlperia = hasAlperia
-        ? Math.min(60, minAlperia + Math.ceil(target / Math.max(alperiaFlat, 30)) + 12)
+        ? dimCap(Math.min(50, minAlperia + Math.ceil(target / Math.max(alperiaFlat, 35)) + 10))
+        : 0;
+      // Settembre 2026: NUOVO brand Sorgenia (energia, tier unificato)
+      const minSorgenia = hasSorgenia ? MINIMI.sorgenia : 0;
+      const maxSorgenia = hasSorgenia
+        ? dimCap(Math.min(50, minSorgenia + Math.ceil(target / 70) + 10))
         : 0;
 
       const extraPts = getExtraPointsPerUnit();
-      const maxEff = hasEff ? Math.min(80, Math.ceil(90 / Math.max(extraPts, 0.1)) + 10) : 0;
-      const maxRent = hasRent ? Math.min(80, Math.ceil(90 / Math.max(extraPts, 0.1)) + 10) : 0;
+      const maxEff = hasEff ? dimCap(Math.min(40, Math.ceil(90 / Math.max(extraPts, 0.1)) + 10)) : 0;
+      const maxRent = hasRent ? dimCap(Math.min(40, Math.ceil(90 / Math.max(extraPts, 0.1)) + 10)) : 0;
 
       document.getElementById("effPtsLabel").innerText = extraPts;
       document.getElementById("rentPtsLabel").innerText = extraPts;
 
-      // Luglio 2026: ACEA rev al "base tier" (values[0], t1); l'upgrade al tier reale
+      // Settembre 2026: ACEA rev al "base tier" (values[0], t1); l'upgrade al tier reale
       // (basato sul TOTALE energia unificato) viene calcolato nel main loop.
       const aceaRow = ACEA_TABLE[cfg.aceaTipo] || ACEA_TABLE.sprint_fix;
       const aceaBaseUnit = aceaRow.flat != null
         ? Math.max(0, aceaRow.flat - (cfg.aceaBollettino ? 20 : 0))
         : Math.max(0, (aceaRow.values?.[0] || 0) - (cfg.aceaBollettino ? 20 : 0));
       const aceaRev = new Array(maxAcea + 1).fill(0);
-      const aceaPts = new Array(maxAcea + 1).fill(0);
       for (let n = 0; n <= maxAcea; n++) {
         aceaRev[n] = n * aceaBaseUnit;
-        aceaPts[n] = puntiAceaMB(n);
       }
 
       const skyRev = new Array(maxSky + 1).fill(0);
-      const skyPts = new Array(maxSky + 1).fill(0);
       for (let n = 0; n <= maxSky; n++) {
         skyRev[n] = revenueSky(n, cfg.skyTipo);
-        skyPts[n] = puntiSkyMB(n, cfg.skyTipo);
       }
 
       // Giugno 2026: HO ricavo dipende dal tier COMBINATO (FW+HO punti).
@@ -1777,25 +1889,18 @@
       const hoBaseUnit =
         (HO_TABLES[cfg.hoMode] || HO_TABLES.auto)[cfg.hoTier]?.values?.[0] || 0;
       const hoRev = new Array(maxHo + 1).fill(0);
-      const hoPts = new Array(maxHo + 1).fill(0);
       for (let n = 0; n <= maxHo; n++) {
         hoRev[n] = n * hoBaseUnit;
-        hoPts[n] = puntiHoMB(n);
       }
 
       const tMobRev = new Array(maxTMob + 1).fill(0);
-      const tMobPts = new Array(maxTMob + 1).fill(0);
       for (let n = 0; n <= maxTMob; n++) {
         tMobRev[n] = revenueTiscMobile(n, cfg.tiscMobileTipo);
-        tMobPts[n] = n * 0.25;
       }
 
       const tFixRev = new Array(maxTFix + 1).fill(0);
-      const tFixPts = new Array(maxTFix + 1).fill(0);
-      const tFixRow = TISC_FIXED[cfg.tiscFissoTipo] || TISC_FIXED.res_fibra;
       for (let n = 0; n <= maxTFix; n++) {
         tFixRev[n] = revenueTiscFixed(n, cfg.tiscFissoTipo);
-        tFixPts[n] = n * (tFixRow.mbPointsPer || 0.5);
       }
 
       const effRev = new Array(maxEff + 1).fill(0);
@@ -1812,12 +1917,19 @@
         rentPts[n] = n * extraPts;
       }
 
-      // Luglio 2026: Alperia — compensi FLAT (non variano con la soglia).
+      // Settembre 2026: Alperia — compensi FLAT (non variano con la soglia).
       const alperiaRev = new Array(maxAlperia + 1).fill(0);
-      const alperiaPts = new Array(maxAlperia + 1).fill(0);
       for (let n = 0; n <= maxAlperia; n++) {
         alperiaRev[n] = revenueAlperia(n, cfg.alperiaTipo);
-        alperiaPts[n] = puntiAlperiaMB(n);
+      }
+
+      // Settembre 2026: Sorgenia — rev al "base tier" (t1); upgrade al tier UNIFICATO
+      // calcolato nel main loop.
+      const sorgeniaRow = SORGENIA_TABLE[cfg.sorgeniaTipo] || SORGENIA_TABLE.fissa_variabile;
+      const sorgeniaBaseUnit = sorgeniaRow.values?.[0] || 0;
+      const sorgeniaRev = new Array(maxSorgenia + 1).fill(0);
+      for (let n = 0; n <= maxSorgenia; n++) {
+        sorgeniaRev[n] = n * sorgeniaBaseUnit;
       }
 
       let dp = Array.from({ length: maxTotal + 1 }, () => []);
@@ -1831,9 +1943,22 @@
         tmob: 0,
         tfix: 0,
         alperia: 0,
+        sorgenia: 0,
         eff: 0,
         rent: 0
       });
+
+      // PERFORMANCE: costruisco lo stato con una lista esplicita di proprietà invece
+      // dello spread ({...st}). Con 11 campi e milioni di stati la differenza è netta.
+      function cloneState(st) {
+        return {
+          rev: st.rev, punti: st.punti, mask: st.mask,
+          acea: st.acea, sky: st.sky, ho: st.ho,
+          tmob: st.tmob, tfix: st.tfix,
+          alperia: st.alperia, sorgenia: st.sorgenia,
+          eff: st.eff, rent: st.rent
+        };
+      }
 
       function addVar(dpIn, minN, maxN, applyFn) {
         const dpOut = Array.from({ length: maxTotal + 1 }, () => []);
@@ -1854,79 +1979,98 @@
         for (let s = 0; s <= maxTotal; s++) {
           if (dpOut[s].length > 0) {
             dpOut[s] = pruneRestStates(dpOut[s]);
-            // Luglio 2026: cap ridotto (160→100) per contenere la crescita degli stati
-            // dopo l'aggiunta della dim Alperia. Il pruning pareto preserva la qualità.
-            if (dpOut[s].length > 100) dpOut[s] = dpOut[s].slice(0, 100);
+            // Settembre 2026 — PERFORMANCE: con 9 dimensioni il cap dev'essere basso.
+            // Il pruning Pareto per bucket preserva le combinazioni migliori.
+            if (dpOut[s].length > 32) dpOut[s] = dpOut[s].slice(0, 32);
           }
         }
 
         return dpOut;
       }
 
-      dp = addVar(dp, minAcea, maxAcea, (st, n) => ({
-        ...st,
-        acea: n,
-        mask: n > 0 ? (st.mask | 1) : st.mask,
-        rev: st.rev + aceaRev[n],
-        punti: st.punti + aceaPts[n]
-      }));
-
-      dp = addVar(dp, minSky, maxSky, (st, n) => {
-        const row = SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"];
-        return {
-          ...st,
-          sky: n,
-          mask: (n > 0 && row.validBrand) ? (st.mask | 2) : st.mask,
-          rev: st.rev + skyRev[n],
-          punti: st.punti + skyPts[n]
-        };
+      // Settembre 2026: punti BASE per tipo offerta (ENERGIA 1 · MOBILE 0,5 · FISSO 1 · SKY 1).
+      // Il boost (×1,25 / ×1,5 su mobile) viene applicato nel main loop.
+      dp = addVar(dp, minAcea, maxAcea, (st, n) => {
+        const o = cloneState(st);
+        o.acea = n;
+        if (n > 0) o.mask |= 1;
+        o.rev += aceaRev[n];
+        o.punti += n;
+        return o;
       });
 
-      dp = addVar(dp, minHo, maxHo, (st, n) => ({
-        ...st,
-        ho: n,
-        rev: st.rev + hoRev[n],
-        punti: st.punti + hoPts[n]
-      }));
+      const skyRowDP = SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"];
+      const skyPtsPer = puntiSkyMB(1, cfg.skyTipo);
+      dp = addVar(dp, minSky, maxSky, (st, n) => {
+        const o = cloneState(st);
+        o.sky = n;
+        if (n > 0 && skyRowDP.validBrand) o.mask |= 2;
+        o.rev += skyRev[n];
+        o.punti += n * skyPtsPer;
+        return o;
+      });
 
-      dp = addVar(dp, minTMob, maxTMob, (st, n) => ({
-        ...st,
-        tmob: n,
-        rev: st.rev + tMobRev[n],
-        punti: st.punti + tMobPts[n]
-      }));
+      dp = addVar(dp, minHo, maxHo, (st, n) => {
+        const o = cloneState(st);
+        o.ho = n;
+        o.rev += hoRev[n];
+        o.punti += n * 0.5;
+        return o;
+      });
 
-      dp = addVar(dp, minTFix, maxTFix, (st, n) => ({
-        ...st,
-        tfix: n,
-        mask: (n > 0 && st.tmob > 0) ? (st.mask | 4) : st.mask,
-        rev: st.rev + tFixRev[n],
-        punti: st.punti + tFixPts[n]
-      }));
+      dp = addVar(dp, minTMob, maxTMob, (st, n) => {
+        const o = cloneState(st);
+        o.tmob = n;
+        o.rev += tMobRev[n];
+        o.punti += n * 0.5;
+        return o;
+      });
 
-      dp = addVar(dp, minEff, maxEff, (st, n) => ({
-        ...st,
-        eff: n,
-        rev: st.rev + effRev[n],
-        punti: st.punti + effPts[n]
-      }));
+      dp = addVar(dp, minTFix, maxTFix, (st, n) => {
+        const o = cloneState(st);
+        o.tfix = n;
+        if (n > 0 && st.tmob > 0) o.mask |= 4;
+        o.rev += tFixRev[n];
+        o.punti += n;
+        return o;
+      });
 
-      dp = addVar(dp, minRent, maxRent, (st, n) => ({
-        ...st,
-        rent: n,
-        rev: st.rev + rentRev[n],
-        punti: st.punti + rentPts[n]
-      }));
+      dp = addVar(dp, minEff, maxEff, (st, n) => {
+        const o = cloneState(st);
+        o.eff = n;
+        o.rev += effRev[n];
+        o.punti += effPts[n];
+        return o;
+      });
 
-      // Luglio 2026: NUOVO BRAND — Alperia. Compensi FLAT, punti 1/contratto.
-      // Mask bit 8 (16) usato per il brand Alperia (attivo con n ≥ 1).
-      dp = addVar(dp, minAlperia, maxAlperia, (st, n) => ({
-        ...st,
-        alperia: n,
-        mask: n > 0 ? (st.mask | 16) : st.mask,
-        rev: st.rev + alperiaRev[n],
-        punti: st.punti + alperiaPts[n]
-      }));
+      dp = addVar(dp, minRent, maxRent, (st, n) => {
+        const o = cloneState(st);
+        o.rent = n;
+        o.rev += rentRev[n];
+        o.punti += rentPts[n];
+        return o;
+      });
+
+      // Settembre 2026: Alperia (energia). I punti sono calcolati nel main loop
+      // in base al TIPO OFFERTA (energia), non più per brand.
+      dp = addVar(dp, minAlperia, maxAlperia, (st, n) => {
+        const o = cloneState(st);
+        o.alperia = n;
+        if (n > 0) o.mask |= 16;
+        o.rev += alperiaRev[n];
+        o.punti += n;
+        return o;
+      });
+
+      // Settembre 2026: NUOVO BRAND — Sorgenia (energia). Mask bit 32.
+      dp = addVar(dp, minSorgenia, maxSorgenia, (st, n) => {
+        const o = cloneState(st);
+        o.sorgenia = n;
+        if (n > 0) o.mask |= 32;
+        o.rev += sorgeniaRev[n];
+        o.punti += n;
+        return o;
+      });
 
       return dp;
     }
@@ -1954,27 +2098,36 @@
       const hasHo = brandAttivi.includes("ho");
       const hasTisc = brandAttivi.includes("tiscali");
       const hasAlperia = brandAttivi.includes("alperia");
+      const hasSorgenia = brandAttivi.includes("sorgenia");
       const hasEff = brandAttivi.includes("eff");
       const hasRent = brandAttivi.includes("rent");
 
-      // Luglio 2026: brand Tiscali richiede ≥ 5 mobili (fisso non obbligatorio)
+      // Settembre 2026: minimi per attivare i prodotti selezionati
       const minTotal =
         (hasAcea ? 1 : 0) +
         (hasSky ? 1 : 0) +
         (hasTisc ? MINIMI.tiscMob : 0) +
         (hasFw ? 3 : 0) +
         (hasHo ? 1 : 0) +
-        (hasAlperia ? MINIMI.alperia : 0);
+        (hasAlperia ? MINIMI.alperia : 0) +
+        (hasSorgenia ? MINIMI.sorgenia : 0);
 
-      const maxTotal = Math.min(320, minTotal + 260);
+      // Settembre 2026 — PERFORMANCE: maxTotal calcolato dal target reale invece di
+      // una costante larga. Stimo il compenso medio più basso fra i brand attivi e
+      // aggiungo un margine di sicurezza. Il DP e il main loop scalano con maxTotal².
+      const minUnitEstimate = 20;   // compenso più basso plausibile per contratto
+      const maxTotal = Math.max(
+        minTotal + 6,
+        Math.min(160, minTotal + Math.ceil(targetRev / minUnitEstimate) + 10)
+      );
 
-      // Luglio 2026: 5 brand principali (aggiunto Alperia), max 4 nella tabella bonus MB
-      const selectedMain = ["acea", "sky", "fastweb", "tiscali", "alperia"].filter((b) =>
-        brandAttivi.includes(b)
-      ).length;
-
-      const requireMBAccess = selectedMain >= 2;
-      const requiredPoints = requireMBAccess ? 10 : 0;
+      // Settembre 2026: 8 prodotti in 3 categorie. Accesso alla gara MB:
+      //   ≥4 prodotti attivi (≥3 se si produce SOLO energia). Energia sempre necessaria.
+      const MB_MIN_PRODOTTI = COMPENSI.multibrand.min_prodotti || 4;
+      const MB_MIN_PRODOTTI_ENERGIA = COMPENSI.multibrand.min_prodotti_energia || 3;
+      // Punti minimi = prima soglia della tabella
+      const requiredPoints = (COMPENSI.multibrand.soglie || [20])[0] || 20;
+      const requireMBAccess = true;
 
       const flagsForCalc = {
         hasAcea,
@@ -1983,6 +2136,7 @@
         hasHo,
         hasTisc,
         hasAlperia,
+        hasSorgenia,
         hasEff,
         hasRent
       };
@@ -1992,10 +2146,10 @@
        ****************************/
       const fwBySum = new Map();
 
-      // Luglio 2026: FW Mobile rev al "base tier" (values[0]); upgrade tier in main loop
+      // Settembre 2026: FW Mobile rev al "base tier" (values[0]); upgrade tier in main loop
       const fwMobileRowGlobal = FW_MOBILE_AUTO[cfg.fwMobilePiano] || FW_MOBILE_AUTO["9.95"];
       const fmBaseUnit = fwMobileRowGlobal.values[0] || 0;
-      // Luglio 2026: FW Energy rev al "base tier" (t1); upgrade al tier UNIFICATO
+      // Settembre 2026: FW Energy rev al "base tier" (t1); upgrade al tier UNIFICATO
       // (basato sul totale ACEA + FW Energy + Alperia) viene calcolato in main loop.
       const fwEnergyRowGlobal = FW_ENERGY[cfg.fwEnergyTipo] || FW_ENERGY.lfm;
       const feBaseUnit = fwEnergyRowGlobal.values?.[0] || 0;
@@ -2005,7 +2159,7 @@
         const minFf = 1;
         const minFe = 1;
 
-        // Luglio 2026: soglia energia unificata max=60 → maxFe cap 90; SIM soglie 40→ maxFm 90
+        // Settembre 2026: soglia energia unificata max=60 → maxFe cap 90; SIM soglie 40→ maxFm 90
         const maxFm = Math.min(90, minFm + Math.ceil(targetRev / 30) + 25);
         const maxFf = Math.min(50, minFf + Math.ceil(targetRev / 60) + 15);
         const maxFe = Math.min(90, minFe + Math.ceil(targetRev / 70) + 25);
@@ -2021,7 +2175,8 @@
                 revenueFastwebFisso(ff, cfg.fwFissoTipo) +
                 fe * feBaseUnit;
 
-              const punti = puntiFastwebMB(fm, ff, fe, cfg.fwFissoTipo);
+              // Settembre 2026: punti BASE per tipo offerta (MOBILE 0,5 · FISSO 1 · ENERGIA 1)
+              const punti = fm * 0.5 + ff * 1 + fe * 1;
 
               const brand = fm >= 1 && ff >= 1 && fe >= 1;
 
@@ -2041,8 +2196,8 @@
 
         for (const [sum, list] of fwBySum.entries()) {
           const p = pruneFwStates(list);
-          // Luglio 2026: cap ridotto (180→100) per performance.
-          fwBySum.set(sum, p.length > 100 ? p.slice(0, 100) : p);
+          // Settembre 2026 — PERFORMANCE: cap ridotto a 48.
+          fwBySum.set(sum, p.length > 40 ? p.slice(0, 40) : p);
         }
       } else {
         fwBySum.set(0, [
@@ -2067,6 +2222,7 @@
         hasHo,
         hasTisc,
         hasAlperia,
+        hasSorgenia,
         hasEff,
         hasRent,
         target: targetRev
@@ -2078,18 +2234,20 @@
       let best = null;
 
       const skyRowCached = SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"];
+      const extraPtsGlobal = getExtraPointsPerUnit();
 
-      // Luglio 2026: bonus tier FW Mobile/HO calcolato dinamicamente in main loop
+      // Settembre 2026: bonus tier FW Mobile/HO calcolato dinamicamente in main loop
       // (dipende da punti = fw.fm × 1 + rs.ho × 0,5). Aggiungo overhead all'upper bound.
       const hoRowGlobal =
         (HO_TABLES[cfg.hoMode] || HO_TABLES.auto)[cfg.hoTier] || HO_TABLES.auto.lt6MainMpd;
       const hoBaseUnitMain = hoRowGlobal.values?.[0] || 0;
       const fmTierMaxVal = Math.max(...fwMobileRowGlobal.values);
       const hoTierMaxVal = Math.max(...hoRowGlobal.values);
+      // Settembre 2026: base = 5€ contrattuale (sotto 3 punti)
       const fmTierDelta = Math.max(0, fmTierMaxVal - fmBaseUnit);
       const hoTierDelta = Math.max(0, hoTierMaxVal - hoBaseUnitMain);
 
-      // Luglio 2026: soglie ENERGIA UNIFICATE (1/7/18/35/60) su totale ACEA + FW Energy + Alperia.
+      // Settembre 2026: soglie ENERGIA UNIFICATE (1/7/18/35/60) su totale ACEA + FW Energy + Alperia.
       // Precompute valori ACEA e FW Energy per ogni tier (indice 0..4).
       const aceaRowMain = ACEA_TABLE[cfg.aceaTipo] || ACEA_TABLE.sprint_fix;
       const aceaBaseUnitMain = aceaRowMain.flat != null
@@ -2116,8 +2274,19 @@
         ? Math.max(0, Math.max(...feValByTier) - feBaseUnit)
         : 0;
 
-      // Upper bound bonus Multibrand (base max 1100 + extra sky 200 = 1300).
-      const BONUS_UPPER = 1300;
+      // Settembre 2026: NUOVO brand Sorgenia (energia, tier unificato)
+      const sorgeniaRowMain = SORGENIA_TABLE[cfg.sorgeniaTipo] || SORGENIA_TABLE.fissa_variabile;
+      const sorgeniaBaseUnitMain = sorgeniaRowMain.values?.[0] || 0;
+      const sorgeniaValByTier = new Array(5).fill(0);
+      if (hasSorgenia) {
+        for (let t = 0; t < 5; t++) sorgeniaValByTier[t] = sorgeniaRowMain.values?.[t] || 0;
+      }
+      const sorgeniaTierDelta = hasSorgenia
+        ? Math.max(0, Math.max(...sorgeniaValByTier) - sorgeniaBaseUnitMain)
+        : 0;
+
+      // Upper bound bonus Multibrand (max e3 = 1100).
+      const BONUS_UPPER = 1100;
 
       // Precompute max per sum: FW rev, rest rev, fm, ho, acea, fe
       const maxFwRevBySum = new Map();
@@ -2138,6 +2307,7 @@
       const maxRestRevBySum = new Array(maxTotal + 1).fill(-Infinity);
       const maxHoBySum = new Array(maxTotal + 1).fill(0);
       const maxAceaBySum = new Array(maxTotal + 1).fill(0);
+      const maxSorgBySum = new Array(maxTotal + 1).fill(0);
       for (let s = 0; s <= maxTotal; s++) {
         const list = restBySum[s];
         if (!list) continue;
@@ -2145,12 +2315,30 @@
           if (rs.rev > maxRestRevBySum[s]) maxRestRevBySum[s] = rs.rev;
           if (rs.ho > maxHoBySum[s]) maxHoBySum[s] = rs.ho;
           if ((rs.acea || 0) > maxAceaBySum[s]) maxAceaBySum[s] = rs.acea;
+          if ((rs.sorgenia || 0) > maxSorgBySum[s]) maxSorgBySum[s] = rs.sorgenia;
         }
         if (maxRestRevBySum[s] === -Infinity) maxRestRevBySum[s] = 0;
+        // PERFORMANCE: ordino per ricavo DESC così nel main loop posso usare
+        // "break" (invece di "continue") appena il bound non è più raggiungibile.
+        list.sort((a, b) => b.rev - a.rev);
       }
 
+      // PERFORMANCE: stessa cosa per gli stati Fastweb.
+      for (const list of fwBySum.values()) list.sort((a, b) => b.rev - a.rev);
+
+      // PERFORMANCE: budget massimo di combinazioni valutate. Evita il freeze del
+      // browser su configurazioni con tutti i brand attivi. Il pruning Pareto
+      // garantisce che le combinazioni migliori vengano viste per prime.
+      let evalBudget = 1200000;
+      // Una volta trovata la prima soluzione valida, esploro ancora pochi "tot"
+      // superiori e poi mi fermo: il loop è ascendente sul numero di contratti,
+      // quindi le soluzioni successive sono via via più costose.
+      let firstFoundTot = -1;
+
       for (let tot = minTotal; tot <= maxTotal; tot++) {
+        if (evalBudget <= 0) break;
         for (let fwSum = 0; fwSum <= tot; fwSum++) {
+          if (evalBudget <= 0) break;
           const fwStates = fwBySum.get(fwSum);
           if (!fwStates || fwStates.length === 0) continue;
 
@@ -2164,7 +2352,8 @@
             (maxHoBySum[restSum] || 0) * hoTierDelta;
           const pairEnergyBonusUpper =
             (maxAceaBySum[restSum] || 0) * aceaTierDelta +
-            (maxFeBySum.get(fwSum) || 0) * feTierDelta;
+            (maxFeBySum.get(fwSum) || 0) * feTierDelta +
+            (maxSorgBySum[restSum] || 0) * sorgeniaTierDelta;
 
           const pairUpper =
             (maxFwRevBySum.get(fwSum) || 0) +
@@ -2176,62 +2365,94 @@
 
           const maxHoForRest = maxHoBySum[restSum] || 0;
           const maxAceaForRest = maxAceaBySum[restSum] || 0;
+          const maxSorgForRest = maxSorgBySum[restSum] || 0;
+
+          // Bonus max costante per questo restSum (indipendente dal singolo rs):
+          // serve per poter usare "break" sulla lista ordinata per rev DESC.
+          const restMaxBonusConst =
+            maxHoForRest * hoTierDelta +
+            maxAceaForRest * aceaTierDelta +
+            maxSorgForRest * sorgeniaTierDelta;
 
           for (const fw of fwStates) {
+            if (evalBudget <= 0) break;
+
             // Bonus tier max per questo fw
-            const fwTierBonusUpper =
-              fw.fm * fmTierDelta +
-              maxHoForRest * hoTierDelta +
-              maxAceaForRest * aceaTierDelta +
-              fw.fe * feTierDelta;
+            const fwOwnBonus = fw.fm * fmTierDelta + fw.fe * feTierDelta;
             const fwUpper =
-              fw.rev + (maxRestRevBySum[restSum] || 0) + fwTierBonusUpper + BONUS_UPPER;
+              fw.rev + (maxRestRevBySum[restSum] || 0) + fwOwnBonus + restMaxBonusConst + BONUS_UPPER;
+            // fwStates è ordinato per rev DESC: se questo non ce la fa, nemmeno i successivi
+            // (fwOwnBonus non è monotono, quindi resto conservativo con "continue").
             if (fwUpper < targetRev) continue;
 
+            const fwHeadroom = fw.rev + fwOwnBonus + restMaxBonusConst + BONUS_UPPER;
+
             for (const rs of restStates) {
-              // Upper bound tight per (fw, rs)
-              const tightBonusUpper =
-                fw.fm * fmTierDelta +
-                rs.ho * hoTierDelta +
-                (rs.acea || 0) * aceaTierDelta +
-                fw.fe * feTierDelta;
-              if (fw.rev + rs.rev + tightBonusUpper + BONUS_UPPER < targetRev) continue;
+              // restStates ordinato per rev DESC → se il bound cade qui, cade per tutti i successivi
+              if (fwHeadroom + rs.rev < targetRev) break;
+              if (--evalBudget <= 0) break;
 
-              const aceaBrand = hasAcea && rs.acea >= 1;
-              const skyBrand = hasSky && rs.sky >= 1 && !!skyRowCached.validBrand;
-              // Luglio 2026: brand Tiscali con ≥ 5 mobili (fisso non obbligatorio)
-              const tiscBrand = hasTisc && rs.tmob >= MINIMI.tiscMob;
-              // Luglio 2026: FW brand richiede FW Energy ≥ 1 (già garantito da fw.brand)
-              const fwBrand = hasFw && fw.brand && (!hasHo || rs.ho >= 1);
-              // Luglio 2026: NUOVO — brand Alperia attivo con ≥ 1 contratto
-              const alperiaBrand = hasAlperia && (rs.alperia || 0) >= 1;
+              // ============================================================
+              // SETTEMBRE 2026 — PRODOTTI ATTIVI (8 in 3 categorie)
+              // ============================================================
+              const qAcea     = rs.acea || 0;
+              const qFwEnergy = fw.fe || 0;
+              const qSorgenia = rs.sorgenia || 0;
+              const qAlperia  = rs.alperia || 0;
+              const qFwTelco  = (fw.fm || 0) + (fw.ff || 0);
+              const qHo       = rs.ho || 0;
+              const qTiscali  = (rs.tmob || 0) + (rs.tfix || 0);
+              const qSky      = skyRowCached.validBrand ? (rs.sky || 0) : 0;
 
-              let brandMB = 0;
-              if (aceaBrand) brandMB++;
-              if (skyBrand) brandMB++;
-              if (fwBrand) brandMB++;
-              if (tiscBrand) brandMB++;
-              if (alperiaBrand) brandMB++;
-              // Luglio 2026: la tabella bonus MB scala su max 4 brand
-              const brandMBCapped = Math.min(4, brandMB);
+              // ENERGIA (4 prodotti)
+              let nEnergia = 0;
+              if (hasAcea && qAcea >= 1) nEnergia++;
+              if (hasFw && qFwEnergy >= 1) nEnergia++;
+              if (hasSorgenia && qSorgenia >= 1) nEnergia++;
+              if (hasAlperia && qAlperia >= 1) nEnergia++;
+              // TELCO (3 prodotti)
+              let nTelco = 0;
+              if (hasFw && qFwTelco >= 1) nTelco++;
+              if (hasHo && qHo >= 1) nTelco++;
+              if (hasTisc && qTiscali >= 1) nTelco++;
+              // INTRATTENIMENTO (1 prodotto)
+              const nIntratt = (hasSky && qSky >= 1) ? 1 : 0;
 
-              let puntiMB = rs.punti + ((hasFw || hasHo) ? fw.punti : 0);
+              const nProdotti = nEnergia + nTelco + nIntratt;
+              const hasEnergia = nEnergia >= 1;
+              const soloEnergia = hasEnergia && nTelco === 0 && nIntratt === 0;
+              const minRichiesti = soloEnergia ? MB_MIN_PRODOTTI_ENERGIA : MB_MIN_PRODOTTI;
+              // ACCESSO: energia sempre necessaria + n. prodotti minimo
+              const accesso = hasEnergia && nProdotti >= minRichiesti;
+              if (!accesso) continue;
 
-              const boostEnergy =
-                (hasAcea && hasFw && rs.acea >= 10 && fw.fe >= 10)
-                  ? (COMPENSI.multibrand.boost_energy_points || 10)
-                  : 0;
+              // COLONNA GETTONE
+              let colonna;
+              if (nTelco >= 1 && nIntratt >= 1) colonna = "e3";
+              else if (nTelco >= 1 || nIntratt >= 1) colonna = "e2";
+              else colonna = "e1";
 
-              puntiMB += boostEnergy;
+              // MAGGIORAZIONE PUNTI: ≥3 prodotti energia con ≥5 contratti ciascuno
+              const boostActive = isMBBoostActive(qAcea, qFwEnergy, qSorgenia, qAlperia);
+              const ptTable = getMBPointsTable(boostActive);
 
-              if (requireMBAccess) {
-                if (brandMB < 2) continue;
-                if (puntiMB + 1e-9 < requiredPoints) continue;
-              }
+              // PUNTI per TIPO OFFERTA
+              const qEnergiaTot = qAcea + qFwEnergy + qSorgenia + qAlperia;
+              const qMobileTot  = (fw.fm || 0) + qHo + (rs.tmob || 0);
+              const qFissoTot   = (fw.ff || 0) + (rs.tfix || 0);
+              const extraPtsMB  = (rs.eff || 0) * extraPtsGlobal + (rs.rent || 0) * extraPtsGlobal;
 
-              // Luglio 2026: tier ENERGIA UNIFICATO
-              // (basato sul totale rs.acea + fw.fe + rs.alperia)
-              const totalEnergy = (rs.acea || 0) + (fw.fe || 0) + (rs.alperia || 0);
+              const puntiMB =
+                qEnergiaTot * ptTable.energia +
+                qMobileTot  * ptTable.mobile +
+                qFissoTot   * ptTable.fisso +
+                qSky        * ptTable.sky +
+                extraPtsMB;
+
+              if (puntiMB + 1e-9 < requiredPoints) continue;
+
+              // Settembre 2026: tier ENERGIA UNIFICATO su 4 brand energia
+              const totalEnergy = qEnergiaTot;
               let energyTierIdx = 0;
               if (totalEnergy >= 60) energyTierIdx = 4;
               else if (totalEnergy >= 35) energyTierIdx = 3;
@@ -2240,24 +2461,28 @@
 
               const aceaTierUnit = hasAcea ? aceaValByTier[energyTierIdx] : 0;
               const feTierUnit = hasFw ? feValByTier[energyTierIdx] : 0;
-              const aceaTierBonus = (rs.acea || 0) * Math.max(0, aceaTierUnit - aceaBaseUnitMain);
-              const feTierBonus = (fw.fe || 0) * Math.max(0, feTierUnit - feBaseUnit);
+              const sorgTierUnit = hasSorgenia ? sorgeniaValByTier[energyTierIdx] : 0;
+              const aceaTierBonus = qAcea * Math.max(0, aceaTierUnit - aceaBaseUnitMain);
+              const feTierBonus = qFwEnergy * Math.max(0, feTierUnit - feBaseUnit);
+              const sorgTierBonus = qSorgenia * Math.max(0, sorgTierUnit - sorgeniaBaseUnitMain);
 
-              // Luglio 2026: tier FW Mobile/HO calcolato sui PUNTI combinati
-              const tierPunti = (fw.fm || 0) * 1 + (rs.ho || 0) * 0.5;
+              // Settembre 2026: tier SIM 3/10/20/30 con cap DEALER ENERGY (≥2 FW Energia)
+              const tierPunti = (fw.fm || 0) * 1 + qHo * 0.5;
+              const simIdx = simTierIdx(tierPunti, qFwEnergy);
               const fmTierUnit = hasFw
-                ? pickTierValue(tierPunti, fwMobileRowGlobal.thresholds, fwMobileRowGlobal.values)
+                ? (simIdx < 0 ? FW_MOBILE_BASE_PAY : (fwMobileRowGlobal.values[simIdx] || 0))
                 : 0;
               const hoTierUnit = hasHo
-                ? pickTierValue(tierPunti, hoRowGlobal.thresholds, hoRowGlobal.values)
+                ? (simIdx < 0 ? FW_MOBILE_BASE_PAY : (hoRowGlobal.values[simIdx] || 0))
                 : 0;
               const fmTierBonus = (fw.fm || 0) * Math.max(0, fmTierUnit - fmBaseUnit);
-              const hoTierBonus = (rs.ho || 0) * Math.max(0, hoTierUnit - hoBaseUnitMain);
+              const hoTierBonus = qHo * Math.max(0, hoTierUnit - hoBaseUnitMain);
 
-              const mb = bonusMultibrand(puntiMB, brandMBCapped, rs.sky);
+              const mb = bonusMultibrand(puntiMB, colonna);
               const totRev =
                 rs.rev + fw.rev +
-                fmTierBonus + hoTierBonus + aceaTierBonus + feTierBonus +
+                fmTierBonus + hoTierBonus +
+                aceaTierBonus + feTierBonus + sorgTierBonus +
                 mb.total;
 
               if (totRev >= targetRev) {
@@ -2282,29 +2507,40 @@
                   rAlperia: hasAlperia ? revenueAlperia(rs.alperia || 0, cfg.alperiaTipo) : 0,
                   rEff: hasEff ? rs.eff * (cfg.effVal || 0) : 0,
                   rRent: hasRent ? rs.rent * (cfg.rentVal || 0) : 0,
-                  rFm: hasFw ? revenueFastwebMobile(fw.fm, rs.ho, cfg.fwMobilePiano) : 0,
+                  rFm: hasFw ? (fw.fm || 0) * fmTierUnit : 0,
                   rFf: hasFw ? revenueFastwebFisso(fw.ff, cfg.fwFissoTipo) : 0,
-                  rFe: hasFw ? (fw.fe || 0) * feTierUnit : 0,
-                  rHo: hasHo ? revenueHo(fw.fm, rs.ho, cfg.hoMode, cfg.hoTier) : 0,
+                  rFe: hasFw ? qFwEnergy * feTierUnit : 0,
+                  rHo: hasHo ? qHo * hoTierUnit : 0,
+                  rSorgenia: hasSorgenia ? qSorgenia * sorgTierUnit : 0,
+                  sorgenia: qSorgenia,
 
                   puntiMB,
                   bonusMB: mb.base,
-                  bonusSkyExtra: mb.skyExtra,
+                  bonusSkyExtra: 0,
                   bonusTotal: mb.total,
-                  boostEnergy,
                   totRev,
                   totalEnergy,
                   energyTierIdx,
 
-                  marginVsCosti: totRev - costi,
-                  marginVsTarget: totRev - targetRev,
+                  // Settembre 2026 — dati Multibrand riscritta
+                  colonna,
+                  boostActive,
+                  nEnergia,
+                  nTelco,
+                  nIntratt,
+                  nProdotti,
+                  minRichiesti,
+                  soloEnergia,
+                  simTierIdxUsed: simIdx,
+                  isDealerEnergy: qFwEnergy >= DEALER_ENERGY_MIN_CONTRACTS,
+                  unitFm: fmTierUnit,
+                  unitHo: hoTierUnit,
+                  unitAcea: aceaTierUnit,
+                  unitFe: feTierUnit,
+                  unitSorgenia: sorgTierUnit,
 
-                  brandMB,
-                  aceaBrand,
-                  skyBrand,
-                  tiscBrand,
-                  fwBrand,
-                  alperiaBrand
+                  marginVsCosti: totRev - costi,
+                  marginVsTarget: totRev - targetRev
                 };
 
                 const pref = computePreference(
@@ -2342,15 +2578,20 @@
           }
         }
 
+        if (best && firstFoundTot < 0) firstFoundTot = tot;
+
+        // Uscita anticipata: soluzione di buona qualità...
         if (
           best &&
           best.overshootNorm < 0.04 &&
           best.dist < 0.22 &&
           best.shortfall < 0.12 &&
-          tot > (minTotal + 14)
+          tot > (minTotal + 10)
         ) {
           break;
         }
+        // ...oppure ho già esplorato abbastanza oltre la prima soluzione trovata.
+        if (firstFoundTot >= 0 && tot > firstFoundTot + 14) break;
       }
 
       renderOutput(best, {
@@ -2404,12 +2645,19 @@
       const hasEff = brandAttivi.includes("eff");
       const hasRent = brandAttivi.includes("rent");
 
-      const brandList = [];
-      if (best.aceaBrand) brandList.push("ACEA");
-      if (best.skyBrand) brandList.push("SKY");
-      if (best.fwBrand) brandList.push(hasHo ? "FASTWEB+HO" : "FASTWEB");
-      if (best.tiscBrand) brandList.push("TISCALI");
-      if (best.alperiaBrand) brandList.push("ALPERIA");
+      // Settembre 2026: prodotti attivi (8 in 3 categorie)
+      const prodEnergia = [];
+      if (hasAcea && best.acea >= 1) prodEnergia.push("ACEA");
+      if (hasFw && best.fe >= 1) prodEnergia.push("FW Energia");
+      if (hasSorgenia && (best.sorgenia || 0) >= 1) prodEnergia.push("SORGENIA");
+      if (hasAlperia && (best.alperia || 0) >= 1) prodEnergia.push("ALPERIA");
+      const prodTelco = [];
+      if (hasFw && (best.fm + best.ff) >= 1) prodTelco.push("FASTWEB");
+      if (hasHo && best.ho >= 1) prodTelco.push("HO Mobile");
+      if (hasTisc && (best.tmob + best.tfix) >= 1) prodTelco.push("TISCALI");
+      const prodIntratt = [];
+      if (hasSky && best.sky >= 1) prodIntratt.push("SKY");
+      const brandList = [...prodEnergia, ...prodTelco, ...prodIntratt];
 
       const pctFmt = (v) => `${Math.round((v || 0) * 100)}%`;
 
@@ -2418,7 +2666,7 @@
       if (nomeNegozio) {
         txt += `*🏬 NEGOZIO*: ${nomeNegozio}\n`;
       }
-      txt += `*📅 MESE*: Luglio 2026\n\n`;
+      txt += `*📅 MESE*: Settembre 2026\n\n`;
 
       txt += `*🎯 OBIETTIVO*: €${costi}`;
       if (useMarg) txt += ` + *MARGINALITÀ ${pct}%*`;
@@ -2427,14 +2675,20 @@
       if (useMarg) txt += `*📌 Target ricavi*: €${targetRev}\n`;
 
       txt += `\n*📌 Brand selezionati*: ${brandAttivi.join(", ").toUpperCase()}\n`;
-      txt += `*🏷 Brand conteggiati in Multibrand*: ${brandList.join(", ") || "NESSUNO"}\n`;
+      txt += `*🏷 Prodotti attivi Multibrand* (${best.nProdotti}): ${brandList.join(", ") || "NESSUNO"}\n`;
+      txt += ` • ENERGIA: ${best.nEnergia} · TELCO: ${best.nTelco} · INTRATT.: ${best.nIntratt}\n`;
 
-      if (requireMBAccess) {
-        txt += `*✅ Accesso Multibrand*: almeno 10 punti (raggiunti: ${best.puntiMB.toFixed(2)})\n`;
+      const colLbl = best.colonna === "e3" ? "Energia + Telco + Intrattenimento"
+                   : best.colonna === "e2" ? "Energia + Telco/Intrattenimento"
+                   : "Energia";
+      txt += `*✅ Accesso Multibrand*: ${best.nProdotti}/${best.minRichiesti} prodotti · ${best.puntiMB.toFixed(2)} punti (min ${requiredPoints})\n`;
+      txt += `*🎫 Colonna gettone*: ${best.colonna.toUpperCase()} — ${colLbl}\n`;
+
+      if (best.boostActive) {
+        txt += `*⚡ Maggiorazione punti ATTIVA*: 3+ prodotti energia con ≥5 contratti (ENERGIA 1,25 · MOBILE 0,75 · FISSO 1,25 · SKY 1,25)\n`;
       }
-
-      if (best.boostEnergy > 0) {
-        txt += `*⚡ Extra Boost Energy*: +${best.boostEnergy} punti (10 ACEA + 10 FW Energy)\n`;
+      if (best.isDealerEnergy) {
+        txt += `*🔋 DEALER ENERGY*: ≥2 FW Energia → soglie SIM t20/t30 sbloccate\n`;
       }
 
       const virtualBrandsOut = getVirtualBrands();
@@ -2457,7 +2711,7 @@
         txt += `• *ACEA* → ${best.acea} contratti (${ACEA_TABLE[cfg.aceaTipo]?.name || "ACEA"})\n`;
         txt += ` - €/contratto: €${aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.totalEnergy)}\n`;
         txt += ` - provvigioni: €${best.rAcea}\n`;
-        txt += ` - punti MB: ${puntiAceaMB(best.acea)}\n\n`;
+        txt += ` - punti MB (energia): ${(best.acea * (best.boostActive ? 1.25 : 1)).toFixed(2)}\n\n`;
       }
 
       if (hasSky) {
@@ -2487,10 +2741,12 @@
         }
 
         txt += ` 👉 Totale FASTWEB${hasHo ? "+HO" : ""}: €${best.rFm + best.rFf + best.rFe + best.rHo}\n`;
-        txt += ` 👉 Punti MB FASTWEB${hasHo ? "+HO" : ""} (se brand valido): ${
-          best.fwBrand
-            ? (puntiFastwebMB(best.fm, best.ff, best.fe, cfg.fwFissoTipo) + puntiHoMB(best.ho)).toFixed(2)
-            : "0.00"
+        const bMul = best.boostActive ? 1 : 1;
+        const ptMob = best.boostActive ? 0.75 : 0.5;
+        const ptFis = best.boostActive ? 1.25 : 1;
+        const ptEne = best.boostActive ? 1.25 : 1;
+        txt += ` 👉 Punti MB FASTWEB${hasHo ? "+HO" : ""}: ${
+          ((best.fm + best.ho) * ptMob + best.ff * ptFis + best.fe * ptEne).toFixed(2)
         }\n\n`;
       } else if (hasHo) {
         txt += `• *HO Mobile* selezionato senza FASTWEB → contribuisce a ricavi, ma non attiva brand MB separato\n`;
@@ -2508,10 +2764,8 @@
         txt += ` - provvigioni: €${best.rTFix}\n`;
 
         txt += ` 👉 Totale TISCALI: €${best.rTMob + best.rTFix}\n`;
-        txt += ` 👉 Punti MB TISCALI (se brand valido): ${
-          best.tiscBrand
-            ? puntiTiscaliMB(best.tmob, best.tfix, cfg.tiscFissoTipo).toFixed(2)
-            : "0.00"
+        txt += ` 👉 Punti MB TISCALI: ${
+          (best.tmob * (best.boostActive ? 0.75 : 0.5) + best.tfix * (best.boostActive ? 1.25 : 1)).toFixed(2)
         }\n\n`;
       }
 
@@ -2520,13 +2774,21 @@
         txt += `• *ALPERIA (${alpName})* → ${best.alperia} contratti\n`;
         txt += ` - €/contratto (FLAT): €${alperiaUnitValue(cfg.alperiaTipo)}\n`;
         txt += ` - provvigioni: €${best.rAlperia}\n`;
-        txt += ` - punti MB: ${puntiAlperiaMB(best.alperia)}\n\n`;
+        txt += ` - punti MB (energia): ${(best.alperia * (best.boostActive ? 1.25 : 1)).toFixed(2)}\n\n`;
       }
 
-      if (hasAcea || hasFw || hasAlperia) {
+      if (hasSorgenia) {
+        const sorgName = (SORGENIA_TABLE[cfg.sorgeniaTipo] || SORGENIA_TABLE.fissa_variabile).name;
+        txt += `• *SORGENIA (${sorgName})* → ${best.sorgenia} contratti\n`;
+        txt += ` - €/contratto: €${best.unitSorgenia}\n`;
+        txt += ` - provvigioni: €${best.rSorgenia}\n`;
+        txt += ` - punti MB (energia): ${(best.sorgenia * (best.boostActive ? 1.25 : 1)).toFixed(2)}\n\n`;
+      }
+
+      if (hasAcea || hasFw || hasAlperia || hasSorgenia) {
         const totE = best.totalEnergy || 0;
         const tierLabels = ["t1 (1)", "t7 (7)", "t18 (18)", "t35 (35)", "t60 (60)"];
-        txt += `*⚡ Tier ENERGIA unificato* (ACEA + FW Energy + Alperia): ${totE} contratti → *${tierLabels[best.energyTierIdx || 0]}*\n\n`;
+        txt += `*⚡ Tier ENERGIA unificato* (ACEA + FW Energy + Alperia + Sorgenia): ${totE} contratti → *${tierLabels[best.energyTierIdx || 0]}*\n\n`;
       }
 
       if (hasEff) {
@@ -2546,10 +2808,6 @@
       txt += `*🔥 Punti Multibrand totali*: ${best.puntiMB.toFixed(2)}\n`;
       txt += `*💶 Bonus Multibrand base*: €${best.bonusMB}\n`;
 
-      if (best.bonusSkyExtra > 0) {
-        txt += `*🌟 Extra SKY*: €${best.bonusSkyExtra}\n`;
-      }
-
       txt += `*💶 Bonus Multibrand totale*: €${best.bonusTotal}\n`;
       txt += `\n*💰 TOTALE RICAVI*: €${best.totRev}\n`;
       txt += `*📊 Margine vs costi*: €${best.marginVsCosti}\n`;
@@ -2560,7 +2818,7 @@
 
       txt += `\n*💡 Convergenze*: se fai contratti in convergenza puoi guadagnare da +10€ a +40€ per ogni combinazione.\n`;
 
-      txt += `\n✔ Combinazione *realistica e pronta all’uso* aggiornata a Luglio 2026.`;
+      txt += `\n✔ Combinazione *realistica e pronta all’uso* aggiornata a Settembre 2026.`;
 
       out.innerText = txt;
       out.classList.remove("hidden");
@@ -2619,8 +2877,13 @@
       if (requireMBAccess) {
         d += `Accesso Multibrand richiesto: >=${requiredPoints} punti (attuali: ${best.puntiMB.toFixed(2)})\n`;
       }
-      if (best.boostEnergy > 0) {
-        d += `Extra Boost Energy: +${best.boostEnergy} punti\n`;
+      d += `Prodotti attivi: ${best.nProdotti}/${best.minRichiesti} (ENERGIA ${best.nEnergia} · TELCO ${best.nTelco} · INTRATT ${best.nIntratt})\n`;
+      d += `Colonna gettone: ${(best.colonna || "-").toUpperCase()}\n`;
+      if (best.boostActive) {
+        d += `Maggiorazione punti ATTIVA (3+ prodotti energia con >=5 contratti)\n`;
+      }
+      if (best.isDealerEnergy) {
+        d += `DEALER ENERGY attivo (>=2 FW Energia): soglie SIM t20/t30 disponibili\n`;
       }
 
       const virtualBrandsDett = getVirtualBrands();
@@ -2641,7 +2904,7 @@
         d += `• ACEA — ${(ACEA_TABLE[cfg.aceaTipo] || ACEA_TABLE.sprint_fix).name}\n`;
         d += `- contratti: ${best.acea}\n`;
         d += `- €/contratto: €${aceaUnitValue(best.acea, cfg.aceaTipo, cfg.aceaBollettino, best.totalEnergy).toFixed(2)}\n`;
-        d += `- punti MB/contratto: 1\n\n`;
+        d += `- punti MB/contratto (energia): ${best.boostActive ? "1,25" : "1"}\n\n`;
       }
 
       if (brandAttivi.includes("sky") && best.sky > 0) {
@@ -2661,7 +2924,7 @@
           d += `- SIM: ${best.fm}\n`;
           d += `- Protect: non incluso (eventuali +15€/SIM da aggiungere a parte)\n`;
           d += `- €/SIM: €${fwMobileUnitValue(best.fm, best.ho, cfg.fwMobilePiano).toFixed(2)}\n`;
-          d += `- punti MB/SIM: 0,25\n\n`;
+          d += `- punti MB/SIM (mobile): ${best.boostActive ? "0,75" : "0,5"}\n\n`;
         }
 
         if (best.ff > 0) {
@@ -2669,7 +2932,7 @@
           d += `• FASTWEB Fisso — ${row.name}\n`;
           d += `- linee: ${best.ff}\n`;
           d += `- €/linea: €${fwFissoUnitValue(best.ff, cfg.fwFissoTipo).toFixed(2)}\n`;
-          d += `- punti MB/linea: ${row.mbPointsPer}\n\n`;
+          d += `- punti MB/linea (fisso): ${best.boostActive ? "1,25" : "1"}\n\n`;
         }
 
         if (best.fe > 0) {
@@ -2677,7 +2940,7 @@
           d += `• FASTWEB Energy — ${row.name}\n`;
           d += `- contratti: ${best.fe}\n`;
           d += `- €/contratto: €${fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo, best.totalEnergy).toFixed(2)}\n`;
-          d += `- punti MB/contratto: 1\n\n`;
+          d += `- punti MB/contratto (energia): ${best.boostActive ? "1,25" : "1"}\n\n`;
         }
       }
 
@@ -2686,7 +2949,7 @@
         d += `- SIM: ${best.ho}\n`;
         d += `- modalità: ${cfg.hoMode.toUpperCase()} / ${cfg.hoTier}\n`;
         d += `- €/SIM: €${hoUnitValue(best.fm, best.ho, cfg.hoMode, cfg.hoTier).toFixed(2)}\n`;
-        d += `- punti MB/SIM: 0,25\n\n`;
+        d += `- punti MB/SIM (mobile): ${best.boostActive ? "0,75" : "0,5"}\n\n`;
       }
 
       if (brandAttivi.includes("tiscali")) {
@@ -2694,7 +2957,7 @@
           d += `• TISCALI Mobile — ${(TISC_MOBILE[cfg.tiscMobileTipo] || TISC_MOBILE.mobile_200).name}\n`;
           d += `- contratti: ${best.tmob}\n`;
           d += `- €/contratto: €${tiscMobileUnitValue(best.tmob, cfg.tiscMobileTipo).toFixed(2)}\n`;
-          d += `- punti MB/contratto: 0,25\n\n`;
+          d += `- punti MB/contratto (mobile): ${best.boostActive ? "0,75" : "0,5"}\n\n`;
         }
 
         if (best.tfix > 0) {
@@ -2702,7 +2965,7 @@
           d += `• TISCALI Fisso — ${row.name}\n`;
           d += `- contratti: ${best.tfix}\n`;
           d += `- €/contratto: €${tiscFixedUnitValue(best.tfix, cfg.tiscFissoTipo).toFixed(2)}\n`;
-          d += `- punti MB/contratto: ${row.mbPointsPer}\n\n`;
+          d += `- punti MB/contratto (fisso): ${best.boostActive ? "1,25" : "1"}\n\n`;
         }
       }
 
@@ -2711,7 +2974,15 @@
         d += `• ALPERIA — ${alpRow.name}\n`;
         d += `- contratti: ${best.alperia}\n`;
         d += `- €/contratto (FLAT): €${alperiaUnitValue(cfg.alperiaTipo).toFixed(2)}\n`;
-        d += `- punti MB/contratto: 1\n\n`;
+        d += `- punti MB/contratto (energia): ${best.boostActive ? "1,25" : "1"}\n\n`;
+      }
+
+      if (brandAttivi.includes("sorgenia") && best.sorgenia > 0) {
+        const sr = SORGENIA_TABLE[cfg.sorgeniaTipo] || SORGENIA_TABLE.fissa_variabile;
+        d += `• SORGENIA — ${sr.name}\n`;
+        d += `- contratti: ${best.sorgenia}\n`;
+        d += `- €/contratto: €${(best.unitSorgenia || 0).toFixed(2)}\n`;
+        d += `- punti MB/contratto (energia): ${best.boostActive ? "1,25" : "1"}\n\n`;
       }
 
       if (best.totalEnergy != null) {
@@ -2735,10 +3006,6 @@
 
       d += `Totale punti MB: ${best.puntiMB.toFixed(2)}\n`;
       d += `Bonus base: €${best.bonusMB}\n`;
-
-      if (best.bonusSkyExtra > 0) {
-        d += `Extra SKY: €${best.bonusSkyExtra}\n`;
-      }
 
       d += `Bonus totale: €${best.bonusTotal}\n\n`;
       d += `💡 Convergenze: se fai contratti in convergenza puoi guadagnare da +10€ a +40€ per ogni combinazione.`;
@@ -2792,6 +3059,7 @@
         ho: "#5f58a1",
         tiscali: "#3b2783",
         alperia: "#12a56b",
+        sorgenia: "#e8410a",
         eff: "#16a34a",
         rent: "#2563eb"
       };
@@ -2806,6 +3074,7 @@
         tiscsim: "#3b2783",
         tiscfisso: "#3b2783",
         alperia: "#12a56b",
+        sorgenia: "#e8410a",
         eff: "#16a34a",
         rent: "#2563eb"
       };
@@ -2818,16 +3087,25 @@
       const hasHo = brandAttivi.includes("ho");
       const hasTisc = brandAttivi.includes("tiscali");
       const hasAlperia = brandAttivi.includes("alperia");
+      const hasSorgenia = brandAttivi.includes("sorgenia");
       const hasEff = brandAttivi.includes("eff");
       const hasRent = brandAttivi.includes("rent");
       const extraPts = getExtraPointsPerUnit();
 
+      // Settembre 2026: prodotti attivi (8 in 3 categorie)
       const mbBrandList = [];
-      if (best.aceaBrand) mbBrandList.push("ACEA");
-      if (best.skyBrand) mbBrandList.push("SKY");
-      if (best.fwBrand) mbBrandList.push(hasHo ? "FASTWEB+HO" : "FASTWEB");
-      if (best.tiscBrand) mbBrandList.push("TISCALI");
-      if (best.alperiaBrand) mbBrandList.push("ALPERIA");
+      if (hasAcea && best.acea >= 1) mbBrandList.push("ACEA");
+      if (hasFw && best.fe >= 1) mbBrandList.push("FW Energia");
+      if (hasSorgenia && (best.sorgenia || 0) >= 1) mbBrandList.push("SORGENIA");
+      if (hasAlperia && (best.alperia || 0) >= 1) mbBrandList.push("ALPERIA");
+      if (hasFw && (best.fm + best.ff) >= 1) mbBrandList.push("FASTWEB");
+      if (hasHo && best.ho >= 1) mbBrandList.push("HO Mobile");
+      if (hasTisc && (best.tmob + best.tfix) >= 1) mbBrandList.push("TISCALI");
+      if (hasSky && best.sky >= 1) mbBrandList.push("SKY");
+      const ptMobPdf = best.boostActive ? 0.75 : 0.5;
+      const ptFisPdf = best.boostActive ? 1.25 : 1;
+      const ptEnePdf = best.boostActive ? 1.25 : 1;
+      const ptSkyPdf = best.boostActive ? 1.25 : 1;
 
       // KPI cards
       const margineColor = best.marginVsCosti >= 0 ? "#059669" : "#dc2626";
@@ -2860,7 +3138,7 @@
           qtyLabel: "contratti",
           unit,
           totale: best.rAcea,
-          punti: puntiAceaMB(best.acea)
+          punti: best.acea * ptEnePdf
         });
       }
 
@@ -2875,7 +3153,7 @@
           qtyLabel: "contratti",
           unit,
           totale: best.rSky,
-          punti: puntiSkyMB(best.sky, cfg.skyTipo)
+          punti: puntiSkyMB(best.sky, cfg.skyTipo) > 0 ? best.sky * ptSkyPdf : 0
         });
       }
 
@@ -2888,7 +3166,7 @@
           qtyLabel: "SIM",
           unit: fwMobileUnitValue(best.fm, best.ho, cfg.fwMobilePiano),
           totale: best.rFm,
-          punti: best.fm * 0.25
+          punti: best.fm * ptMobPdf
         });
         const fissoRow = FW_FISSO[cfg.fwFissoTipo] || FW_FISSO.casa_start;
         prodRows.push({
@@ -2899,7 +3177,7 @@
           qtyLabel: "linee",
           unit: fwFissoUnitValue(best.ff, cfg.fwFissoTipo),
           totale: best.rFf,
-          punti: best.ff * (fissoRow.mbPointsPer || 0.5)
+          punti: best.ff * ptFisPdf
         });
         prodRows.push({
           color: BRAND_COLOR.fastweb,
@@ -2909,7 +3187,7 @@
           qtyLabel: "contratti",
           unit: fwEnergyUnitValue(best.fe, cfg.fwEnergyTipo, best.totalEnergy),
           totale: best.rFe,
-          punti: best.fe * 1
+          punti: best.fe * ptEnePdf
         });
       }
 
@@ -2922,7 +3200,7 @@
           qtyLabel: "SIM",
           unit: hoUnitValue(best.fm, best.ho, cfg.hoMode, cfg.hoTier),
           totale: best.rHo,
-          punti: puntiHoMB(best.ho)
+          punti: best.ho * ptMobPdf
         });
       }
 
@@ -2936,7 +3214,7 @@
           qtyLabel: "contratti",
           unit: tiscMobileUnitValue(best.tmob, cfg.tiscMobileTipo),
           totale: best.rTMob,
-          punti: best.tmob * 0.25
+          punti: best.tmob * ptMobPdf
         });
         prodRows.push({
           color: BRAND_COLOR.tiscali,
@@ -2946,7 +3224,7 @@
           qtyLabel: "contratti",
           unit: tiscFixedUnitValue(best.tfix, cfg.tiscFissoTipo),
           totale: best.rTFix,
-          punti: best.tfix * (tFissoRow.mbPointsPer || 0.5)
+          punti: best.tfix * ptFisPdf
         });
       }
 
@@ -2960,7 +3238,21 @@
           qtyLabel: "contratti",
           unit: alperiaUnitValue(cfg.alperiaTipo),
           totale: best.rAlperia,
-          punti: puntiAlperiaMB(best.alperia || 0)
+          punti: (best.alperia || 0) * ptEnePdf
+        });
+      }
+
+      if (hasSorgenia) {
+        const sorgRow = SORGENIA_TABLE[cfg.sorgeniaTipo] || SORGENIA_TABLE.fissa_variabile;
+        prodRows.push({
+          color: BRAND_COLOR.sorgenia,
+          brand: "SORGENIA",
+          subtitle: sorgRow.name,
+          qty: best.sorgenia || 0,
+          qtyLabel: "contratti",
+          unit: best.unitSorgenia || 0,
+          totale: best.rSorgenia || 0,
+          punti: (best.sorgenia || 0) * ptEnePdf
         });
       }
 
@@ -3012,7 +3304,7 @@
       const totaleProvvigioni =
         (best.rAcea || 0) + (best.rSky || 0) + (best.rFm || 0) + (best.rFf || 0) +
         (best.rFe || 0) + (best.rHo || 0) + (best.rTMob || 0) + (best.rTFix || 0) +
-        (best.rAlperia || 0) + (best.rEff || 0) + (best.rRent || 0);
+        (best.rAlperia || 0) + (best.rSorgenia || 0) + (best.rEff || 0) + (best.rRent || 0);
 
       const html = `<!doctype html>
 <html lang="it">
@@ -3307,7 +3599,7 @@
 <body>
   <div class="topbar">
     <div class="left">
-      <div class="eyebrow">Cost Management • Luglio 2026</div>
+      <div class="eyebrow">Cost Management • Settembre 2026</div>
       <h1>${escapeHtml(titolo)}</h1>
       <div class="sub">Report produzione brand multibrand</div>
     </div>
@@ -3354,12 +3646,14 @@
         ${mbBrandList.length
           ? mbBrandList.map(b => `<span class="badge" style="background:#111827">${escapeHtml(b)}</span>`).join("")
           : `<span class="badge muted">Nessuno</span>`}
-        ${requireMBAccess
-          ? `<span class="badge" style="background:#059669">Accesso MB OK · ${fmtNum(best.puntiMB)} pt</span>`
+        <span class="badge" style="background:#059669">Accesso MB OK · ${best.nProdotti}/${best.minRichiesti} prodotti · ${fmtNum(best.puntiMB)} pt</span>
+        ${best.boostActive
+          ? `<span class="badge" style="background:#f59e0b">Punti maggiorati ×1,25</span>`
           : ""}
-        ${best.boostEnergy > 0
-          ? `<span class="badge" style="background:#f59e0b">+${best.boostEnergy} Boost Energy</span>`
+        ${best.isDealerEnergy
+          ? `<span class="badge" style="background:#0891b2">Dealer Energy</span>`
           : ""}
+        <span class="badge" style="background:#7c3aed">Colonna ${(best.colonna || "-").toUpperCase()}</span>
       </div>
     </div>
   </div>
@@ -3398,7 +3692,7 @@
         <td class="num">${best.totContratti}</td>
         <td class="num">—</td>
         <td class="num">${fmtEuro(totaleProvvigioni)}</td>
-        <td class="num">${fmtNum(best.puntiMB - (best.boostEnergy || 0))}</td>
+        <td class="num">${fmtNum(best.puntiMB)}</td>
       </tr>
     </tfoot>
   </table>
@@ -3414,8 +3708,8 @@
       <div class="val">${fmtEuro(best.bonusMB)}</div>
     </div>
     <div class="mb-cell">
-      <div class="lbl">Extra SKY</div>
-      <div class="val">${fmtEuro(best.bonusSkyExtra)}</div>
+      <div class="lbl">Colonna gettone</div>
+      <div class="val">${(best.colonna || "-").toUpperCase()}</div>
     </div>
     <div class="mb-cell highlight">
       <div class="lbl">Bonus Multibrand totale</div>
@@ -3443,7 +3737,7 @@
   </div>
 
   <footer>
-    Cost Management Dealer E2K · Luglio 2026 · Documento generato automaticamente${nomeNegozio ? ` per ${escapeHtml(nomeNegozio)}` : ""}
+    Cost Management Dealer E2K · Settembre 2026 · Documento generato automaticamente${nomeNegozio ? ` per ${escapeHtml(nomeNegozio)}` : ""}
   </footer>
 
   <script>

@@ -787,6 +787,9 @@
      ****************************************************************/
     let brandAttivi = [];
     let _bestDettaglio = null;
+    // Settembre 2026: target normalizzati per prodotto, usati anche dal pruning
+    // per preservare la diversità lungo l'asse che ci interessa (aderenza alle %).
+    let _mbTargets = {};
 
     /****************************************************************
      * CONFIGURAZIONE MULTIBRAND
@@ -1739,10 +1742,12 @@
         }
       }
 
+      // Settembre 2026 — il vincolo "totRev >= targetRev" è già hard, quindi l'overshoot
+      // è secondario: il peso principale va sull'aderenza alle percentuali richieste.
       const objective =
         overshootNorm * 1.0 +
-        dist * 0.8 +
-        shortfall * 0.8 +
+        dist * 6.0 +
+        shortfall * 2.5 +
         (candidate.totContratti || 0) / 600;
 
       return {
@@ -1762,11 +1767,13 @@
     function pruneFwStates(states) {
       const buckets = new Map();
 
+      const T = _mbTargets;
       for (const st of states) {
-        const sum = st.fm + st.ff + st.fe + st.ho;
-        const k1 = sum > 0 ? Math.min(4, Math.floor((st.fe / sum) * 5)) : 0;
-        const k2 = sum > 0 ? Math.min(4, Math.floor((st.ff / sum) * 5)) : 0;
-        const k3 = sum > 0 ? Math.min(4, Math.floor(((st.fm + st.ho) / sum) * 5)) : 0;
+        const sum = st.fm + st.ff + st.fe;
+        // Settembre 2026: bucket rispetto ai target di fwsim / fwfisso / fwenergy
+        const k1 = tgtBucket(st.fe, sum, T.fwenergy);
+        const k2 = tgtBucket(st.ff, sum, T.fwfisso);
+        const k3 = tgtBucket(st.fm, sum, T.fwsim);
         const key = `${k1}|${k2}|${k3}|${st.brand}`;
 
         if (!buckets.has(key)) buckets.set(key, []);
@@ -1783,27 +1790,43 @@
       return out;
     }
 
+    // Settembre 2026 — quantizza la quota di un prodotto RISPETTO AL SUO TARGET.
+    // Il Pareto tiene gli stati a ricavo minimo per punti: senza questa chiave i
+    // prodotti più remunerativi (es. SKY) venivano sempre dominati e spariti dal mix.
+    function tgtBucket(qty, sum, tgt) {
+      if (sum <= 0) return 0;
+      const act = qty / sum;
+      if (!tgt || tgt <= 0) return act > 0.02 ? 5 : 0;
+      const r = act / tgt;
+      if (r < 0.4) return 0;
+      if (r < 0.75) return 1;
+      if (r < 1.15) return 2;
+      if (r < 1.7) return 3;
+      if (r < 2.6) return 4;
+      return 5;
+    }
+
     function pruneRestStates(states) {
       const buckets = new Map();
 
+      // Settembre 2026 — la chiave di bucketing distingue OGNI PRODOTTO, non più le
+      // macro-categorie. Con la vecchia chiave (energia aggregata) gli stati ben
+      // distribuiti finivano nello stesso bucket di quelli concentrati su un solo
+      // prodotto e venivano scartati dal Pareto, rovinando l'aderenza alle percentuali.
+      const T = _mbTargets;
       for (const st of states) {
-        // Settembre 2026: include st.alperia nel sum di bucketing (era omesso).
         const alperia = st.alperia || 0;
         const sorgenia = st.sorgenia || 0;
         const sum = st.acea + st.sky + st.ho + st.tmob + st.tfix + st.eff + st.rent + alperia + sorgenia;
-        // Settembre 2026: Energia = ACEA + Alperia + Sorgenia (tier unificato)
-        const energy = st.acea + alperia + sorgenia;
-        const sky = st.sky;
-        const fixed = st.tfix;
-        const mobile = st.ho + st.tmob;
-        const other = st.eff + st.rent;
 
         const key = [
-          sum > 0 ? Math.min(4, Math.floor((energy / sum) * 5)) : 0,
-          sum > 0 ? Math.min(4, Math.floor((sky / sum) * 5)) : 0,
-          sum > 0 ? Math.min(4, Math.floor((fixed / sum) * 5)) : 0,
-          sum > 0 ? Math.min(4, Math.floor((mobile / sum) * 5)) : 0,
-          sum > 0 ? Math.min(4, Math.floor((other / sum) * 5)) : 0,
+          tgtBucket(st.acea, sum, T.acea),
+          tgtBucket(alperia, sum, T.alperia),
+          tgtBucket(sorgenia, sum, T.sorgenia),
+          tgtBucket(st.sky, sum, T.sky),
+          tgtBucket(st.ho, sum, T.ho),
+          tgtBucket(st.tmob, sum, T.tiscsim),
+          tgtBucket(st.tfix, sum, T.tiscfisso),
           st.mask
         ].join("|");
 
@@ -1813,7 +1836,7 @@
 
       const out = [];
       for (const arr of buckets.values()) {
-        for (const x of paretoMinRevMaxPoints(arr).slice(0, 4)) {
+        for (const x of paretoMinRevMaxPoints(arr).slice(0, 3)) {
           out.push(x);
         }
       }
@@ -2091,6 +2114,7 @@
       const targetRev = useMarg ? Math.ceil(costi * (1 + pct / 100)) : costi;
       const cfg = getCfg();
       const brandTargets = getBrandTargetPercents();
+      _mbTargets = brandTargets.normalized || {};
 
       const hasAcea = brandAttivi.includes("acea");
       const hasSky = brandAttivi.includes("sky");
@@ -2229,6 +2253,140 @@
       });
 
       /****************************
+       * VALUTAZIONE COMBINAZIONE (condivisa)
+       ****************************/
+      // Settembre 2026 — un'unica funzione valuta una combinazione completa di quantità
+      // e restituisce il candidato (o null se non valida). La usano sia la ricerca DP
+      // sia la costruzione guidata dalle percentuali richieste, così i due percorsi
+      // non possono divergere nei calcoli.
+      function evaluateCombo(q) {
+        const qAcea = q.acea || 0, qSky = q.sky || 0;
+        const qFm = q.fm || 0, qFf = q.ff || 0, qFe = q.fe || 0;
+        const qHo = q.ho || 0, qTmob = q.tmob || 0, qTfix = q.tfix || 0;
+        const qAlp = q.alperia || 0, qSor = q.sorgenia || 0;
+        const qEff = q.eff || 0, qRent = q.rent || 0;
+
+        const skyValid = skyRowCached.validBrand ? qSky : 0;
+
+        // --- Prodotti attivi (8 in 3 categorie) ---
+        let nEnergia = 0;
+        if (hasAcea && qAcea >= 1) nEnergia++;
+        if (hasFw && qFe >= 1) nEnergia++;
+        if (hasSorgenia && qSor >= 1) nEnergia++;
+        if (hasAlperia && qAlp >= 1) nEnergia++;
+        let nTelco = 0;
+        if (hasFw && (qFm + qFf) >= 1) nTelco++;
+        if (hasHo && qHo >= 1) nTelco++;
+        if (hasTisc && (qTmob + qTfix) >= 1) nTelco++;
+        const nIntratt = (hasSky && skyValid >= 1) ? 1 : 0;
+
+        const nProdotti = nEnergia + nTelco + nIntratt;
+        const hasEnergia = nEnergia >= 1;
+        const soloEnergia = hasEnergia && nTelco === 0 && nIntratt === 0;
+        const minRichiesti = soloEnergia ? MB_MIN_PRODOTTI_ENERGIA : MB_MIN_PRODOTTI;
+        if (!hasEnergia || nProdotti < minRichiesti) return null;
+
+        let colonna;
+        if (nTelco >= 1 && nIntratt >= 1) colonna = "e3";
+        else if (nTelco >= 1 || nIntratt >= 1) colonna = "e2";
+        else colonna = "e1";
+
+        // --- Punti per tipo offerta (+ eventuale maggiorazione) ---
+        const boostActive = isMBBoostActive(qAcea, qFe, qSor, qAlp);
+        const ptTable = getMBPointsTable(boostActive);
+        const qEnergiaTot = qAcea + qFe + qSor + qAlp;
+        const qMobileTot = qFm + qHo + qTmob;
+        const qFissoTot = qFf + qTfix;
+        const puntiMB =
+          qEnergiaTot * ptTable.energia +
+          qMobileTot * ptTable.mobile +
+          qFissoTot * ptTable.fisso +
+          skyValid * ptTable.sky +
+          (qEff + qRent) * extraPtsGlobal;
+        if (puntiMB + 1e-9 < requiredPoints) return null;
+
+        // --- Tier energia unificato ---
+        let energyTierIdx = 0;
+        if (qEnergiaTot >= 60) energyTierIdx = 4;
+        else if (qEnergiaTot >= 35) energyTierIdx = 3;
+        else if (qEnergiaTot >= 18) energyTierIdx = 2;
+        else if (qEnergiaTot >= 7) energyTierIdx = 1;
+
+        const aceaTierUnit = hasAcea ? aceaValByTier[energyTierIdx] : 0;
+        const feTierUnit = hasFw ? feValByTier[energyTierIdx] : 0;
+        const sorgTierUnit = hasSorgenia ? sorgeniaValByTier[energyTierIdx] : 0;
+
+        // --- Tier SIM (punti 3/10/20/30, cap DEALER ENERGY) ---
+        const simIdx = simTierIdx(qFm * 1 + qHo * 0.5, qFe);
+        const fmTierUnit = hasFw
+          ? (simIdx < 0 ? FW_MOBILE_BASE_PAY : (fwMobileRowGlobal.values[simIdx] || 0)) : 0;
+        const hoTierUnit = hasHo
+          ? (simIdx < 0 ? FW_MOBILE_BASE_PAY : (hoRowGlobal.values[simIdx] || 0)) : 0;
+
+        // --- Ricavi ---
+        const rAcea = hasAcea ? qAcea * aceaTierUnit : 0;
+        const rSky = hasSky ? revenueSky(qSky, cfg.skyTipo) : 0;
+        const rFm = hasFw ? qFm * fmTierUnit : 0;
+        const rFf = hasFw ? revenueFastwebFisso(qFf, cfg.fwFissoTipo) : 0;
+        const rFe = hasFw ? qFe * feTierUnit : 0;
+        const rHo = hasHo ? qHo * hoTierUnit : 0;
+        const rTMob = hasTisc ? revenueTiscMobile(qTmob, cfg.tiscMobileTipo) : 0;
+        const rTFix = hasTisc ? revenueTiscFixed(qTfix, cfg.tiscFissoTipo) : 0;
+        const rAlperia = hasAlperia ? revenueAlperia(qAlp, cfg.alperiaTipo) : 0;
+        const rSorgenia = hasSorgenia ? qSor * sorgTierUnit : 0;
+        const rEff = hasEff ? qEff * (cfg.effVal || 0) : 0;
+        const rRent = hasRent ? qRent * (cfg.rentVal || 0) : 0;
+
+        const mb = bonusMultibrand(puntiMB, colonna);
+        const totRev = rAcea + rSky + rFm + rFf + rFe + rHo + rTMob + rTFix +
+                       rAlperia + rSorgenia + rEff + rRent + mb.total;
+        if (totRev < targetRev) return null;
+
+        const totContratti = qAcea + qSky + qFm + qFf + qFe + qHo + qTmob + qTfix +
+                             qAlp + qSor + qEff + qRent;
+
+        const candidate = {
+          totContratti,
+          acea: qAcea, sky: qSky, tmob: qTmob, tfix: qTfix,
+          alperia: qAlp, sorgenia: qSor, eff: qEff, rent: qRent,
+          fm: qFm, ff: qFf, fe: qFe, ho: qHo,
+          rAcea, rSky, rTMob, rTFix, rAlperia, rSorgenia, rEff, rRent, rFm, rFf, rFe, rHo,
+          puntiMB,
+          bonusMB: mb.base, bonusSkyExtra: 0, bonusTotal: mb.total,
+          totRev, totalEnergy: qEnergiaTot, energyTierIdx,
+          colonna, boostActive,
+          nEnergia, nTelco, nIntratt, nProdotti, minRichiesti, soloEnergia,
+          simTierIdxUsed: simIdx,
+          isDealerEnergy: qFe >= DEALER_ENERGY_MIN_CONTRACTS,
+          unitFm: fmTierUnit, unitHo: hoTierUnit,
+          unitAcea: aceaTierUnit, unitFe: feTierUnit, unitSorgenia: sorgTierUnit,
+          marginVsCosti: totRev - costi,
+          marginVsTarget: totRev - targetRev
+        };
+
+        const pref = computePreference(candidate, targetRev, flagsForCalc, brandTargets.normalized);
+        candidate.objective = pref.objective;
+        candidate.brandStats = pref.brandStats;
+        candidate.brandShares = pref.brandShares;
+        candidate.brandTotal = pref.brandTotal;
+        candidate.dist = pref.dist;
+        candidate.shortfall = pref.shortfall;
+        candidate.overshootNorm = pref.overshootNorm;
+        return candidate;
+      }
+
+      function isBetter(cand, cur) {
+        if (!cur) return true;
+        if (cand.objective < cur.objective - 1e-9) return true;
+        if (Math.abs(cand.objective - cur.objective) < 1e-9) {
+          if (cand.overshootNorm < cur.overshootNorm - 1e-9) return true;
+          if (Math.abs(cand.overshootNorm - cur.overshootNorm) < 1e-9 &&
+              cand.totContratti < cur.totContratti) return true;
+        }
+        return false;
+      }
+
+      /****************************
        * RICERCA MIGLIORE SOLUZIONE
        ****************************/
       let best = null;
@@ -2329,11 +2487,101 @@
       // PERFORMANCE: budget massimo di combinazioni valutate. Evita il freeze del
       // browser su configurazioni con tutti i brand attivi. Il pruning Pareto
       // garantisce che le combinazioni migliori vengano viste per prime.
-      let evalBudget = 1200000;
+      let evalBudget = 2500000;
       // Una volta trovata la prima soluzione valida, esploro ancora pochi "tot"
       // superiori e poi mi fermo: il loop è ascendente sul numero di contratti,
       // quindi le soluzioni successive sono via via più costose.
       let firstFoundTot = -1;
+
+      /****************************
+       * COSTRUZIONE GUIDATA DALLE PERCENTUALI
+       ****************************/
+      // Settembre 2026 — la ricerca DP ottimizza il ricavo e fatica a rispettare un mix
+      // preciso su 10 prodotti. Qui costruisco la soluzione PARTENDO dalle percentuali
+      // richieste (metodo del resto maggiore), poi la raffino con una hill-climbing.
+      // Il risultato viene poi confrontato con quello della ricerca DP.
+      const FIELD_OF = {
+        acea: "acea", sky: "sky",
+        fwsim: "fm", fwfisso: "ff", fwenergy: "fe",
+        ho: "ho", tiscsim: "tmob", tiscfisso: "tfix",
+        alperia: "alperia", sorgenia: "sorgenia",
+        eff: "eff", rent: "rent"
+      };
+
+      function clampMins(q) {
+        if (hasFw) { q.fm = Math.max(1, q.fm); q.ff = Math.max(1, q.ff); q.fe = Math.max(1, q.fe); }
+        if (hasAcea) q.acea = Math.max(MINIMI.acea, q.acea);
+        if (hasSky) q.sky = Math.max(MINIMI.sky, q.sky);
+        if (hasHo) q.ho = Math.max(1, q.ho);
+        if (hasTisc) q.tmob = Math.max(MINIMI.tiscMob, q.tmob);
+        if (hasAlperia) q.alperia = Math.max(MINIMI.alperia, q.alperia);
+        if (hasSorgenia) q.sorgenia = Math.max(MINIMI.sorgenia, q.sorgenia);
+        return q;
+      }
+
+      function allocateByTargets(N) {
+        const q = { acea:0, sky:0, fm:0, ff:0, fe:0, ho:0, tmob:0, tfix:0,
+                    alperia:0, sorgenia:0, eff:0, rent:0 };
+        const vb = getVirtualBrands();
+        const items = vb.map((k) => {
+          const exact = N * (brandTargets.normalized[k] || 0);
+          const base = Math.floor(exact);
+          return { field: FIELD_OF[k], base, rem: exact - base };
+        });
+        let assigned = items.reduce((a, it) => a + it.base, 0);
+        items.sort((a, b) => b.rem - a.rem);
+        for (let i = 0; i < items.length && assigned < N; i++, assigned++) items[i].base++;
+        for (const it of items) if (it.field) q[it.field] += it.base;
+        return clampMins(q);
+      }
+
+      // Hill-climbing: piccole variazioni (+/-1) su ogni prodotto finché migliora.
+      function refineCombo(q0, c0) {
+        let bq = Object.assign({}, q0);
+        let bc = c0;
+        const fields = ["acea","sky","fm","ff","fe","ho","tmob","tfix","alperia","sorgenia"];
+        for (let iter = 0; iter < 60; iter++) {
+          let improved = false;
+          for (const f of fields) {
+            for (const d of [1, -1]) {
+              const q = Object.assign({}, bq);
+              q[f] = (q[f] || 0) + d;
+              if (q[f] < 0) continue;
+              clampMins(q);
+              const c = evaluateCombo(q);
+              if (c && isBetter(c, bc)) { bc = c; bq = q; improved = true; }
+            }
+          }
+          if (!improved) break;
+        }
+        return bc;
+      }
+
+      // Scansione su N: cerco il primo N che copre il target, poi raffino attorno.
+      {
+        const nStart = Math.max(minTotal, 4);
+        const nEnd = Math.min(maxTotal, nStart + 220);
+        let seeded = null;
+        let seededQ = null;
+        for (let N = nStart; N <= nEnd; N++) {
+          const q = allocateByTargets(N);
+          const c = evaluateCombo(q);
+          if (c) { seeded = c; seededQ = q; break; }
+        }
+        if (seeded) {
+          best = refineCombo(seededQ, seeded);
+          // provo anche qualche N successivo: a volte un totale leggermente più alto
+          // permette un mix più aderente alle percentuali.
+          const nSeed = seeded.totContratti;
+          for (let N = nSeed + 1; N <= Math.min(nEnd, nSeed + 12); N++) {
+            const q = allocateByTargets(N);
+            const c = evaluateCombo(q);
+            if (!c) continue;
+            const r = refineCombo(q, c);
+            if (isBetter(r, best)) best = r;
+          }
+        }
+      }
 
       for (let tot = minTotal; tot <= maxTotal; tot++) {
         if (evalBudget <= 0) break;
@@ -2392,206 +2640,51 @@
               if (fwHeadroom + rs.rev < targetRev) break;
               if (--evalBudget <= 0) break;
 
-              // ============================================================
-              // SETTEMBRE 2026 — PRODOTTI ATTIVI (8 in 3 categorie)
-              // ============================================================
-              const qAcea     = rs.acea || 0;
-              const qFwEnergy = fw.fe || 0;
-              const qSorgenia = rs.sorgenia || 0;
-              const qAlperia  = rs.alperia || 0;
-              const qFwTelco  = (fw.fm || 0) + (fw.ff || 0);
-              const qHo       = rs.ho || 0;
-              const qTiscali  = (rs.tmob || 0) + (rs.tfix || 0);
-              const qSky      = skyRowCached.validBrand ? (rs.sky || 0) : 0;
-
-              // ENERGIA (4 prodotti)
-              let nEnergia = 0;
-              if (hasAcea && qAcea >= 1) nEnergia++;
-              if (hasFw && qFwEnergy >= 1) nEnergia++;
-              if (hasSorgenia && qSorgenia >= 1) nEnergia++;
-              if (hasAlperia && qAlperia >= 1) nEnergia++;
-              // TELCO (3 prodotti)
-              let nTelco = 0;
-              if (hasFw && qFwTelco >= 1) nTelco++;
-              if (hasHo && qHo >= 1) nTelco++;
-              if (hasTisc && qTiscali >= 1) nTelco++;
-              // INTRATTENIMENTO (1 prodotto)
-              const nIntratt = (hasSky && qSky >= 1) ? 1 : 0;
-
-              const nProdotti = nEnergia + nTelco + nIntratt;
-              const hasEnergia = nEnergia >= 1;
-              const soloEnergia = hasEnergia && nTelco === 0 && nIntratt === 0;
-              const minRichiesti = soloEnergia ? MB_MIN_PRODOTTI_ENERGIA : MB_MIN_PRODOTTI;
-              // ACCESSO: energia sempre necessaria + n. prodotti minimo
-              const accesso = hasEnergia && nProdotti >= minRichiesti;
-              if (!accesso) continue;
-
-              // COLONNA GETTONE
-              let colonna;
-              if (nTelco >= 1 && nIntratt >= 1) colonna = "e3";
-              else if (nTelco >= 1 || nIntratt >= 1) colonna = "e2";
-              else colonna = "e1";
-
-              // MAGGIORAZIONE PUNTI: ≥3 prodotti energia con ≥5 contratti ciascuno
-              const boostActive = isMBBoostActive(qAcea, qFwEnergy, qSorgenia, qAlperia);
-              const ptTable = getMBPointsTable(boostActive);
-
-              // PUNTI per TIPO OFFERTA
-              const qEnergiaTot = qAcea + qFwEnergy + qSorgenia + qAlperia;
-              const qMobileTot  = (fw.fm || 0) + qHo + (rs.tmob || 0);
-              const qFissoTot   = (fw.ff || 0) + (rs.tfix || 0);
-              const extraPtsMB  = (rs.eff || 0) * extraPtsGlobal + (rs.rent || 0) * extraPtsGlobal;
-
-              const puntiMB =
-                qEnergiaTot * ptTable.energia +
-                qMobileTot  * ptTable.mobile +
-                qFissoTot   * ptTable.fisso +
-                qSky        * ptTable.sky +
-                extraPtsMB;
-
-              if (puntiMB + 1e-9 < requiredPoints) continue;
-
-              // Settembre 2026: tier ENERGIA UNIFICATO su 4 brand energia
-              const totalEnergy = qEnergiaTot;
-              let energyTierIdx = 0;
-              if (totalEnergy >= 60) energyTierIdx = 4;
-              else if (totalEnergy >= 35) energyTierIdx = 3;
-              else if (totalEnergy >= 18) energyTierIdx = 2;
-              else if (totalEnergy >= 7) energyTierIdx = 1;
-
-              const aceaTierUnit = hasAcea ? aceaValByTier[energyTierIdx] : 0;
-              const feTierUnit = hasFw ? feValByTier[energyTierIdx] : 0;
-              const sorgTierUnit = hasSorgenia ? sorgeniaValByTier[energyTierIdx] : 0;
-              const aceaTierBonus = qAcea * Math.max(0, aceaTierUnit - aceaBaseUnitMain);
-              const feTierBonus = qFwEnergy * Math.max(0, feTierUnit - feBaseUnit);
-              const sorgTierBonus = qSorgenia * Math.max(0, sorgTierUnit - sorgeniaBaseUnitMain);
-
-              // Settembre 2026: tier SIM 3/10/20/30 con cap DEALER ENERGY (≥2 FW Energia)
-              const tierPunti = (fw.fm || 0) * 1 + qHo * 0.5;
-              const simIdx = simTierIdx(tierPunti, qFwEnergy);
-              const fmTierUnit = hasFw
-                ? (simIdx < 0 ? FW_MOBILE_BASE_PAY : (fwMobileRowGlobal.values[simIdx] || 0))
-                : 0;
-              const hoTierUnit = hasHo
-                ? (simIdx < 0 ? FW_MOBILE_BASE_PAY : (hoRowGlobal.values[simIdx] || 0))
-                : 0;
-              const fmTierBonus = (fw.fm || 0) * Math.max(0, fmTierUnit - fmBaseUnit);
-              const hoTierBonus = qHo * Math.max(0, hoTierUnit - hoBaseUnitMain);
-
-              const mb = bonusMultibrand(puntiMB, colonna);
-              const totRev =
-                rs.rev + fw.rev +
-                fmTierBonus + hoTierBonus +
-                aceaTierBonus + feTierBonus + sorgTierBonus +
-                mb.total;
-
-              if (totRev >= targetRev) {
-                const candidate = {
-                  totContratti: tot,
-                  acea: rs.acea,
-                  sky: rs.sky,
-                  tmob: rs.tmob,
-                  tfix: rs.tfix,
-                  alperia: rs.alperia || 0,
-                  eff: rs.eff,
-                  rent: rs.rent,
-                  fm: fw.fm,
-                  ff: fw.ff,
-                  fe: fw.fe,
-                  ho: rs.ho,
-
-                  rAcea: hasAcea ? (rs.acea || 0) * aceaTierUnit : 0,
-                  rSky: hasSky ? revenueSky(rs.sky, cfg.skyTipo) : 0,
-                  rTMob: hasTisc ? revenueTiscMobile(rs.tmob, cfg.tiscMobileTipo) : 0,
-                  rTFix: hasTisc ? revenueTiscFixed(rs.tfix, cfg.tiscFissoTipo) : 0,
-                  rAlperia: hasAlperia ? revenueAlperia(rs.alperia || 0, cfg.alperiaTipo) : 0,
-                  rEff: hasEff ? rs.eff * (cfg.effVal || 0) : 0,
-                  rRent: hasRent ? rs.rent * (cfg.rentVal || 0) : 0,
-                  rFm: hasFw ? (fw.fm || 0) * fmTierUnit : 0,
-                  rFf: hasFw ? revenueFastwebFisso(fw.ff, cfg.fwFissoTipo) : 0,
-                  rFe: hasFw ? qFwEnergy * feTierUnit : 0,
-                  rHo: hasHo ? qHo * hoTierUnit : 0,
-                  rSorgenia: hasSorgenia ? qSorgenia * sorgTierUnit : 0,
-                  sorgenia: qSorgenia,
-
-                  puntiMB,
-                  bonusMB: mb.base,
-                  bonusSkyExtra: 0,
-                  bonusTotal: mb.total,
-                  totRev,
-                  totalEnergy,
-                  energyTierIdx,
-
-                  // Settembre 2026 — dati Multibrand riscritta
-                  colonna,
-                  boostActive,
-                  nEnergia,
-                  nTelco,
-                  nIntratt,
-                  nProdotti,
-                  minRichiesti,
-                  soloEnergia,
-                  simTierIdxUsed: simIdx,
-                  isDealerEnergy: qFwEnergy >= DEALER_ENERGY_MIN_CONTRACTS,
-                  unitFm: fmTierUnit,
-                  unitHo: hoTierUnit,
-                  unitAcea: aceaTierUnit,
-                  unitFe: feTierUnit,
-                  unitSorgenia: sorgTierUnit,
-
-                  marginVsCosti: totRev - costi,
-                  marginVsTarget: totRev - targetRev
-                };
-
-                const pref = computePreference(
-                  candidate,
-                  targetRev,
-                  flagsForCalc,
-                  brandTargets.normalized
-                );
-
-                candidate.objective = pref.objective;
-                candidate.brandStats = pref.brandStats;
-                candidate.brandShares = pref.brandShares;
-                candidate.brandTotal = pref.brandTotal;
-                candidate.dist = pref.dist;
-                candidate.shortfall = pref.shortfall;
-                candidate.overshootNorm = pref.overshootNorm;
-
-                if (
-                  !best ||
-                  candidate.objective < best.objective - 1e-9 ||
-                  (
-                    Math.abs(candidate.objective - best.objective) < 1e-9 &&
-                    candidate.overshootNorm < best.overshootNorm - 1e-9
-                  ) ||
-                  (
-                    Math.abs(candidate.objective - best.objective) < 1e-9 &&
-                    Math.abs(candidate.overshootNorm - best.overshootNorm) < 1e-9 &&
-                    candidate.totContratti < best.totContratti
-                  )
-                ) {
-                  best = candidate;
-                }
-              }
+              // Settembre 2026: la valutazione è delegata a evaluateCombo (stessa
+              // funzione usata dalla costruzione guidata dalle percentuali).
+              const cand = evaluateCombo({
+                acea: rs.acea, sky: rs.sky,
+                fm: fw.fm, ff: fw.ff, fe: fw.fe,
+                ho: rs.ho, tmob: rs.tmob, tfix: rs.tfix,
+                alperia: rs.alperia, sorgenia: rs.sorgenia,
+                eff: rs.eff, rent: rs.rent
+              });
+              if (cand && isBetter(cand, best)) best = cand;
             }
           }
         }
 
         if (best && firstFoundTot < 0) firstFoundTot = tot;
 
-        // Uscita anticipata: soluzione di buona qualità...
+        // Uscita anticipata solo con una soluzione DAVVERO buona anche come distribuzione.
         if (
           best &&
-          best.overshootNorm < 0.04 &&
-          best.dist < 0.22 &&
-          best.shortfall < 0.12 &&
-          tot > (minTotal + 10)
+          best.overshootNorm < 0.05 &&
+          best.dist < 0.12 &&
+          best.shortfall < 0.05 &&
+          tot > (minTotal + 8)
         ) {
           break;
         }
-        // ...oppure ho già esplorato abbastanza oltre la prima soluzione trovata.
-        if (firstFoundTot >= 0 && tot > firstFoundTot + 14) break;
+        // Altrimenti continuo a esplorare: la finestra è più ampia se la distribuzione
+        // trovata finora è ancora scadente (serve tempo per trovare mix bilanciati).
+        if (firstFoundTot >= 0) {
+          const finestra = best && best.dist < 0.30 ? 18 : 40;
+          if (tot > firstFoundTot + finestra) break;
+        }
+      }
+
+      // Raffinamento finale: se il DP ha trovato una struttura diversa, provo comunque
+      // a migliorarne l'aderenza alle percentuali con la stessa hill-climbing.
+      if (best) {
+        const bq = {
+          acea: best.acea, sky: best.sky, fm: best.fm, ff: best.ff, fe: best.fe,
+          ho: best.ho, tmob: best.tmob, tfix: best.tfix,
+          alperia: best.alperia, sorgenia: best.sorgenia,
+          eff: best.eff, rent: best.rent
+        };
+        const r = refineCombo(bq, best);
+        if (isBetter(r, best)) best = r;
       }
 
       renderOutput(best, {

@@ -418,7 +418,7 @@
         <div class="chip acea" data-brand="acea">ACEA</div>
         <div class="chip sky" data-brand="sky">SKY</div>
         <div class="chip fastweb" data-brand="fastweb">FASTWEB</div>
-        <div class="chip ho" data-brand="ho">HO Mobile (agganciato a Fastweb)</div>
+        <div class="chip ho" data-brand="ho">HO Mobile</div>
         <div class="chip tiscali" data-brand="tiscali">TISCALI</div>
         <div class="chip alperia" data-brand="alperia">ALPERIA (energia)</div>
         <div class="chip sorgenia" data-brand="sorgenia">SORGENIA (Settembre 2026)</div>
@@ -428,7 +428,7 @@
       <p class="muted" style="margin-top: 8px;">
         <b>Settembre 2026 — Multibrand riscritta.</b> 8 prodotti in 3 categorie:<br />
         • <b>ENERGIA</b> (4): ACEA · FW Energia · SORGENIA · ALPERIA<br />
-        • <b>TELCO</b> (3): FASTWEB (SIM+Fisso) · HO Mobile · TISCALI (SIM+Fisso)<br />
+        • <b>TELCO</b> (3): FASTWEB (SIM+Fisso) · <b>HO Mobile</b> (autonomo) · TISCALI (SIM+Fisso)<br />
         • <b>INTRATTENIMENTO</b> (1): SKY<br />
         <b>Accesso gara</b>: almeno <b>4 prodotti attivi</b> (bastano <b>3</b> se produci solo energia).
         L'energia è <b>sempre</b> necessaria.<br />
@@ -574,9 +574,10 @@
 
           <div class="noteBox">
             <b>Settembre 2026</b> — FASTWEB conta come <b>2 prodotti separati</b> in Multibrand:<br />
-            • <b>FW Energia</b> (categoria ENERGIA) → attivo con ≥1 contratto energia<br />
-            • <b>Fastweb SIM+Fisso</b> (categoria TELCO) → attivo con ≥1 SIM o fisso<br />
-            <b>HO Mobile</b> è un prodotto TELCO a sé (attivo con ≥1 SIM HO).<br /><br />
+            • <b>Fastweb SIM + Fisso</b> (categoria TELCO) → attivo con ≥1 SIM <i>oppure</i> ≥1 fisso<br />
+            • <b>Fastweb Energia</b> (categoria ENERGIA) → attivo con ≥1 contratto energia<br />
+            I due sono <b>indipendenti</b>: non serve più produrre mobile + fisso + energia
+            insieme per "validare" Fastweb.<br /><br />
             <b>Settembre 2026 — Tier €/SIM in PUNTI</b>: FW SIM × 1 + HO SIM × 0,5 → soglie
             <b>3 / 10 / 20 / 30 punti</b>.<br />
             Sotto i <b>3 punti</b> si applica il compenso base contrattuale: <b>5€ a SIM</b>.<br />
@@ -605,9 +606,15 @@
           </select>
 
           <div class="noteBox">
-            <b>Settembre 2026</b>: HO Mobile è un <b>prodotto TELCO autonomo</b>
-            (non più conteggiato dentro Fastweb), attivo con ≥ <b>1 SIM</b>.<br />
-            Le SIM HO valgono <b>0,5 punti</b> per il tier SIM condiviso con Fastweb.
+            <b>Settembre 2026 — HO Mobile è un prodotto SLEGATO da Fastweb.</b><br />
+            È uno dei <b>3 prodotti TELCO</b> (con Fastweb SIM+Fisso e Tiscali) e si attiva
+            da solo con ≥ <b>1 SIM HO</b>: non richiede alcun contratto Fastweb.<br />
+            Punti Multibrand: <b>0,5 pt</b> per SIM (0,75 con la maggiorazione energia).<br /><br />
+            <b>Unica cosa condivisa con Fastweb</b> (come da tabella di gara): la
+            <b>soglia €/SIM</b>, calcolata sui punti mobile totali
+            (FW SIM × 1 + HO SIM × 0,5 → 3/10/20/30) e il cap <b>DEALER ENERGY</b> su
+            t20/t30, che richiede ≥2 contratti Fastweb Energia. Sotto i 3 punti vale il
+            base contrattuale di <b>5€/SIM</b>.
           </div>
         </div>
 
@@ -1745,7 +1752,7 @@
         const k1 = tgtBucket(st.fe, sum, T.fwenergy);
         const k2 = tgtBucket(st.ff, sum, T.fwfisso);
         const k3 = tgtBucket(st.fm, sum, T.fwsim);
-        const key = `${k1}|${k2}|${k3}|${st.brand}`;
+        const key = `${k1}|${k2}|${k3}`;
 
         if (!buckets.has(key)) buckets.set(key, []);
         buckets.get(key).push(st);
@@ -1821,14 +1828,14 @@
     function buildRestBySum(maxTotal, cfg, flags) {
       const { hasAcea, hasSky, hasHo, hasTisc, hasAlperia, hasSorgenia, target } = flags;
 
-      const minAcea = hasAcea ? MINIMI.acea : 0;
-      const minSky = hasSky ? MINIMI.sky : 0;
-      const minHo = hasHo ? 1 : 0;
-      // Settembre 2026: Tiscali = 1 prodotto TELCO, attivo con ≥1 contratto (SIM o fisso)
-      const minTMob = hasTisc ? MINIMI.tiscMob : 0;
-      const minTFix = hasTisc ? MINIMI.tiscFix : 0;
-      // Settembre 2026: nuovo brand Alperia
-      const minAlperia = hasAlperia ? MINIMI.alperia : 0;
+      // Settembre 2026: un contratto minimo per prodotto solo se il prodotto è
+      // selezionato e ha percentuale > 0. Nessun vincolo incrociato fra prodotti.
+      const minAcea = flags.wantAcea ? 1 : 0;
+      const minSky = flags.wantSky ? 1 : 0;
+      const minHo = flags.wantHo ? 1 : 0;
+      const minTMob = flags.wantTMob ? 1 : 0;
+      const minTFix = flags.wantTFix ? 1 : 0;
+      const minAlperia = flags.wantAlp ? 1 : 0;
 
       // Settembre 2026 — PERFORMANCE: ogni dimensione è limitata anche da maxTotal
       // (non può superarlo) e dalla soglia energia massima (60). Con 9 dimensioni
@@ -1847,7 +1854,7 @@
         ? dimCap(Math.min(50, minAlperia + Math.ceil(target / Math.max(alperiaFlat, 35)) + 10))
         : 0;
       // Settembre 2026: NUOVO brand Sorgenia (energia, tier unificato)
-      const minSorgenia = hasSorgenia ? MINIMI.sorgenia : 0;
+      const minSorgenia = flags.wantSor ? 1 : 0;
       const maxSorgenia = hasSorgenia
         ? dimCap(Math.min(50, minSorgenia + Math.ceil(target / 70) + 10))
         : 0;
@@ -2047,6 +2054,7 @@
       _mbTargets = brandTargets.normalized || {};
       const jenio = isJenio();
 
+
       const hasAcea = brandAttivi.includes("acea");
       const hasSky = brandAttivi.includes("sky");
       const hasFw = brandAttivi.includes("fastweb");
@@ -2054,16 +2062,32 @@
       const hasTisc = brandAttivi.includes("tiscali");
       const hasAlperia = brandAttivi.includes("alperia");
       const hasSorgenia = brandAttivi.includes("sorgenia");
+      // Settembre 2026 — ogni prodotto è indipendente: produco il minimo di 1 contratto
+      // solo se il prodotto è selezionato E ha una percentuale obiettivo > 0.
+      // (Prima Fastweb forzava mobile+fisso+energia insieme: era la vecchia regola del
+      //  brand accoppiato Fastweb+HO, non più valida a settembre.)
+      const TN = brandTargets.normalized || {};
+      const wantFm  = hasFw && (TN.fwsim || 0) > 0;
+      const wantFf  = hasFw && (TN.fwfisso || 0) > 0;
+      const wantFe  = hasFw && (TN.fwenergy || 0) > 0;
+      const wantHo  = hasHo && (TN.ho || 0) > 0;
+      const wantAcea = hasAcea && (TN.acea || 0) > 0;
+      const wantSky = hasSky && (TN.sky || 0) > 0;
+      const wantTMob = hasTisc && (TN.tiscsim || 0) > 0;
+      const wantTFix = hasTisc && (TN.tiscfisso || 0) > 0;
+      const wantAlp = hasAlperia && (TN.alperia || 0) > 0;
+      const wantSor = hasSorgenia && (TN.sorgenia || 0) > 0;
 
       // Settembre 2026: minimi per attivare i prodotti selezionati
       const minTotal =
-        (hasAcea ? 1 : 0) +
-        (hasSky ? 1 : 0) +
-        (hasTisc ? MINIMI.tiscMob : 0) +
-        (hasFw ? 3 : 0) +
-        (hasHo ? 1 : 0) +
-        (hasAlperia ? MINIMI.alperia : 0) +
-        (hasSorgenia ? MINIMI.sorgenia : 0);
+        (wantAcea ? 1 : 0) +
+        (wantSky ? 1 : 0) +
+        (wantTMob ? 1 : 0) +
+        (wantTFix ? 1 : 0) +
+        (wantFm ? 1 : 0) + (wantFf ? 1 : 0) + (wantFe ? 1 : 0) +
+        (wantHo ? 1 : 0) +
+        (wantAlp ? 1 : 0) +
+        (wantSor ? 1 : 0);
 
       // Settembre 2026 — PERFORMANCE: maxTotal calcolato dal target reale invece di
       // una costante larga. Stimo il compenso medio più basso fra i brand attivi e
@@ -2106,9 +2130,11 @@
       const feBaseUnit = fwEnergyRowGlobal.values?.[0] || 0;
 
       if (hasFw) {
-        const minFm = 1;
-        const minFf = 1;
-        const minFe = 1;
+        // Settembre 2026: Fastweb sono DUE prodotti distinti (Telco SIM+Fisso ed Energia)
+        // e HO è un terzo prodotto a sé. Nessuno dei tre obbliga gli altri.
+        const minFm = wantFm ? 1 : 0;
+        const minFf = wantFf ? 1 : 0;
+        const minFe = wantFe ? 1 : 0;
 
         // Settembre 2026: soglia energia unificata max=60 → maxFe cap 90; SIM soglie 40→ maxFm 90
         const maxFm = Math.min(90, minFm + Math.ceil(targetRev / 30) + 25);
@@ -2129,18 +2155,8 @@
               // Settembre 2026: punti BASE per tipo offerta (MOBILE 0,5 · FISSO 1 · ENERGIA 1)
               const punti = fm * 0.5 + ff * 1 + fe * 1;
 
-              const brand = fm >= 1 && ff >= 1 && fe >= 1;
-
               if (!fwBySum.has(sum)) fwBySum.set(sum, []);
-              fwBySum.get(sum).push({
-                fm,
-                ff,
-                fe,
-                ho: 0,
-                rev,
-                punti,
-                brand
-              });
+              fwBySum.get(sum).push({ fm, ff, fe, ho: 0, rev, punti });
             }
           }
         }
@@ -2151,17 +2167,7 @@
           fwBySum.set(sum, p.length > 40 ? p.slice(0, 40) : p);
         }
       } else {
-        fwBySum.set(0, [
-          {
-            fm: 0,
-            ff: 0,
-            fe: 0,
-            ho: 0,
-            rev: 0,
-            punti: 0,
-            brand: false
-          }
-        ]);
+        fwBySum.set(0, [{ fm: 0, ff: 0, fe: 0, ho: 0, rev: 0, punti: 0 }]);
       }
 
       /****************************
@@ -2174,6 +2180,7 @@
         hasTisc,
         hasAlperia,
         hasSorgenia,
+        wantAcea, wantSky, wantHo, wantTMob, wantTFix, wantAlp, wantSor,
         target: targetRev
       });
 
@@ -2427,14 +2434,18 @@
         alperia: "alperia", sorgenia: "sorgenia"
       };
 
+      // Settembre 2026: ogni prodotto ha il proprio minimo, senza vincoli incrociati.
       function clampMins(q) {
-        if (hasFw) { q.fm = Math.max(1, q.fm); q.ff = Math.max(1, q.ff); q.fe = Math.max(1, q.fe); }
-        if (hasAcea) q.acea = Math.max(MINIMI.acea, q.acea);
-        if (hasSky) q.sky = Math.max(MINIMI.sky, q.sky);
-        if (hasHo) q.ho = Math.max(1, q.ho);
-        if (hasTisc) q.tmob = Math.max(MINIMI.tiscMob, q.tmob);
-        if (hasAlperia) q.alperia = Math.max(MINIMI.alperia, q.alperia);
-        if (hasSorgenia) q.sorgenia = Math.max(MINIMI.sorgenia, q.sorgenia);
+        if (wantFm) q.fm = Math.max(1, q.fm);
+        if (wantFf) q.ff = Math.max(1, q.ff);
+        if (wantFe) q.fe = Math.max(1, q.fe);
+        if (wantHo) q.ho = Math.max(1, q.ho);
+        if (wantAcea) q.acea = Math.max(1, q.acea);
+        if (wantSky) q.sky = Math.max(1, q.sky);
+        if (wantTMob) q.tmob = Math.max(1, q.tmob);
+        if (wantTFix) q.tfix = Math.max(1, q.tfix);
+        if (wantAlp) q.alperia = Math.max(1, q.alperia);
+        if (wantSor) q.sorgenia = Math.max(1, q.sorgenia);
         return q;
       }
 

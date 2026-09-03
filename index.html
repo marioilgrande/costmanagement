@@ -19,8 +19,6 @@
       --ho: #5f58a1;
       --alperia: #12a56b;
       --sorgenia: #e8410a;
-      --eff: #16a34a;
-      --rent: #2563eb;
 
       --text: #111827;
       --muted: #6b7280;
@@ -196,8 +194,6 @@
     .chip.tiscali { color: var(--tiscali); background: rgba(59, 39, 131, 0.12); }
     .chip.alperia { color: var(--alperia); background: rgba(18, 165, 107, 0.12); }
     .chip.sorgenia { color: var(--sorgenia); background: rgba(232, 65, 10, 0.12); }
-    .chip.eff { color: var(--eff); background: rgba(22, 163, 74, 0.12); }
-    .chip.rent { color: var(--rent); background: rgba(37, 99, 235, 0.12); }
 
     .chip.active {
       border: 2px solid currentColor;
@@ -235,8 +231,6 @@
     .badge.tiscali { background: rgba(59, 39, 131, 0.12); border-color: rgba(59, 39, 131, 0.3); color: var(--tiscali); }
     .badge.alperia { background: rgba(18, 165, 107, 0.12); border-color: rgba(18, 165, 107, 0.3); color: var(--alperia); }
     .badge.sorgenia { background: rgba(232, 65, 10, 0.12); border-color: rgba(232, 65, 10, 0.3); color: var(--sorgenia); }
-    .badge.eff { background: rgba(22, 163, 74, 0.12); border-color: rgba(22, 163, 74, 0.3); color: var(--eff); }
-    .badge.rent { background: rgba(37, 99, 235, 0.12); border-color: rgba(37, 99, 235, 0.3); color: var(--rent); }
 
     .checkline {
       display: flex;
@@ -370,6 +364,19 @@
         placeholder="Es. E2K Milano Centrale"
         autocomplete="off"
       />
+
+      <div class="checkline" style="margin-top: 12px;">
+        <input id="shopJenio" type="checkbox" />
+        <label for="shopJenio" style="font-weight: 900; margin: 0;">
+          Negozio convenzionato JENIO
+        </label>
+      </div>
+
+      <div class="noteBox">
+        I negozi <b>JENIO</b> usano una tabella gettoni dedicata: soglie punti più basse
+        (<b>15/25/40/50/70/90/110</b> invece di 20/30/40/50/70/90/110) e gettoni più alti
+        (fino a <b>1.300€</b> invece di 1.100€).
+      </div>
     </div>
 
     <!-- COSTI -->
@@ -405,7 +412,7 @@
 
     <!-- BRAND -->
     <div class="section">
-      <h2>Brand attivi</h2>
+      <h2>Prodotti attivi</h2>
 
       <div id="brandContainer">
         <div class="chip acea" data-brand="acea">ACEA</div>
@@ -416,10 +423,6 @@
         <div class="chip alperia" data-brand="alperia">ALPERIA (energia)</div>
         <div class="chip sorgenia" data-brand="sorgenia">SORGENIA (Settembre 2026)</div>
 
-        <div class="hr"></div>
-
-        <div class="chip eff" data-brand="eff">EFFICIENCY (secondario)</div>
-        <div class="chip rent" data-brand="rent">RENT (secondario)</div>
       </div>
 
       <p class="muted" style="margin-top: 8px;">
@@ -432,27 +435,27 @@
         <b>Punti per tipo offerta</b>: ENERGIA 1 · MOBILE 0,5 · FISSO 1 · SKY 1.
         Con <b>3+ prodotti energia da ≥5 contratti</b> → 1,25 / 0,75 / 1,25 / 1,25.<br />
         I 4 brand energia hanno soglie <b>UNIFICATE</b> (1/7/18/35/60) sul totale contratti energia.<br />
-        Brand secondari invariati: <b>EFFICIENCY</b> e <b>RENT</b>.
+        Ogni prodotto è <b>attivo</b> con almeno 1 contratto.
       </p>
     </div>
 
     <!-- PERCENTUALI -->
     <div class="section">
-      <h2>Distribuzione personalizzata per brand</h2>
+      <h2>Distribuzione personalizzata per prodotto</h2>
 
       <p class="muted" style="margin-bottom: 12px;">
-        Inserisci la percentuale di produzione desiderata per ogni brand attivo.
+        Inserisci la percentuale di produzione desiderata per ogni prodotto attivo.
         Il sistema userà queste percentuali come riferimento del calcolo.
         Se il totale non è 100%, verrà normalizzato automaticamente.<br />
         Puoi impostare <b>0%</b> su un brand: il sistema rispetterà la tua scelta
-        e non spingerà la produzione su quel brand (resta il vincolo minimo del brand
-        chip se selezionato).<br />
+        e non spingerà la produzione su quel prodotto (resta il minimo di 1 contratto
+        se il prodotto è selezionato).<br />
         <b>Settembre 2026</b>: per accedere alla Multibrand servono <b>4 prodotti attivi</b>
         (3 se produci solo energia), quindi distribuisci le percentuali su almeno 4 voci.
       </p>
 
       <div id="percentualiBox" class="percentBox">
-        <div class="muted">Seleziona almeno un brand per configurare le percentuali.</div>
+        <div class="muted">Seleziona almeno un prodotto per configurare le percentuali.</div>
       </div>
 
       <div id="percentualiSomma" class="sumBadge warn">Totale percentuali: 0%</div>
@@ -486,7 +489,7 @@
 
           <div class="noteBox">
             Soglie ACEA Sprint & Fix / Flex / Subentro: <b>1 / 5 / 15 / 30 / 55</b>.<br />
-            Brand ACEA in Multibrand attivo con almeno <b>1 contratto</b>.<br />
+            Prodotto ENERGIA in Multibrand: attivo con ≥ <b>1 contratto</b> · <b>1 pt</b>/contratto.<br />
             <b>Boost Multibrand</b>: 10 ACEA + 10 FW Energia = <b>+10 punti</b>.
           </div>
         </div>
@@ -515,9 +518,9 @@
           </select>
 
           <div class="noteBox">
-            Nella Multibrand il brand SKY si considera attivo con almeno
-            <b>1 contratto valido</b>.<br />
-            Il <b>solo Prova Sky</b> non attiva il brand SKY.
+            SKY è l'unico prodotto della categoria <b>INTRATTENIMENTO</b>, attivo con
+            almeno <b>1 contratto valido</b> (<b>1 pt</b>/contratto).<br />
+            Il <b>solo Prova Sky</b> non attiva il prodotto SKY e non fa punto gara.
           </div>
         </div>
 
@@ -586,7 +589,7 @@
         <div id="cfgHo" class="brand-box hidden">
           <div class="brand-head">
             <div style="font-weight: 900;">HO Mobile</div>
-            <span class="badge ho">Parte del brand Fastweb</span>
+            <span class="badge ho">Prodotto TELCO a sé</span>
           </div>
 
           <label for="hoMode">Modalità</label>
@@ -602,8 +605,9 @@
           </select>
 
           <div class="noteBox">
-            Se HO è selezionato, viene conteggiato come <b>parte del brand Fastweb</b>.<br />
-            Da solo non crea un brand Multibrand separato.
+            <b>Settembre 2026</b>: HO Mobile è un <b>prodotto TELCO autonomo</b>
+            (non più conteggiato dentro Fastweb), attivo con ≥ <b>1 SIM</b>.<br />
+            Le SIM HO valgono <b>0,5 punti</b> per il tier SIM condiviso con Fastweb.
           </div>
         </div>
 
@@ -696,43 +700,6 @@
           </div>
         </div>
 
-        <!-- EXTRA -->
-        <div id="cfgExtra" class="brand-box hidden">
-          <div class="brand-head">
-            <div style="font-weight: 900;">EFFICIENCY & RENT</div>
-            <span class="badge eff">Secondari</span>
-          </div>
-
-          <p class="muted" style="margin-bottom: 10px;">
-            Logica secondari invariata. Puoi inserire una provvigione media se vuoi farli
-            contribuire anche ai ricavi.
-          </p>
-
-          <div class="grid-2">
-            <div>
-              <label for="effVal">EFFICIENCY – provvigione media (€)</label>
-              <input id="effVal" type="number" class="field" value="0" min="0" step="1" />
-              <div class="muted" style="margin-top: 6px;">
-                Punti MB per pratica: <b id="effPtsLabel">5</b>
-              </div>
-            </div>
-
-            <div>
-              <label for="rentVal">RENT – provvigione media (€)</label>
-              <input id="rentVal" type="number" class="field" value="0" min="0" step="1" />
-              <div class="muted" style="margin-top: 6px;">
-                Punti MB per pratica: <b id="rentPtsLabel">5</b>
-              </div>
-            </div>
-          </div>
-
-          <div class="checkline">
-            <input id="extraPtsMode" type="checkbox" checked />
-            <label for="extraPtsMode" style="font-weight: 700; margin: 0;">
-              Usa 5 punti per pratica su Efficiency e Rent
-            </label>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -816,6 +783,12 @@
         bonus_e1: [50, 75, 125, 175, 225, 275, 350],
         bonus_e2: [100, 150, 250, 350, 450, 550, 700],
         bonus_e3: [150, 225, 375, 525, 675, 825, 1100],
+        // Tabella riservata ai negozi convenzionati JENIO: soglie più basse e
+        // gettoni più alti rispetto allo standard E2K.
+        soglie_jenio: [15, 25, 40, 50, 70, 90, 110],
+        bonus_e1_jenio: [60, 150, 200, 270, 330, 400, 500],
+        bonus_e2_jenio: [120, 300, 450, 550, 650, 750, 900],
+        bonus_e3_jenio: [180, 450, 600, 850, 950, 1100, 1300],
         punti: { energia: 1, mobile: 0.5, fisso: 1, sky: 1 },
         punti_boost: { energia: 1.25, mobile: 0.75, fisso: 1.25, sky: 1.25 },
         min_prodotti: 4,
@@ -840,8 +813,6 @@
       tiscFix: 0,
       alperia: 1,
       sorgenia: 1,
-      eff: 0,
-      rent: 0,
       fwMobile: 1,
       fwFisso: 1,
       fwEnergy: 1
@@ -1222,7 +1193,6 @@
       show("cfgTiscali", brandAttivi.includes("tiscali"));
       show("cfgAlperia", brandAttivi.includes("alperia"));
       show("cfgSorgenia", brandAttivi.includes("sorgenia"));
-      show("cfgExtra", brandAttivi.includes("eff") || brandAttivi.includes("rent"));
     }
 
     function initBrandEvents() {
@@ -1294,9 +1264,7 @@
       tiscsim: { label: "TISCALI SIM (Mobile)", colorClass: "tiscali", default: 10 },
       tiscfisso: { label: "TISCALI Fisso", colorClass: "tiscali", default: 5 },
       alperia: { label: "ALPERIA (Energia)", colorClass: "alperia", default: 8 },
-      sorgenia: { label: "SORGENIA (Energia)", colorClass: "sorgenia", default: 8 },
-      eff: { label: "EFFICIENCY", colorClass: "eff", default: 3 },
-      rent: { label: "RENT", colorClass: "rent", default: 2 }
+      sorgenia: { label: "SORGENIA (Energia)", colorClass: "sorgenia", default: 8 }
     };
 
     function getVirtualBrands() {
@@ -1321,7 +1289,7 @@
       if (!box) return;
 
       if (brandAttivi.length === 0) {
-        box.innerHTML = `<div class="muted">Seleziona almeno un brand per configurare le percentuali.</div>`;
+        box.innerHTML = `<div class="muted">Seleziona almeno un prodotto per configurare le percentuali.</div>`;
         updatePercentualiSomma();
         return;
       }
@@ -1451,9 +1419,7 @@
         tiscMobileTipo: document.getElementById("tiscMobileTipo")?.value || "mobile_200",
         tiscFissoTipo: document.getElementById("tiscFissoTipo")?.value || "res_fibra",
         alperiaTipo: document.getElementById("alperiaTipo")?.value || "premium",
-        sorgeniaTipo: document.getElementById("sorgeniaTipo")?.value || "fissa_variabile",
-        effVal: Number(document.getElementById("effVal")?.value || 0),
-        rentVal: Number(document.getElementById("rentVal")?.value || 0)
+        sorgeniaTipo: document.getElementById("sorgeniaTipo")?.value || "fissa_variabile"
       };
     }
 
@@ -1616,10 +1582,6 @@
     /****************************************************************
      * FUNZIONI PUNTI
      ****************************************************************/
-    function getExtraPointsPerUnit() {
-      return !!document.getElementById("extraPtsMode")?.checked ? 5 : 0.5;
-    }
-
     // ============================================================
     // SETTEMBRE 2026 — PUNTI MULTIBRAND PER TIPO DI OFFERTA
     // ============================================================
@@ -1655,8 +1617,18 @@
     /****************************************************************
      * MULTIBRAND
      ****************************************************************/
-    function getMBLevel(puntiTot) {
-      const soglie = COMPENSI.multibrand.soglie || [];
+    // Settembre 2026: i negozi JENIO usano soglie e gettoni propri.
+    function isJenio() {
+      return !!document.getElementById("shopJenio")?.checked;
+    }
+
+    function getMBSoglie(jenio) {
+      const mb = COMPENSI.multibrand;
+      return (jenio ? mb.soglie_jenio : mb.soglie) || mb.soglie || [];
+    }
+
+    function getMBLevel(puntiTot, jenio) {
+      const soglie = getMBSoglie(jenio);
       let idx = -1;
 
       for (let i = 0; i < soglie.length; i++) {
@@ -1668,19 +1640,20 @@
 
     // Settembre 2026: il gettone dipende dalla COLONNA (e1/e2/e3), non più dal n. brand.
     //   e1 = solo ENERGIA · e2 = ENERGIA + TELCO/SKY · e3 = ENERGIA + TELCO + SKY
-    function bonusMultibrand(puntiTot, colonna) {
-      const level = getMBLevel(puntiTot);
+    function bonusMultibrand(puntiTot, colonna, jenio) {
+      const level = getMBLevel(puntiTot, jenio);
       if (level < 0 || !colonna) {
         return { base: 0, skyExtra: 0, total: 0, level: -1, colonna: colonna || null };
       }
 
       const mb = COMPENSI.multibrand;
+      const pick = (k) => (jenio ? (mb[k + "_jenio"] || mb[k]) : mb[k]) || [];
       let base = 0;
-      if (colonna === "e1") base = (mb.bonus_e1 || [])[level] || 0;
-      else if (colonna === "e2") base = (mb.bonus_e2 || [])[level] || 0;
-      else if (colonna === "e3") base = (mb.bonus_e3 || [])[level] || 0;
+      if (colonna === "e1") base = pick("bonus_e1")[level] || 0;
+      else if (colonna === "e2") base = pick("bonus_e2")[level] || 0;
+      else if (colonna === "e3") base = pick("bonus_e3")[level] || 0;
 
-      return { base, skyExtra: 0, total: base, level, colonna };
+      return { base, skyExtra: 0, total: base, level, colonna, jenio: !!jenio };
     }
 
     /****************************************************************
@@ -1697,9 +1670,7 @@
         tiscsim: flags.hasTisc ? (candidate.tmob || 0) : 0,
         tiscfisso: flags.hasTisc ? (candidate.tfix || 0) : 0,
         alperia: flags.hasAlperia ? (candidate.alperia || 0) : 0,
-        sorgenia: flags.hasSorgenia ? (candidate.sorgenia || 0) : 0,
-        eff: flags.hasEff ? (candidate.eff || 0) : 0,
-        rent: flags.hasRent ? (candidate.rent || 0) : 0
+        sorgenia: flags.hasSorgenia ? (candidate.sorgenia || 0) : 0
       };
 
       const total = Object.values(stats).reduce((a, b) => a + b, 0);
@@ -1817,7 +1788,7 @@
       for (const st of states) {
         const alperia = st.alperia || 0;
         const sorgenia = st.sorgenia || 0;
-        const sum = st.acea + st.sky + st.ho + st.tmob + st.tfix + st.eff + st.rent + alperia + sorgenia;
+        const sum = st.acea + st.sky + st.ho + st.tmob + st.tfix + alperia + sorgenia;
 
         const key = [
           tgtBucket(st.acea, sum, T.acea),
@@ -1848,7 +1819,7 @@
      * COSTRUZIONE STATI REST
      ****************************************************************/
     function buildRestBySum(maxTotal, cfg, flags) {
-      const { hasAcea, hasSky, hasHo, hasTisc, hasAlperia, hasSorgenia, hasEff, hasRent, target } = flags;
+      const { hasAcea, hasSky, hasHo, hasTisc, hasAlperia, hasSorgenia, target } = flags;
 
       const minAcea = hasAcea ? MINIMI.acea : 0;
       const minSky = hasSky ? MINIMI.sky : 0;
@@ -1858,8 +1829,6 @@
       const minTFix = hasTisc ? MINIMI.tiscFix : 0;
       // Settembre 2026: nuovo brand Alperia
       const minAlperia = hasAlperia ? MINIMI.alperia : 0;
-      const minEff = hasEff ? 0 : 0;
-      const minRent = hasRent ? 0 : 0;
 
       // Settembre 2026 — PERFORMANCE: ogni dimensione è limitata anche da maxTotal
       // (non può superarlo) e dalla soglia energia massima (60). Con 9 dimensioni
@@ -1883,12 +1852,6 @@
         ? dimCap(Math.min(50, minSorgenia + Math.ceil(target / 70) + 10))
         : 0;
 
-      const extraPts = getExtraPointsPerUnit();
-      const maxEff = hasEff ? dimCap(Math.min(40, Math.ceil(90 / Math.max(extraPts, 0.1)) + 10)) : 0;
-      const maxRent = hasRent ? dimCap(Math.min(40, Math.ceil(90 / Math.max(extraPts, 0.1)) + 10)) : 0;
-
-      document.getElementById("effPtsLabel").innerText = extraPts;
-      document.getElementById("rentPtsLabel").innerText = extraPts;
 
       // Settembre 2026: ACEA rev al "base tier" (values[0], t1); l'upgrade al tier reale
       // (basato sul TOTALE energia unificato) viene calcolato nel main loop.
@@ -1926,20 +1889,6 @@
         tFixRev[n] = revenueTiscFixed(n, cfg.tiscFissoTipo);
       }
 
-      const effRev = new Array(maxEff + 1).fill(0);
-      const effPts = new Array(maxEff + 1).fill(0);
-      for (let n = 0; n <= maxEff; n++) {
-        effRev[n] = n * (cfg.effVal || 0);
-        effPts[n] = n * extraPts;
-      }
-
-      const rentRev = new Array(maxRent + 1).fill(0);
-      const rentPts = new Array(maxRent + 1).fill(0);
-      for (let n = 0; n <= maxRent; n++) {
-        rentRev[n] = n * (cfg.rentVal || 0);
-        rentPts[n] = n * extraPts;
-      }
-
       // Settembre 2026: Alperia — compensi FLAT (non variano con la soglia).
       const alperiaRev = new Array(maxAlperia + 1).fill(0);
       for (let n = 0; n <= maxAlperia; n++) {
@@ -1966,9 +1915,7 @@
         tmob: 0,
         tfix: 0,
         alperia: 0,
-        sorgenia: 0,
-        eff: 0,
-        rent: 0
+        sorgenia: 0
       });
 
       // PERFORMANCE: costruisco lo stato con una lista esplicita di proprietà invece
@@ -1978,8 +1925,7 @@
           rev: st.rev, punti: st.punti, mask: st.mask,
           acea: st.acea, sky: st.sky, ho: st.ho,
           tmob: st.tmob, tfix: st.tfix,
-          alperia: st.alperia, sorgenia: st.sorgenia,
-          eff: st.eff, rent: st.rent
+          alperia: st.alperia, sorgenia: st.sorgenia
         };
       }
 
@@ -2058,22 +2004,6 @@
         return o;
       });
 
-      dp = addVar(dp, minEff, maxEff, (st, n) => {
-        const o = cloneState(st);
-        o.eff = n;
-        o.rev += effRev[n];
-        o.punti += effPts[n];
-        return o;
-      });
-
-      dp = addVar(dp, minRent, maxRent, (st, n) => {
-        const o = cloneState(st);
-        o.rent = n;
-        o.rev += rentRev[n];
-        o.punti += rentPts[n];
-        return o;
-      });
-
       // Settembre 2026: Alperia (energia). I punti sono calcolati nel main loop
       // in base al TIPO OFFERTA (energia), non più per brand.
       dp = addVar(dp, minAlperia, maxAlperia, (st, n) => {
@@ -2104,7 +2034,7 @@
     function calcola() {
       const costi = calcolaTotaleCosti();
       if (costi <= 0) return alert("Inserisci i costi.");
-      if (brandAttivi.length === 0) return alert("Seleziona almeno un brand.");
+      if (brandAttivi.length === 0) return alert("Seleziona almeno un prodotto.");
 
       const useMarg = !!document.getElementById("useMarg")?.checked;
       let pct = Number(document.getElementById("margPct")?.value || 20);
@@ -2115,6 +2045,7 @@
       const cfg = getCfg();
       const brandTargets = getBrandTargetPercents();
       _mbTargets = brandTargets.normalized || {};
+      const jenio = isJenio();
 
       const hasAcea = brandAttivi.includes("acea");
       const hasSky = brandAttivi.includes("sky");
@@ -2123,8 +2054,6 @@
       const hasTisc = brandAttivi.includes("tiscali");
       const hasAlperia = brandAttivi.includes("alperia");
       const hasSorgenia = brandAttivi.includes("sorgenia");
-      const hasEff = brandAttivi.includes("eff");
-      const hasRent = brandAttivi.includes("rent");
 
       // Settembre 2026: minimi per attivare i prodotti selezionati
       const minTotal =
@@ -2150,7 +2079,7 @@
       const MB_MIN_PRODOTTI = COMPENSI.multibrand.min_prodotti || 4;
       const MB_MIN_PRODOTTI_ENERGIA = COMPENSI.multibrand.min_prodotti_energia || 3;
       // Punti minimi = prima soglia della tabella
-      const requiredPoints = (COMPENSI.multibrand.soglie || [20])[0] || 20;
+      const requiredPoints = (getMBSoglie(jenio) || [20])[0] || 20;
       const requireMBAccess = true;
 
       const flagsForCalc = {
@@ -2160,9 +2089,7 @@
         hasHo,
         hasTisc,
         hasAlperia,
-        hasSorgenia,
-        hasEff,
-        hasRent
+        hasSorgenia
       };
 
       /****************************
@@ -2247,8 +2174,6 @@
         hasTisc,
         hasAlperia,
         hasSorgenia,
-        hasEff,
-        hasRent,
         target: targetRev
       });
 
@@ -2264,7 +2189,6 @@
         const qFm = q.fm || 0, qFf = q.ff || 0, qFe = q.fe || 0;
         const qHo = q.ho || 0, qTmob = q.tmob || 0, qTfix = q.tfix || 0;
         const qAlp = q.alperia || 0, qSor = q.sorgenia || 0;
-        const qEff = q.eff || 0, qRent = q.rent || 0;
 
         const skyValid = skyRowCached.validBrand ? qSky : 0;
 
@@ -2301,8 +2225,7 @@
           qEnergiaTot * ptTable.energia +
           qMobileTot * ptTable.mobile +
           qFissoTot * ptTable.fisso +
-          skyValid * ptTable.sky +
-          (qEff + qRent) * extraPtsGlobal;
+          skyValid * ptTable.sky;
         if (puntiMB + 1e-9 < requiredPoints) return null;
 
         // --- Tier energia unificato ---
@@ -2334,27 +2257,25 @@
         const rTFix = hasTisc ? revenueTiscFixed(qTfix, cfg.tiscFissoTipo) : 0;
         const rAlperia = hasAlperia ? revenueAlperia(qAlp, cfg.alperiaTipo) : 0;
         const rSorgenia = hasSorgenia ? qSor * sorgTierUnit : 0;
-        const rEff = hasEff ? qEff * (cfg.effVal || 0) : 0;
-        const rRent = hasRent ? qRent * (cfg.rentVal || 0) : 0;
 
-        const mb = bonusMultibrand(puntiMB, colonna);
+        const mb = bonusMultibrand(puntiMB, colonna, jenio);
         const totRev = rAcea + rSky + rFm + rFf + rFe + rHo + rTMob + rTFix +
-                       rAlperia + rSorgenia + rEff + rRent + mb.total;
+                       rAlperia + rSorgenia + mb.total;
         if (totRev < targetRev) return null;
 
         const totContratti = qAcea + qSky + qFm + qFf + qFe + qHo + qTmob + qTfix +
-                             qAlp + qSor + qEff + qRent;
+                             qAlp + qSor;
 
         const candidate = {
           totContratti,
           acea: qAcea, sky: qSky, tmob: qTmob, tfix: qTfix,
-          alperia: qAlp, sorgenia: qSor, eff: qEff, rent: qRent,
+          alperia: qAlp, sorgenia: qSor,
           fm: qFm, ff: qFf, fe: qFe, ho: qHo,
-          rAcea, rSky, rTMob, rTFix, rAlperia, rSorgenia, rEff, rRent, rFm, rFf, rFe, rHo,
+          rAcea, rSky, rTMob, rTFix, rAlperia, rSorgenia, rFm, rFf, rFe, rHo,
           puntiMB,
           bonusMB: mb.base, bonusSkyExtra: 0, bonusTotal: mb.total,
           totRev, totalEnergy: qEnergiaTot, energyTierIdx,
-          colonna, boostActive,
+          colonna, boostActive, jenio,
           nEnergia, nTelco, nIntratt, nProdotti, minRichiesti, soloEnergia,
           simTierIdxUsed: simIdx,
           isDealerEnergy: qFe >= DEALER_ENERGY_MIN_CONTRACTS,
@@ -2392,7 +2313,6 @@
       let best = null;
 
       const skyRowCached = SKY_PRODUCTS[cfg.skyTipo] || SKY_PRODUCTS["3p"];
-      const extraPtsGlobal = getExtraPointsPerUnit();
 
       // Settembre 2026: bonus tier FW Mobile/HO calcolato dinamicamente in main loop
       // (dipende da punti = fw.fm × 1 + rs.ho × 0,5). Aggiungo overhead all'upper bound.
@@ -2504,8 +2424,7 @@
         acea: "acea", sky: "sky",
         fwsim: "fm", fwfisso: "ff", fwenergy: "fe",
         ho: "ho", tiscsim: "tmob", tiscfisso: "tfix",
-        alperia: "alperia", sorgenia: "sorgenia",
-        eff: "eff", rent: "rent"
+        alperia: "alperia", sorgenia: "sorgenia"
       };
 
       function clampMins(q) {
@@ -2521,7 +2440,7 @@
 
       function allocateByTargets(N) {
         const q = { acea:0, sky:0, fm:0, ff:0, fe:0, ho:0, tmob:0, tfix:0,
-                    alperia:0, sorgenia:0, eff:0, rent:0 };
+                    alperia:0, sorgenia:0 };
         const vb = getVirtualBrands();
         const items = vb.map((k) => {
           const exact = N * (brandTargets.normalized[k] || 0);
@@ -2646,8 +2565,7 @@
                 acea: rs.acea, sky: rs.sky,
                 fm: fw.fm, ff: fw.ff, fe: fw.fe,
                 ho: rs.ho, tmob: rs.tmob, tfix: rs.tfix,
-                alperia: rs.alperia, sorgenia: rs.sorgenia,
-                eff: rs.eff, rent: rs.rent
+                alperia: rs.alperia, sorgenia: rs.sorgenia
               });
               if (cand && isBetter(cand, best)) best = cand;
             }
@@ -2680,8 +2598,7 @@
         const bq = {
           acea: best.acea, sky: best.sky, fm: best.fm, ff: best.ff, fe: best.fe,
           ho: best.ho, tmob: best.tmob, tfix: best.tfix,
-          alperia: best.alperia, sorgenia: best.sorgenia,
-          eff: best.eff, rent: best.rent
+          alperia: best.alperia, sorgenia: best.sorgenia
         };
         const r = refineCombo(bq, best);
         if (isBetter(r, best)) best = r;
@@ -2716,7 +2633,7 @@
           `Suggerimenti:\n` +
           `- riduci i costi o la marginalità\n` +
           `- attiva più brand principali\n` +
-          `- rivedi le percentuali obiettivo per brand\n` +
+          `- rivedi le percentuali obiettivo per prodotto\n` +
           `- usa una combinazione più remunerativa su SKY / FASTWEB / TISCALI`;
 
         out.classList.remove("hidden");
@@ -2736,8 +2653,6 @@
       const hasTisc = brandAttivi.includes("tiscali");
       const hasAlperia = brandAttivi.includes("alperia");
       const hasSorgenia = brandAttivi.includes("sorgenia");
-      const hasEff = brandAttivi.includes("eff");
-      const hasRent = brandAttivi.includes("rent");
 
       // Settembre 2026: prodotti attivi (8 in 3 categorie)
       const prodEnergia = [];
@@ -2768,7 +2683,7 @@
 
       if (useMarg) txt += `*📌 Target ricavi*: €${targetRev}\n`;
 
-      txt += `\n*📌 Brand selezionati*: ${brandAttivi.join(", ").toUpperCase()}\n`;
+      txt += `\n*📌 Prodotti selezionati*: ${brandAttivi.join(", ").toUpperCase()}\n`;
       txt += `*🏷 Prodotti attivi Multibrand* (${best.nProdotti}): ${brandList.join(", ") || "NESSUNO"}\n`;
       txt += ` • ENERGIA: ${best.nEnergia} · TELCO: ${best.nTelco} · INTRATT.: ${best.nIntratt}\n`;
 
@@ -2777,6 +2692,9 @@
                    : "Energia";
       txt += `*✅ Accesso Multibrand*: ${best.nProdotti}/${best.minRichiesti} prodotti · ${best.puntiMB.toFixed(2)} punti (min ${requiredPoints})\n`;
       txt += `*🎫 Colonna gettone*: ${best.colonna.toUpperCase()} — ${colLbl}\n`;
+      if (best.jenio) {
+        txt += `*🏪 Negozio JENIO*: tabella gettoni dedicata (soglie 15/25/40/50/70/90/110)\n`;
+      }
 
       if (best.boostActive) {
         txt += `*⚡ Maggiorazione punti ATTIVA*: 3+ prodotti energia con ≥5 contratti (ENERGIA 1,25 · MOBILE 0,75 · FISSO 1,25 · SKY 1,25)\n`;
@@ -2787,13 +2705,13 @@
 
       const virtualBrandsOut = getVirtualBrands();
 
-      txt += `\n*📊 Distribuzione brand impostata*:\n`;
+      txt += `\n*📊 Distribuzione prodotti impostata*:\n`;
       virtualBrandsOut.forEach((brand) => {
         const label = BRAND_PERCENT_CONFIG[brand].label;
         txt += `• ${label}: ${Math.round((brandTargets.normalized[brand] || 0) * 100)}%\n`;
       });
 
-      txt += `\n*📊 Distribuzione brand reale proposta*:\n`;
+      txt += `\n*📊 Distribuzione prodotti reale proposta*:\n`;
       virtualBrandsOut.forEach((brand) => {
         const label = BRAND_PERCENT_CONFIG[brand].label;
         txt += `• ${label}: ${pctFmt(best.brandShares?.[brand])}\n`;
@@ -2885,20 +2803,6 @@
         txt += `*⚡ Tier ENERGIA unificato* (ACEA + FW Energy + Alperia + Sorgenia): ${totE} contratti → *${tierLabels[best.energyTierIdx || 0]}*\n\n`;
       }
 
-      if (hasEff) {
-        const p = getExtraPointsPerUnit();
-        txt += `• *EFFICIENCY* → ${best.eff} pratiche\n`;
-        txt += ` - provvigioni stimate: €${best.rEff}\n`;
-        txt += ` - punti MB: ${(best.eff * p).toFixed(2)}\n\n`;
-      }
-
-      if (hasRent) {
-        const p = getExtraPointsPerUnit();
-        txt += `• *RENT* → ${best.rent} pratiche\n`;
-        txt += ` - provvigioni stimate: €${best.rRent}\n`;
-        txt += ` - punti MB: ${(best.rent * p).toFixed(2)}\n\n`;
-      }
-
       txt += `*🔥 Punti Multibrand totali*: ${best.puntiMB.toFixed(2)}\n`;
       txt += `*💶 Bonus Multibrand base*: €${best.bonusMB}\n`;
 
@@ -2963,7 +2867,6 @@
         brandTargets
       } = _bestDettaglio;
 
-      const extraPts = getExtraPointsPerUnit();
       let d = "🔍 Dettaglio provvigioni e punti:\n\n";
 
       d += `Costi: €${costi}\n`;
@@ -2973,6 +2876,7 @@
       }
       d += `Prodotti attivi: ${best.nProdotti}/${best.minRichiesti} (ENERGIA ${best.nEnergia} · TELCO ${best.nTelco} · INTRATT ${best.nIntratt})\n`;
       d += `Colonna gettone: ${(best.colonna || "-").toUpperCase()}\n`;
+      d += `Tabella gettoni: ${best.jenio ? "JENIO" : "STANDARD E2K"}\n`;
       if (best.boostActive) {
         d += `Maggiorazione punti ATTIVA (3+ prodotti energia con >=5 contratti)\n`;
       }
@@ -2982,12 +2886,12 @@
 
       const virtualBrandsDett = getVirtualBrands();
 
-      d += "\nDistribuzione brand impostata:\n";
+      d += "\nDistribuzione prodotti impostata:\n";
       virtualBrandsDett.forEach((brand) => {
         d += `- ${BRAND_PERCENT_CONFIG[brand].label}: ${Math.round((brandTargets.normalized[brand] || 0) * 100)}%\n`;
       });
 
-      d += "\nDistribuzione brand reale:\n";
+      d += "\nDistribuzione prodotti reale:\n";
       virtualBrandsDett.forEach((brand) => {
         d += `- ${BRAND_PERCENT_CONFIG[brand].label}: ${Math.round((best.brandShares?.[brand] || 0) * 100)}%\n`;
       });
@@ -3084,20 +2988,6 @@
         d += `Tier ENERGIA unificato: ${best.totalEnergy} contratti totali → ${tierLbls[best.energyTierIdx || 0]}\n\n`;
       }
 
-      if (brandAttivi.includes("eff") && best.eff > 0) {
-        d += `• EFFICIENCY\n`;
-        d += `- pratiche: ${best.eff}\n`;
-        d += `- provvigione media: €${(cfg.effVal || 0).toFixed(2)}\n`;
-        d += `- punti MB/pratica: ${extraPts}\n\n`;
-      }
-
-      if (brandAttivi.includes("rent") && best.rent > 0) {
-        d += `• RENT\n`;
-        d += `- pratiche: ${best.rent}\n`;
-        d += `- provvigione media: €${(cfg.rentVal || 0).toFixed(2)}\n`;
-        d += `- punti MB/pratica: ${extraPts}\n\n`;
-      }
-
       d += `Totale punti MB: ${best.puntiMB.toFixed(2)}\n`;
       d += `Bonus base: €${best.bonusMB}\n`;
 
@@ -3154,8 +3044,7 @@
         tiscali: "#3b2783",
         alperia: "#12a56b",
         sorgenia: "#e8410a",
-        eff: "#16a34a",
-        rent: "#2563eb"
+        sorgenia: "#e8410a"
       };
 
       const VIRTUAL_COLOR = {
@@ -3169,8 +3058,7 @@
         tiscfisso: "#3b2783",
         alperia: "#12a56b",
         sorgenia: "#e8410a",
-        eff: "#16a34a",
-        rent: "#2563eb"
+        sorgenia: "#e8410a"
       };
 
       const virtualBrands = getVirtualBrands();
@@ -3182,9 +3070,6 @@
       const hasTisc = brandAttivi.includes("tiscali");
       const hasAlperia = brandAttivi.includes("alperia");
       const hasSorgenia = brandAttivi.includes("sorgenia");
-      const hasEff = brandAttivi.includes("eff");
-      const hasRent = brandAttivi.includes("rent");
-      const extraPts = getExtraPointsPerUnit();
 
       // Settembre 2026: prodotti attivi (8 in 3 categorie)
       const mbBrandList = [];
@@ -3350,32 +3235,6 @@
         });
       }
 
-      if (hasEff) {
-        prodRows.push({
-          color: BRAND_COLOR.eff,
-          brand: "EFFICIENCY",
-          subtitle: "Secondario",
-          qty: best.eff,
-          qtyLabel: "pratiche",
-          unit: cfg.effVal || 0,
-          totale: best.rEff,
-          punti: best.eff * extraPts
-        });
-      }
-
-      if (hasRent) {
-        prodRows.push({
-          color: BRAND_COLOR.rent,
-          brand: "RENT",
-          subtitle: "Secondario",
-          qty: best.rent,
-          qtyLabel: "pratiche",
-          unit: cfg.rentVal || 0,
-          totale: best.rRent,
-          punti: best.rent * extraPts
-        });
-      }
-
       const prodHtml = prodRows.map((r) => `
         <tr>
           <td>
@@ -3398,7 +3257,7 @@
       const totaleProvvigioni =
         (best.rAcea || 0) + (best.rSky || 0) + (best.rFm || 0) + (best.rFf || 0) +
         (best.rFe || 0) + (best.rHo || 0) + (best.rTMob || 0) + (best.rTFix || 0) +
-        (best.rAlperia || 0) + (best.rSorgenia || 0) + (best.rEff || 0) + (best.rRent || 0);
+        (best.rAlperia || 0) + (best.rSorgenia || 0);
 
       const html = `<!doctype html>
 <html lang="it">
@@ -3725,7 +3584,7 @@
 
   <div class="info-grid">
     <div class="info-box">
-      <div class="lbl">Brand selezionati</div>
+      <div class="lbl">Prodotti selezionati</div>
       <div class="badges">
         ${brandAttivi.map(b => {
           const lbl = (BRAND_PERCENT_CONFIG[b]?.label) || b.toUpperCase();
@@ -3735,7 +3594,7 @@
       </div>
     </div>
     <div class="info-box">
-      <div class="lbl">Brand validi Multibrand</div>
+      <div class="lbl">Prodotti attivi Multibrand</div>
       <div class="badges">
         ${mbBrandList.length
           ? mbBrandList.map(b => `<span class="badge" style="background:#111827">${escapeHtml(b)}</span>`).join("")
@@ -3748,11 +3607,12 @@
           ? `<span class="badge" style="background:#0891b2">Dealer Energy</span>`
           : ""}
         <span class="badge" style="background:#7c3aed">Colonna ${(best.colonna || "-").toUpperCase()}</span>
+        ${best.jenio ? `<span class="badge" style="background:#db2777">JENIO</span>` : ""}
       </div>
     </div>
   </div>
 
-  <h2 class="section-title">Distribuzione produzione per brand</h2>
+  <h2 class="section-title">Distribuzione produzione per prodotto</h2>
   <table class="data">
     <thead>
       <tr>
